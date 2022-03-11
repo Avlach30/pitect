@@ -12,6 +12,12 @@ export class Users {
   type: string;
 
   @Column()
+  numberPhone: number;
+
+  @Column('boolean', { default: false })
+  isVerified: boolean;
+
+  @Column()
   email: string;
 
   @Column()

@@ -19,7 +19,13 @@ export class UserService {
     private jwtService: JwtService,
   ) {}
 
-  async signup(name: string, type: string, email: string, password: string) {
+  async signup(
+    name: string,
+    type: string,
+    numberPhone: string,
+    email: string,
+    password: string,
+  ) {
     let isSame;
     try {
       isSame = await this.userRepository.query(
@@ -38,18 +44,21 @@ export class UserService {
     const hashedPw = await bcrypt.hash(password, 12);
 
     const userCreate = await this.userRepository.query(
-      'INSERT INTO users (FULLNAME, TYPE, EMAIL, PASSWORD) VALUES (?, ?, ?, ?)',
-      [name, type, email, hashedPw],
+      'INSERT INTO users (FULLNAME, TYPE, numPhone, EMAIL, PASSWORD) VALUES (?, ?, ?, ?, ?)',
+      [name, type, numberPhone, email, hashedPw],
     );
 
     const resultData = await this.userRepository.query(
-      'SELECT EMAIL, FULLNAME, TYPE FROM users WHERE USERID = ?',
+      'SELECT EMAIL, FULLNAME, TYPE, numPhone FROM users WHERE USERID = ?',
       [userCreate.insertId],
     );
+
+    // console.log(resultData);
 
     const resultObj = {
       fullname: resultData[0].FULLNAME,
       type: resultData[0].TYPE,
+      numberPhone: parseInt(`+62${Number(resultData[0].numPhone)}`),
       email: resultData[0].EMAIL,
     };
 

@@ -12,6 +12,7 @@ How to use this API for frontend / mobile usage
   {
     "name": String,
     "type": String,
+    "numberPhone": String,
     "email": String,
     "password": String
   }
@@ -21,9 +22,10 @@ How to use this API for frontend / mobile usage
   {
     "message": "User signup successfully",
     "user": {
-        "fullname": "morisson",
-        "type": "project owner",
-        "email": "morisson@gmail.com"
+        "fullname": "john doe",
+        "type": "personal",
+        "numberPhone": 6289123456789,
+        "email": "johndoe@gmail.com"
     }
   }
   ```

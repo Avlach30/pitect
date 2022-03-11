@@ -19,10 +19,17 @@ export class AuthController {
   async signup(
     @Body('name') name: string,
     @Body('type') type: string,
+    @Body('numberPhone') numberPhone: string,
     @Body('email') email: string,
     @Body('password') password: string,
   ) {
-    const signUp = await this.userService.signup(name, type, email, password);
+    const signUp = await this.userService.signup(
+      name,
+      type,
+      numberPhone,
+      email,
+      password,
+    );
     return {
       message: 'User signup successfully',
       user: signUp,

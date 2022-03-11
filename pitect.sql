@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 10, 2022 at 01:52 AM
+-- Generation Time: Mar 11, 2022 at 09:22 AM
 -- Server version: 8.0.21
 -- PHP Version: 7.3.21
 
@@ -32,19 +32,21 @@ CREATE TABLE IF NOT EXISTS `users` (
   `USERID` int NOT NULL AUTO_INCREMENT,
   `FULLNAME` varchar(24) NOT NULL,
   `TYPE` varchar(18) DEFAULT NULL,
-  `EMAIL` varchar(48) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `isVerified` tinyint NOT NULL DEFAULT '0',
+  `numPhone` varchar(15) NOT NULL,
+  `EMAIL` varchar(48) DEFAULT NULL,
   `PASSWORD` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`USERID`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`USERID`, `FULLNAME`, `TYPE`, `EMAIL`, `PASSWORD`) VALUES
-(13, 'john doe', 'project owner', 'johndoe@gmail.com', '$2b$12$vTCQZNWL88n9FTj8z2bOq.5J5tqneqGj8K9Lwv3TFXphwxu.ur7cq'),
-(14, 'jane doe', 'worker', 'janedoe@gmail.com', '$2b$12$CPuqVeuCwIWxM3Gp6EXgq.ATp3dPahpFsMYpjOz9X/NWkusKEyZ16'),
-(15, 'morisson', 'project owner', 'morisson@gmail.com', '$2b$12$rAc9MhG20ReIjsjdJ/ERwOn0BuvRFrtBesGJ.UaEPMzaPzoEoQWQK');
+INSERT INTO `users` (`USERID`, `FULLNAME`, `TYPE`, `isVerified`, `numPhone`, `EMAIL`, `PASSWORD`) VALUES
+(24, 'john doe', 'personal', 0, '089123456789', 'johndoe@gmail.com', '$2b$12$WE4aqiUH.xnnF32tJwkrpeaJswHjO5wPBGZ0.Dx7/EX151XbXrjkO'),
+(25, 'jane doe', 'organization', 0, '089123456789', 'janedoe@gmail.com', '$2b$12$DIm3lsm26uhDU8k43uk9RuANaR0lS7LqqODvpwfAVIyTzrycCWJvi'),
+(26, 'rocketmail', 'company', 0, '089123456789', 'rocketmail@gmail.com', '$2b$12$jIFapWK//q5hr5iZDJhXr.UFteoIAP/vIgYDZH67TQSDlG0Jhkaj6');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
