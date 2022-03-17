@@ -6,6 +6,7 @@ import {
   Query,
   Request,
   UseGuards,
+  HttpCode,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -13,9 +14,10 @@ import { UserService } from './user.service';
 
 @Controller('api/auth')
 export class AuthController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private userService: UserService) {}
 
   @Post('signup')
+  @HttpCode(201)
   async signup(
     @Body('name') name: string,
     @Body('type') type: string,
@@ -30,22 +32,17 @@ export class AuthController {
       email,
       password,
     );
-    return {
-      message: 'User signup successfully',
-      user: signUp,
-    };
+    return signUp;
   }
 
   @Post('login')
+  @HttpCode(200)
   async login(
     @Body('email') email: string,
     @Body('password') password: string,
   ) {
     const login = await this.userService.login(email, password);
-    return {
-      message: 'Login successfully',
-      token: login,
-    };
+    return login;
   }
 }
 

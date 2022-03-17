@@ -26,7 +26,11 @@ export class UserService {
     email: string,
     password: string,
   ) {
-    let isSame;
+    if (!name || !type || !numberPhone || !email || !password) {
+      throw new BadRequestException('Please input all fields');
+    }
+
+    let isSame: any;
     try {
       isSame = await this.userRepository.query(
         'SELECT * FROM users WHERE EMAIL = ?',
@@ -56,16 +60,23 @@ export class UserService {
     // console.log(resultData);
 
     const resultObj = {
-      fullname: resultData[0].FULLNAME,
-      type: resultData[0].TYPE,
-      numberPhone: parseInt(`+62${Number(resultData[0].numPhone)}`),
-      email: resultData[0].EMAIL,
+      message: 'User signup successfully',
+      user: {
+        fullname: resultData[0].FULLNAME,
+        type: resultData[0].TYPE,
+        numberPhone: parseInt(`+62${Number(resultData[0].numPhone)}`),
+        email: resultData[0].EMAIL,
+      },
     };
 
     return resultObj;
   }
 
   async login(email: string, password: string) {
+    if (!email || !password) {
+      throw new BadRequestException('Please input all fields');
+    }
+
     let user;
 
     try {
@@ -93,7 +104,12 @@ export class UserService {
       email: loadUser.EMAIL,
       userId: loadUser.USERID.toString(),
     });
-    return token;
+
+    const result = {
+      message: 'Login successfully',
+      token,
+    };
+    return result;
   }
 
   //* Search user with request query
