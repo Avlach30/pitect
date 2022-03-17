@@ -4,6 +4,9 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { UserModule } from './user/user.module';
+import { ProjectModule } from './project/project.module';
+import { ProjectBudgetModule } from './project/budgets/project-budget.module';
+import { ProjectTaskModule } from './project/tasks/project-task.module';
 
 @Module({
   imports: [
@@ -18,6 +21,9 @@ import { UserModule } from './user/user.module';
       synchronize: false,
     }),
     UserModule,
+    ProjectModule,
+    ProjectBudgetModule,
+    ProjectTaskModule,
   ],
   controllers: [],
   providers: [],
