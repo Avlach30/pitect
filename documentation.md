@@ -151,40 +151,50 @@ Token is obtained from login response
   {
     "message": "Success fetched all projects",
     "data": {
-        "projects": [
+        "projectsOwned": [
+            {
+                "id": 29,
+                "name": "Pembangunan Jembatan",
+                "admin": "rocketmail",
+                "contractTotal": 15000000,
+                "totalCost": 4000000,
+                "workDuration": 52
+            },
+            {
+                "id": 30,
+                "name": "Pembangunan Wc",
+                "admin": "rocketmail",
+                "contractTotal": 2000000,
+                "totalCost": 2000000,
+                "workDuration": 52
+            }
+        ],
+        "projectsCollab": [
             {
                 "id": 32,
                 "name": "Pengembangan proyek homestay",
                 "admin": "john doe",
                 "contractTotal": 500000000,
                 "totalCost": 0,
-                "workDuration": "181"
+                "workDuration": 181
             },
             {
-                "id": 33,
-                "name": "Pengembangan proyek homestay",
+                "id": 35,
+                "name": "Pengembangan proyek sengketa",
                 "admin": "john doe",
                 "contractTotal": 500000000,
                 "totalCost": 0,
-                "workDuration": "181"
-            },
-            {
-                "id": 34,
-                "name": "Pengembangan proyek ngawor",
-                "admin": "john doe",
-                "contractTotal": 500000000,
-                "totalCost": 0,
-                "workDuration": "181"
+                "workDuration": 181
             }
         ],
         "budgets": {
-            "sumContracts": 1500000000,
-            "sumSpendings": 0,
-            "remainingBudget": 1500000000
+            "sumContracts": 17000000,
+            "sumSpendings": 6000000,
+            "remainingBudget": 11000000
         },
         "percentageBudgets": {
-            "spending": 0,
-            "remainBudget": 100
+            "spending": 35,
+            "remainBudget": 65
         }
     }
   }
