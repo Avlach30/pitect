@@ -251,14 +251,6 @@ Token is obtained from login response
       "message": "Unauthorized"
   }
   ```
-* ### Response fail (because not owned data)
-  ```
-  {
-      "statusCode": 401,
-      "message": "Unauthorized",
-      "error": "Unauthorized"
-  }
-  ```
 ## 6. Update Project
 Token is obtained from login response
 * ### Endpoint  

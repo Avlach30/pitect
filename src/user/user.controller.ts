@@ -52,6 +52,7 @@ export class UserController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
+  @HttpCode(200)
   async searchUser(@Query('name') name: any, @Request() req: any) {
     const user = await this.userService.searchUser(name, req);
     return {
