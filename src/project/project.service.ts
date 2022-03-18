@@ -109,6 +109,7 @@ export class ProjectService {
 
   async fetchProjects(@Request() req: any) {
     let fetchProjectResult;
+    //* Fetching all projects with admin = id of user logged in
     const fetchProjects = await this.projectRepository
       .query(
         'SELECT projects.id as id, projects.title as name, users.FULLNAME as admin, projects.totalContract, GROUP_CONCAT(projectbudgets.id) as budgetId, GROUP_CONCAT(projectbudgets.cost) as costs, GROUP_CONCAT(projectbudgets.content) as descBudget, datediff(projects.finishDate, projects.startDate) as durasi FROM projectbudgets INNER JOIN projects ON projectbudgets.projectId = projects.id INNER JOIN users ON projects.admin = users.USERID WHERE EXISTS(SELECT 1 from projectbudgets where projectbudgets.projectId = projects.id) AND projects.admin = ? GROUP BY projects.id',
@@ -128,7 +129,7 @@ export class ProjectService {
     });
 
     //* Mapping array of cost for get a sum value
-    const mappingValue = fetchProjectResult.map((item, idx) => {
+    const mappingProjects = fetchProjectResult.map((item, idx) => {
       const initiatedBudget = arrCostLists[idx][0];
 
       const sumValue = arrCostLists[idx].reduce((prev, current) => {
@@ -143,18 +144,18 @@ export class ProjectService {
         admin: item.admin,
         contractTotal: item.totalContract,
         totalCost: totalRealization,
-        workDuration: item.durasi,
+        workDuration: parseInt(item.durasi),
       };
 
       return objItem;
     });
 
     //* Mapping array untuk mendapatkan data total kontrak, total pengeluaran, dan sisa anggaran
-    const arrTotalContracts = mappingValue.map((item, idx) => {
+    const arrTotalContracts = mappingProjects.map((item, idx) => {
       return item.contractTotal;
     });
 
-    const arrTotalSpendings = mappingValue.map((item) => {
+    const arrTotalSpendings = mappingProjects.map((item) => {
       return item.totalCost;
     });
 
@@ -178,10 +179,63 @@ export class ProjectService {
     // console.log(Math.round(percentageSpendings));
     // console.log(Math.round(percentageRemainBudget));
 
+    //* Fething all project with collaborator of user logged in
+    const fetchCollabProjectId = await this.projectRepository.query(
+      'SELECT projectmembers.project FROM projectmembers INNER JOIN projects ON projectmembers.project = projects.id WHERE projectmembers.user = ? AND projects.admin != ?',
+      [parseInt(req.user.userId), parseInt(req.user.userId)],
+    );
+
+    // 'SELECT projects.id as id, projects.title as name, users.FULLNAME as admin, projects.totalContract, GROUP_CONCAT(projectbudgets.id) as budgetId, GROUP_CONCAT(projectbudgets.cost) as costs, GROUP_CONCAT(projectbudgets.content) as descBudget, datediff(projects.finishDate, projects.startDate) as durasi FROM projectbudgets INNER JOIN projects ON projectbudgets.projectId = projects.id INNER JOIN users ON projects.admin = users.USERID WHERE EXISTS(SELECT 1 from projectbudgets where projectbudgets.projectId = projects.id) AND projects.id = ? GROUP BY projects.id',
+    //       [value.project],
+
+    const arrProjectCollabId = fetchCollabProjectId.map(
+      (value) => value.project,
+    );
+
+    // console.log(arrProjectCollabId);
+
+    const fetchCollabProjects = await this.projectRepository.query(
+      'SELECT projects.id as id, projects.title as name, users.FULLNAME as admin, projects.totalContract, GROUP_CONCAT(projectbudgets.id) as budgetId, GROUP_CONCAT(projectbudgets.cost) as costs, GROUP_CONCAT(projectbudgets.content) as descBudget, datediff(projects.finishDate, projects.startDate) as durasi FROM projectbudgets INNER JOIN projects ON projectbudgets.projectId = projects.id INNER JOIN users ON projects.admin = users.USERID WHERE EXISTS(SELECT 1 from projectbudgets where projectbudgets.projectId = projects.id) AND projects.id IN (?) GROUP BY projects.id',
+      [arrProjectCollabId],
+    );
+
+    // console.log(fetchCollabProjects);
+
+    //* Get array of costs
+    const arrCostListCollab = fetchCollabProjects.map((item) => {
+      const arrCost = item.costs.split(',').map((cost) => parseInt(cost));
+      return arrCost;
+    });
+
+    //* Mapping array of cost for get a sum value
+    const mappingCollabProjects = fetchCollabProjects.map((item, idx) => {
+      const initiatedBudget = arrCostListCollab[idx][0];
+
+      const sumValue = arrCostListCollab[idx].reduce((prev, current) => {
+        return prev + current;
+      }, 0);
+
+      const totalRealization = sumValue - initiatedBudget;
+
+      const objItem = {
+        id: item.id,
+        name: item.name,
+        admin: item.admin,
+        contractTotal: item.totalContract,
+        totalCost: totalRealization,
+        workDuration: item.durasi,
+      };
+
+      return objItem;
+    });
+
+    // console.log(mappingCollabProjects);
+
     return {
       message: 'Success fetched all projects',
       data: {
-        projects: mappingValue,
+        projectsOwned: mappingProjects,
+        projectsCollab: mappingCollabProjects,
         budgets: {
           sumContracts,
           sumSpendings,
@@ -212,10 +266,6 @@ export class ProjectService {
 
     if (getResult == undefined) {
       throw new NotFoundException('Project not found');
-    }
-
-    if (getResult.adminId != parseInt(req.user.userId)) {
-      throw new UnauthorizedException('Unauthorized');
     }
 
     const projectMember = await this.projectMemberRepository.query(
