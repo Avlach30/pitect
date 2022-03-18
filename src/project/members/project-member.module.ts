@@ -10,6 +10,7 @@ import { isAuth } from '../../user/middleware/is-auth';
     TypeOrmModule.forFeature([ProjectMembers]),
     JwtModule.register({
       secret: 'this-is-ultimate-secret-Text!',
+      signOptions: { expiresIn: '120s' },
     }),
   ],
   controllers: [],

@@ -12,6 +12,7 @@ import { Projects } from '../project.entity';
     TypeOrmModule.forFeature([Projects]),
     JwtModule.register({
       secret: 'this-is-ultimate-secret-Text!',
+      signOptions: { expiresIn: '120s' },
     }),
   ],
   controllers: [],
