@@ -364,6 +364,7 @@ Token is obtained from login response
   ```
 
 ## 8. Get Logged User Data
+Token is obtained from login response
 * ### Endpoint  
   `/api/profile`
 * ### Method
@@ -394,6 +395,7 @@ Token is obtained from login response
   ```
 
 ## 9. Update logged user
+Token is obtained from login response
 * ### Endpoint  
   `/api/profile`
 * ### Method
@@ -401,6 +403,7 @@ Token is obtained from login response
 * ### Headers
   ```
   Authorization: `Bearer ${token}`
+  Content-Type: application/json
   ```
 * ### Body
   ```
@@ -439,6 +442,7 @@ Token is obtained from login response
   }
   ```
 ## 10. Delete logged user
+Token is obtained from login response
 * ### Endpoint  
   `/api/profile`
 * ### Method
@@ -458,5 +462,132 @@ Token is obtained from login response
   {
       "statusCode": 401,
       "message": "Unauthorized"
+  }
+  ```
+## 11. Add new Project Collaborator
+Token is obtained from login response
+* ### Endpoint  
+  `/api/projects/:projectId`
+* ### Method
+  POST
+* ### Headers
+  ```
+  Authorization: `Bearer ${token}`
+  Content-Type: application/json
+  ```
+* ### Body
+  ```
+  {
+    "userId": String
+  }
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Add new projects collaborator successfully",
+    "affectedData": {
+        "projectId": 33,
+        "userId": 25
+    }
+  }
+  ```
+* ### Response fail (because one of request body not filled (required))
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please input all fields",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because logged user already added) 
+  ```
+  {
+    "statusCode": 400,
+    "message": "Logged user already added",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because user result already added)
+  ```
+  {
+    "statusCode": 400,
+    "message": "User already added",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because logged user isn't project admin/owner) 
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because project not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Project not found",
+      "error": "Not Found"
+  }
+  ```
+## 12. Delete Project Collaborator
+Token is obtained from login response
+* ### Endpoint  
+  `/api/projects/:projectId/members/:userId`
+* ### Method
+  DELETE
+* ### Headers
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Delete project's collaborator successfully"
+  }
+  ```
+* ### Response fail (because logged user can't delete from project collaboration) 
+  ```
+  {
+    "statusCode": 400,
+    "message": "Cannot delete collaborator from logged user",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because logged user isn't project admin/owner) 
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because project not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Project not found",
+      "error": "Not Found"
+  }
+  ```
+* ### Response fail (because user not found)
+  ```
+  {
+    "statusCode": 404,
+    "message": "Collaborator id not found",
+    "error": "Not Found"
   }
   ```

@@ -35,7 +35,7 @@ export class ProjectMemberController {
 
   @UseGuards(AuthGuard('jwt'))
   @Delete('members/:userId')
-  @HttpCode(201)
+  @HttpCode(202)
   async removeCollaborator(
     @Request() req: any,
     @Param('projectId') projectId: string,
