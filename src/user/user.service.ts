@@ -2,6 +2,7 @@ import {
   Injectable,
   BadRequestException,
   UnauthorizedException,
+  NotFoundException,
   Query,
   Request,
 } from '@nestjs/common';
@@ -122,5 +123,70 @@ export class UserService {
 
     // console.log(users);
     return users;
+  }
+
+  async getUser(@Request() req: any) {
+    const user = await this.userRepository.query(
+      'SELECT FULLNAME, TYPE, isVerified, numPhone, EMAIL FROM users WHERE USERID = ?',
+      [parseInt(req.user.userId)],
+    );
+
+    const objResult = {
+      message: 'Fetch user logged in successfully',
+      data: {
+        name: user[0].FULLNAME,
+        accountType: user[0].TYPE,
+        isVerified: user[0].isVerified,
+        numberPhone: parseInt(`+62${Number(user[0].numPhone)}`),
+        email: user[0].EMAIL,
+      },
+    };
+
+    return objResult;
+  }
+
+  async updateProfile(
+    @Request() req: any,
+    name: string,
+    type: string,
+    numberPhone: string,
+    email: string,
+  ) {
+    if (!name || !type || !numberPhone || !email) {
+      throw new BadRequestException('Please input all fields');
+    }
+
+    const updateUser = await this.userRepository.query(
+      'UPDATE users SET FULLNAME = ?, TYPE = ?, numPhone = ?, EMAIL = ? WHERE USERID = ?',
+      [name, type, numberPhone, email, parseInt(req.user.userId)],
+    );
+
+    const result = await this.userRepository.query(
+      'SELECT FULLNAME, TYPE, numPhone, EMAIL FROM users WHERE USERID = ?',
+      [parseInt(req.user.userId)],
+    );
+
+    const objResult = {
+      message: 'Update user logged in successfully',
+      data: {
+        name: result[0].FULLNAME,
+        accountType: result[0].TYPE,
+        numberPhone: parseInt(`+62${Number(result[0].numPhone)}`),
+        email: result[0].EMAIL,
+      },
+    };
+
+    return objResult;
+  }
+
+  async deleteProfile(@Request() req: any) {
+    const deleteUser = await this.userRepository.query(
+      'DELETE FROM users WHERE USERID = ?',
+      [parseInt(req.user.userId)],
+    );
+
+    return {
+      message: 'Delete user successfully',
+    };
   }
 }
