@@ -7,7 +7,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { groupCollapsed } from 'console';
 import { Repository } from 'typeorm';
 
 import { ProjectMembers } from './members/project-member.entity';
