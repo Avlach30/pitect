@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { ProjectModule } from './project/project.module';
 import { ProjectBudgetModule } from './project/budgets/project-budget.module';
 import { ProjectTaskModule } from './project/tasks/project-task.module';
+import { ProjectMemberModule } from './project/members/project-member.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ProjectTaskModule } from './project/tasks/project-task.module';
     }),
     UserModule,
     ProjectModule,
+    ProjectMemberModule,
     ProjectBudgetModule,
     ProjectTaskModule,
   ],
