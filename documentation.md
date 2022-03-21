@@ -1,5 +1,6 @@
 # Documentations
-How to use this API for frontend / mobile usage
+How to use this API for frontend / mobile usage  
+Base URL: Localhost (temporary)
 ## 1. Sign up
 * ### Endpoint   
   `/api/auth/signup`
@@ -359,5 +360,103 @@ Token is obtained from login response
       "statusCode": 401,
       "message": "Unauthorized",
       "error": "Unauthorized"
+  }
+  ```
+
+## 8. Get Logged User Data
+* ### Endpoint  
+  `/api/profile`
+* ### Method
+  GET
+* ### Headers
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Fetch user logged in successfully",
+    "data": {
+        "name": "rocketmail",
+        "accountType": "company",
+        "isVerified": 0,
+        "numberPhone": 6289123456789,
+        "email": "rocketmail@gmail.com"
+    }
+  }
+  ```
+* ### Response fail (because token not available)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
+
+## 9. Update logged user
+* ### Endpoint  
+  `/api/profile`
+* ### Method
+  PUT
+* ### Headers
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Body
+  ```
+  {
+    "name": String,
+    "type": String,
+    "numberPhone": String,
+    "email": String
+  }
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Update user logged in successfully",
+    "data": {
+        "name": "john revisian",
+        "accountType": "organization",
+        "numberPhone": 6288123456789,
+        "email": "revisian@gmail.com"
+    }
+  }
+  ```
+* ### Response fail (because token not available)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because one of request body not filled (required))
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please input all fields",
+    "error": "Bad Request"
+  }
+  ```
+## 10. Delete logged user
+* ### Endpoint  
+  `/api/profile`
+* ### Method
+  DELETE
+* ### Headers
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Delete user successfully"
+  }
+  ```
+* ### Response fail (because token not available)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
   }
   ```
