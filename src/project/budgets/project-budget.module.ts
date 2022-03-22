@@ -5,6 +5,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { isAuth } from '../../user/middleware/is-auth';
 import { ProjectBudgets } from './project-budget.entity';
 import { Projects } from '../project.entity';
+import {
+  ProjectBudgetController,
+  UpdateBudgetController,
+} from './project-budget.controller';
+import { ProjectBudgetService } from './project-budget.service';
 
 @Module({
   imports: [
@@ -15,7 +20,7 @@ import { Projects } from '../project.entity';
       signOptions: { expiresIn: '120s' },
     }),
   ],
-  controllers: [],
-  providers: [isAuth],
+  controllers: [ProjectBudgetController, UpdateBudgetController],
+  providers: [isAuth, ProjectBudgetService],
 })
 export class ProjectBudgetModule {}

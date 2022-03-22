@@ -591,3 +591,181 @@ Token is obtained from login response
     "error": "Not Found"
   }
   ```
+## 13. Get all project spending's  
+Token is obtained from login response
+* ### Endpoint  
+  `/api/projects/:projectId/budgets`
+* ### Method
+  GET
+* ### Headers
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response Success  
+  ```
+  {
+    "message": "Fetch budgets successfully",
+    "data": {
+        "budgets": [
+            {
+                "id": 19,
+                "projectId": 29,
+                "date": "2022-03-16T17:00:00.000Z",
+                "content": "Penyewaan jasa aduk semen dengan pasir",
+                "amount": 20,
+                "cost": 2000000
+            }
+        ],
+        "report": {
+            "totalBudget": 15000000,
+            "totalSpending": 2000000,
+            "remainBudget": 13000000
+        }
+    }
+  }
+  ```
+* ### Response fail (because token not available)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because project not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```
+## 14. Add new project spending  
+Token is obtained from login response
+* ### Endpoint  
+  `/api/projects/:projectId/budgets`
+* ### Method
+  POST
+* ### Headers
+  ```
+  Authorization: `Bearer ${token}`
+  Content-Type: application/json
+  ```
+* ### Body
+  ```
+  {
+    "date": String (YYYY-MM-DD),
+    "content": String,
+    "amount": Number,
+    "cost": Number
+  }
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Add new project spending successfully"
+  }
+  ```
+* ### Response fail (because one of request body not filled (required))
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please input all fields",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available & project admin isn't logged user)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized",
+      "error": "Unauthorized"
+  }
+  ```
+* ### Response fail (because project not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Project not found",
+      "error": "Not Found"
+  }
+  ```
+## 15. Delete existing project spending  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/projects/:projectId/budgets/:budgetId`
+* ### Method
+  DELETE
+* ### Headers
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Delete existing project spending successfully"
+  }
+  ```
+* ### Response fail (because token not available & project admin isn't logged user)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized",
+      "error": "Unauthorized"
+  }
+  ```
+* ### Response fail (because project not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```
+## 16. Update total budget of project  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/projects/:projectId/updateBudget`
+* ### Method
+  POST
+* ### Headers
+  ```
+  Authorization: `Bearer ${token}`
+  Content-Type: application/json
+  ```
+* ### Body
+  ```
+  {
+    "budget": Number
+  }
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Update budget contract successfully",
+    "updatedBudget": 22000000
+  }
+  ```
+* ### Response fail (because request body not filled (required))
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please input this fields",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available & project admin isn't logged user)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized",
+      "error": "Unauthorized"
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Project not found",
+      "error": "Not Found"
+  }
+  ```
