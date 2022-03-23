@@ -769,3 +769,203 @@ Token is obtained from login response
       "error": "Not Found"
   }
   ```
+## 17. Get single task  
+Token is obtained from login response
+* ### Endpoint  
+  `/api/projects/:projectId/task/:taskId`
+* ### Method
+  GET
+* ### Headers
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response success
+  ```
+  {
+    "message": "Fetch single task successfully",
+    "data": {
+        "id": 4,
+        "content": "Perancangan Kontruksi",
+        "isFinished": 0,
+        "projectId": 32
+    }
+  }
+  ```
+
+* ### Response fail (because task not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```
+* ### Response fail (because token not available)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
+## 18. Create a new task  
+Token is obtained from login response
+* ### Endpoint  
+  `/api/projects/:projectId/task`
+* ### Method
+  POST
+* ### Headers
+  ```
+  Authorization: `Bearer ${token}`
+  Content-Type: application/json
+  ```
+* ### Body  
+  ```
+  {
+    "content": String
+  }
+  ```
+* ### Response success
+  ```
+  {
+    "message": "Create new project task successfully",
+    "task": "Pengecoran"
+  }
+  ```
+* ### Response fail (because request body not available (required))
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please input this fields",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available or project admin isn't logged user)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized",
+    "error": "Unauthorized"
+  }
+  ```
+* ### Response fail (because project or task not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```
+## 19. Update task  
+Token is obtained from login response
+* ### Endpoint  
+  `/api/projects/:projectId/task/:taskId`
+* ### Method
+  PUT
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  Content-Type: application/json
+  ```
+* ### Body  
+  ```
+  {
+    "content": String
+  }
+  ```
+* ### Response success
+  ```
+  {
+    "message": "Update project task successfully",
+    "updatedTask": "Pengadukan Semen"
+  }
+  ```
+* ### Response fail (because request body not available (required))
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please input this fields",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available or project admin isn't logged user)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized",
+    "error": "Unauthorized"
+  }
+  ```
+* ### Response fail (because project or task not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```
+## 20. Delete Task
+Token is obtained from login response
+* ### Endpoint  
+  `/api/projects/:projectId/task/:taskId`
+* ### Method
+  DELETE
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Delete project task successfully"
+  }
+  ```
+* ### Response fail (because token not available or project admin isn't logged user)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized",
+    "error": "Unauthorized"
+  }
+  ```
+* ### Response fail (because project or task not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```
+## 21. Finish task  
+Token is obtained from login response
+* ### Endpoint  
+  `/api/projects/:projectId/task/:taskId/finish`
+* ### Method
+  POST
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Task finished",
+    "finishedTask": "Perancangan Kontruksi",
+    "finishedBy": "rocketmail@gmail.com"
+  }
+  ```
+* ### Response fail (because token not available or project collaborator isn't logged user)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized",
+    "error": "Unauthorized"
+  }
+  ```
+* ### Response fail (because project or task not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```
