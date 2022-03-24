@@ -969,3 +969,58 @@ Token is obtained from login response
       "error": "Not Found"
   }
   ```
+## 22. Get specified project report   
+Token is obtained from login response
+* ### Endpoint  
+  `/api/projects/:projectId/report`
+* ### Method
+  GET
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Fetch project report successfully",
+    "project": {
+        "id": 32,
+        "title": "Pengembangan proyek homestay",
+        "address": "Maluku",
+        "start": "2022-01-07T17:00:00.000Z",
+        "finish": "2022-07-07T17:00:00.000Z",
+        "duration": 181,
+        "status": "On Going"
+    },
+    "reports": {
+        "workDay": 75,
+        "remainingDay": 106,
+        "totalBudget": 500000000,
+        "totalSpending": 0,
+        "remainingBudget": 500000000
+    },
+    "percentages": {
+        "workDay": 41,
+        "remainingDay": 59,
+        "totalSpending": 0,
+        "remainingBudget": 100,
+        "total": 20.5
+    }
+  }
+  ```
+* ### Response fail (because token not available)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized",
+      "error": "Unauthorized"
+  }
+  ```
+* ### Response fail (because project not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```

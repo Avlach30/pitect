@@ -90,4 +90,18 @@ export class ProjectController {
     );
     return deleteProject;
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':projectId/report')
+  @HttpCode(200)
+  async getProgressReport(
+    @Param('projectId') projectId: string,
+    @Request() req: any,
+  ) {
+    const getProgressReport = await this.projectService.getProgressReport(
+      projectId,
+      req,
+    );
+    return getProgressReport;
+  }
 }

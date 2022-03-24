@@ -369,4 +369,83 @@ export class ProjectService {
 
     return result;
   }
+
+  async getProgressReport(projectId: string, @Request() req: any) {
+    let getProject;
+    const project = await this.projectRepository
+      .query(
+        'SELECT id, title, admin, totalContract, address, startDate, finishDate, DATEDIFF(finishDate, startDate) as duration, DATEDIFF(CURDATE(), startDate) as workDay, DATEDIFF(finishDate, CURDATE()) as remainingDay FROM projects WHERE id = ?',
+        [parseInt(projectId)],
+      )
+      .then((data) => {
+        getProject = data[0];
+        return getProject;
+      });
+
+    const projectSpending = await this.projectBudgetRepository.query(
+      'SELECT cost FROM projectbudgets WHERE projectId = ? AND content != ?',
+      [parseInt(projectId), 'Kontrak Awal'],
+    );
+
+    //* Get total spendings
+    const sumSpendings = projectSpending
+      .map((value) => value.cost)
+      .reduce((prevValue, currentValue) => prevValue + currentValue, 0);
+
+    if (getProject === undefined) {
+      throw new NotFoundException('Data not found');
+    }
+
+    const status =
+      parseInt(getProject.duration) < parseInt(getProject.workDay)
+        ? 'Finish'
+        : 'On Going';
+
+    const workDay =
+      parseInt(getProject.duration) < parseInt(getProject.workDay)
+        ? parseInt(getProject.duration)
+        : parseInt(getProject.workDay);
+
+    const remainingDay =
+      parseInt(getProject.duration) < parseInt(getProject.workDay)
+        ? 0
+        : parseInt(getProject.remainingDay);
+
+    const percentageWorkDay = Math.round((workDay / getProject.duration) * 100);
+
+    const percentageTotalSpending =
+      (sumSpendings / getProject.totalContract) * 100;
+
+    const objValue = {
+      message: 'Fetch project report successfully',
+      project: {
+        id: getProject.id,
+        title: getProject.title,
+        address: getProject.address,
+        start: getProject.startDate,
+        finish: getProject.finishDate,
+        duration: parseInt(getProject.duration),
+        status,
+      },
+      reports: {
+        workDay,
+        remainingDay,
+        totalBudget: getProject.totalContract,
+        totalSpending: sumSpendings,
+        remainingBudget: getProject.totalContract - sumSpendings,
+      },
+      percentages: {
+        workDay: percentageWorkDay,
+        remainingDay: Math.round((remainingDay / getProject.duration) * 100),
+        totalSpending: percentageTotalSpending,
+        remainingBudget:
+          ((getProject.totalContract - sumSpendings) /
+            getProject.totalContract) *
+          100,
+        total: (percentageWorkDay + percentageTotalSpending) / 2,
+      },
+    };
+
+    return objValue;
+  }
 }
