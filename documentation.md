@@ -993,18 +993,21 @@ Token is obtained from login response
         "status": "On Going"
     },
     "reports": {
-        "workDay": 75,
-        "remainingDay": 106,
+        "workDay": 76,
+        "remainingDay": 105,
         "totalBudget": 500000000,
         "totalSpending": 0,
-        "remainingBudget": 500000000
+        "remainingBudget": 500000000,
+        "totalTask": 3,
+        "finishedTask": 1
     },
     "percentages": {
-        "workDay": 41,
-        "remainingDay": 59,
+        "workDay": 42,
+        "remainingDay": 58,
         "totalSpending": 0,
         "remainingBudget": 100,
-        "total": 20.5
+        "task": 33,
+        "total": 25
     }
   }
   ```
