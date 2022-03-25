@@ -8,8 +8,8 @@ import {
   UserController,
 } from './user.controller';
 import { UserService } from './user.service';
-import { Users } from './user.entity';
-import { isAuth } from './middleware/is-auth';
+import { Users } from '../entity/user.entity';
+import { isAuth } from '../middleware/is-auth';
 
 @Module({
   imports: [

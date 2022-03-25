@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 
-import { ProjectMembers } from './project-member.entity';
-import { isAuth } from '../../user/middleware/is-auth';
+import { ProjectMembers } from '../../entity/project-member.entity';
+import { isAuth } from '../../middleware/is-auth';
 import { ProjectMemberController } from './project-member.controller';
 import { ProjectMemberService } from './project-member.service';
-import { Projects } from '../project.entity';
+import { Projects } from '../../entity/project.entity';
 
 @Module({
   imports: [

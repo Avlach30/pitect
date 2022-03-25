@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 
-import { isAuth } from '../../user/middleware/is-auth';
-import { ProjectBudgets } from './project-budget.entity';
-import { Projects } from '../project.entity';
+import { isAuth } from '../../middleware/is-auth';
+import { ProjectBudgets } from '../../entity/project-budget.entity';
+import { Projects } from '../../entity/project.entity';
 import {
   ProjectBudgetController,
   UpdateBudgetController,

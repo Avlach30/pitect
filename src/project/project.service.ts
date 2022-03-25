@@ -9,10 +9,10 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { ProjectMembers } from './members/project-member.entity';
-import { Projects } from './project.entity';
-import { ProjectBudgets } from './budgets/project-budget.entity';
-import { ProjectTasks } from './tasks/project-task.entity';
+import { ProjectMembers } from '../entity/project-member.entity';
+import { Projects } from '../entity/project.entity';
+import { ProjectBudgets } from '../entity/project-budget.entity';
+import { ProjectTasks } from '../entity/project-task.entity';
 
 @Injectable()
 export class ProjectService {

@@ -8,9 +8,9 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { ProjectTasks } from './project-task.entity';
-import { Projects } from '../project.entity';
-import { ProjectMembers } from '../members/project-member.entity';
+import { ProjectTasks } from '../../entity/project-task.entity';
+import { Projects } from '../../entity/project.entity';
+import { ProjectMembers } from '../../entity/project-member.entity';
 
 @Injectable()
 export class ProjectTaskService {

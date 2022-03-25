@@ -19,7 +19,11 @@ import { ProjectMemberModule } from './project/members/project-member.module';
       password: '',
       database: 'pitect',
       entities: [join(__dirname, '**', '*.entity.{ts,js}')],
+      migrations: [join(__dirname, 'src', 'migrations', '**', '*.{ts,js}')],
       synchronize: false,
+      cli: {
+        migrationsDir: 'src/migrations',
+      },
     }),
     UserModule,
     ProjectModule,

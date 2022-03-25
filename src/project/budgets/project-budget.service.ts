@@ -8,8 +8,8 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { ProjectBudgets } from './project-budget.entity';
-import { Projects } from '../project.entity';
+import { ProjectBudgets } from '../../entity/project-budget.entity';
+import { Projects } from '../../entity/project.entity';
 
 @Injectable()
 export class ProjectBudgetService {
