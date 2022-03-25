@@ -382,6 +382,17 @@ export class ProjectService {
         return getProject;
       });
 
+    const projectTask = await this.projectTaskRepository.query(
+      'SELECT content, isFinished FROM tasks WHERE projectId = ?',
+      [parseInt(projectId)],
+    );
+
+    const totalTask: number = projectTask.length;
+    const finishedTask: number = projectTask.filter(
+      (task: any) => task.isFinished === 1,
+    ).length;
+    // console.log(finishedTask);
+
     const projectSpending = await this.projectBudgetRepository.query(
       'SELECT cost FROM projectbudgets WHERE projectId = ? AND content != ?',
       [parseInt(projectId), 'Kontrak Awal'],
@@ -389,8 +400,11 @@ export class ProjectService {
 
     //* Get total spendings
     const sumSpendings = projectSpending
-      .map((value) => value.cost)
-      .reduce((prevValue, currentValue) => prevValue + currentValue, 0);
+      .map((value: any) => value.cost)
+      .reduce(
+        (prevValue: number, currentValue: number) => prevValue + currentValue,
+        0,
+      );
 
     if (getProject === undefined) {
       throw new NotFoundException('Data not found');
@@ -416,6 +430,8 @@ export class ProjectService {
     const percentageTotalSpending =
       (sumSpendings / getProject.totalContract) * 100;
 
+    const percentageTask = Math.round((finishedTask / totalTask) * 100);
+
     const objValue = {
       message: 'Fetch project report successfully',
       project: {
@@ -433,6 +449,8 @@ export class ProjectService {
         totalBudget: getProject.totalContract,
         totalSpending: sumSpendings,
         remainingBudget: getProject.totalContract - sumSpendings,
+        totalTask,
+        finishedTask,
       },
       percentages: {
         workDay: percentageWorkDay,
@@ -442,7 +460,9 @@ export class ProjectService {
           ((getProject.totalContract - sumSpendings) /
             getProject.totalContract) *
           100,
-        total: (percentageWorkDay + percentageTotalSpending) / 2,
+        task: percentageTask,
+        total:
+          (percentageWorkDay + percentageTotalSpending + percentageTask) / 3,
       },
     };
 
