@@ -159,7 +159,8 @@ Token is obtained from login response
                 "admin": "rocketmail",
                 "totalContract": 15000000,
                 "duration": 52,
-                "cost": 2000000
+                "address": "Sulawesi Selatan",
+                "cost": 3500000
             },
             {
                 "id": 30,
@@ -167,6 +168,7 @@ Token is obtained from login response
                 "admin": "rocketmail",
                 "totalContract": 22000000,
                 "duration": 52,
+                "address": "Sulawesi Selatan",
                 "cost": 1000000
             }
         ],
@@ -177,6 +179,7 @@ Token is obtained from login response
                 "admin": "john doe",
                 "totalContract": 500000000,
                 "duration": 181,
+                "address": "Maluku",
                 "cost": 0
             },
             {
@@ -185,7 +188,8 @@ Token is obtained from login response
                 "admin": "john doe",
                 "totalContract": 500000000,
                 "duration": 181,
-                "cost": 150000
+                "address": "Sulawesi Selatan",
+                "cost": 3150000
             },
             {
                 "id": 35,
@@ -193,17 +197,18 @@ Token is obtained from login response
                 "admin": "john doe",
                 "totalContract": 500000000,
                 "duration": 181,
+                "address": "Maluku",
                 "cost": 0
             }
         ],
         "budgets": {
             "sumContracts": 1537000000,
-            "sumSpendings": 3150000,
-            "remainingBudget": 1533850000
+            "sumSpendings": 7650000,
+            "remainingBudget": 1529350000
         },
         "percentageBudgets": {
-            "spending": 0.20494469746258948,
-            "remainBudget": 99.7950553025374
+            "spending": 0.4977228366948601,
+            "remainBudget": 99.50227716330514
         }
     }
   }

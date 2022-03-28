@@ -111,7 +111,7 @@ export class ProjectService {
     //* Fetching all projects with admin = id of user logged in
     const fetchProjects = await this.projectRepository
       .query(
-        'SELECT projects.id as id, projects.title as name, users.FULLNAME as admin, projects.totalContract, DATEDIFF(projects.finishDate, projects.startDate) as duration FROM projects INNER JOIN users ON projects.admin = users.USERID WHERE projects.admin = ?',
+        'SELECT projects.id as id, projects.title as name, users.FULLNAME as admin, projects.totalContract, DATEDIFF(projects.finishDate, projects.startDate) as duration, projects.address FROM projects INNER JOIN users ON projects.admin = users.USERID WHERE projects.admin = ?',
         [parseInt(req.user.userId)],
       )
       .then((data) => {
@@ -205,7 +205,7 @@ export class ProjectService {
       mappingCollabProjects = [];
     } else {
       const fetchCollabProjects = await this.projectRepository.query(
-        'SELECT projects.id as id, projects.title as name, users.FULLNAME as admin, projects.totalContract, DATEDIFF(projects.finishDate, projects.startDate) as duration FROM projects INNER JOIN users ON projects.admin = users.USERID WHERE projects.id IN (?)',
+        'SELECT projects.id as id, projects.title as name, users.FULLNAME as admin, projects.totalContract, DATEDIFF(projects.finishDate, projects.startDate) as duration, projects.address FROM projects INNER JOIN users ON projects.admin = users.USERID WHERE projects.id IN (?)',
         [arrProjectCollabId],
       );
 
