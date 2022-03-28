@@ -107,76 +107,83 @@ export class ProjectService {
   }
 
   async fetchProjects(@Request() req: any) {
-    let fetchProjectResult;
+    let fetchProjectOwnedResult;
     //* Fetching all projects with admin = id of user logged in
     const fetchProjects = await this.projectRepository
       .query(
-        'SELECT projects.id as id, projects.title as name, users.FULLNAME as admin, projects.totalContract, GROUP_CONCAT(projectbudgets.id) as budgetId, GROUP_CONCAT(projectbudgets.cost) as costs, GROUP_CONCAT(projectbudgets.content) as descBudget, datediff(projects.finishDate, projects.startDate) as durasi FROM projectbudgets INNER JOIN projects ON projectbudgets.projectId = projects.id INNER JOIN users ON projects.admin = users.USERID WHERE EXISTS(SELECT 1 from projectbudgets where projectbudgets.projectId = projects.id) AND projects.admin = ? GROUP BY projects.id',
+        'SELECT projects.id as id, projects.title as name, users.FULLNAME as admin, projects.totalContract, DATEDIFF(projects.finishDate, projects.startDate) as duration FROM projects INNER JOIN users ON projects.admin = users.USERID WHERE projects.admin = ?',
         [parseInt(req.user.userId)],
       )
       .then((data) => {
-        fetchProjectResult = data;
-        return fetchProjectResult;
+        fetchProjectOwnedResult = data;
+        return fetchProjectOwnedResult;
       });
 
-    // console.log(fetchProjectResult);
+    // console.log(fetchProjectOwnedResult);
 
-    //* Get array of costs
-    const arrCostLists = fetchProjectResult.map((item) => {
-      const arrCost = item.costs.split(',').map((cost) => parseInt(cost));
-      return arrCost;
-    });
+    let mappingOwnedProjects: any;
 
-    //* Mapping array of cost for get a sum value
-    const mappingProjects = fetchProjectResult.map((item, idx) => {
-      const initiatedBudget = arrCostLists[idx][0];
+    if (fetchProjectOwnedResult.length === 0) {
+      mappingOwnedProjects = fetchProjectOwnedResult;
+    }
 
-      const sumValue = arrCostLists[idx].reduce((prev, current) => {
-        return prev + current;
-      }, 0);
+    const arrOwnedProjectsId = fetchProjectOwnedResult.map(
+      (project) => project.id,
+    );
 
-      const totalRealization = sumValue - initiatedBudget;
+    //* If projects owned available
+    let fetchSpendings;
+    let sumOwnedProjectSpendings = 0;
+    let sumOwnedProjectContracts = 0;
+    if (fetchProjectOwnedResult.length > 0) {
+      //* Get array of project spendings
+      fetchSpendings = await this.projectBudgetRepository.query(
+        'SELECT projectId as id, cost FROM projectbudgets WHERE projectId IN (?) AND content != ?',
+        [arrOwnedProjectsId, 'Kontrak Awal'],
+      );
 
-      const objItem = {
-        id: item.id,
-        name: item.name,
-        admin: item.admin,
-        contractTotal: item.totalContract,
-        totalCost: totalRealization,
-        workDuration: parseInt(item.durasi),
-      };
+      //* Get array of project spendings
+      const arrSpendings = fetchSpendings.reduce((elem, value) => {
+        if (elem[value.id]) {
+          elem[value.id].cost = [elem[value.id].cost, value.cost].reduce(
+            (prevValue, currentValue) => prevValue + currentValue,
+            0,
+          );
+        } else {
+          elem[value.id] = value;
+        }
 
-      return objItem;
-    });
+        return elem;
+      }, {});
 
-    //* Mapping array untuk mendapatkan data total kontrak, total pengeluaran, dan sisa anggaran
-    const arrTotalContracts = mappingProjects.map((item, idx) => {
-      return item.contractTotal;
-    });
+      const formattedArrSpendings = Object.values(arrSpendings);
 
-    const arrTotalSpendings = mappingProjects.map((item) => {
-      return item.totalCost;
-    });
+      // console.log(formattedArrSpendings);
 
-    // console.log(arrTotalContracts);
-    // console.log(arrTotalSpendings);
+      mappingOwnedProjects = fetchProjectOwnedResult.map((value) => ({
+        ...value,
+        ...fetchSpendings.find((id) => id.id === value.id),
+      }));
 
-    const sumContracts = arrTotalContracts.reduce((prev, current) => {
-      return prev + current;
-    }, 0);
-    // console.log(sumContracts);
+      mappingOwnedProjects.map((value) => {
+        value.duration = parseInt(value.duration);
 
-    const sumSpendings = arrTotalSpendings.reduce((prev, current) => {
-      return prev + current;
-    }, 0);
+        if (value.cost === undefined) {
+          value.cost = 0;
+        }
 
-    const remainingBudget = sumContracts - sumSpendings;
+        return value;
+      });
 
-    //* Count percentage
-    const percentageSpendings = (sumSpendings / sumContracts) * 100;
-    const percentageRemainBudget = (remainingBudget / sumContracts) * 100;
-    // console.log(Math.round(percentageSpendings));
-    // console.log(Math.round(percentageRemainBudget));
+      //* Mapping array untuk mendapatkan data total kontrak, dan total pengeluaran
+      sumOwnedProjectContracts = mappingOwnedProjects
+        .map((contract) => contract.totalContract)
+        .reduce((prevValue, currentValue) => prevValue + currentValue, 0);
+
+      sumOwnedProjectSpendings = mappingOwnedProjects
+        .map((contract) => contract.cost)
+        .reduce((prevValue, currentValue) => prevValue + currentValue, 0);
+    }
 
     //* Fething all project with collaborator of user logged in
     const fetchCollabProjectId = await this.projectRepository.query(
@@ -184,56 +191,84 @@ export class ProjectService {
       [parseInt(req.user.userId), parseInt(req.user.userId)],
     );
 
-    // 'SELECT projects.id as id, projects.title as name, users.FULLNAME as admin, projects.totalContract, GROUP_CONCAT(projectbudgets.id) as budgetId, GROUP_CONCAT(projectbudgets.cost) as costs, GROUP_CONCAT(projectbudgets.content) as descBudget, datediff(projects.finishDate, projects.startDate) as durasi FROM projectbudgets INNER JOIN projects ON projectbudgets.projectId = projects.id INNER JOIN users ON projects.admin = users.USERID WHERE EXISTS(SELECT 1 from projectbudgets where projectbudgets.projectId = projects.id) AND projects.id = ? GROUP BY projects.id',
-    //       [value.project],
-
     const arrProjectCollabId = fetchCollabProjectId.map(
       (value) => value.project,
     );
 
-    // console.log(arrProjectCollabId);
+    let mappingCollabProjects;
+    let fetchProjectCollabSpendings;
+    let sumCollabProjectSpending = 0;
+    let sumCollabProjectContract = 0;
 
-    const fetchCollabProjects = await this.projectRepository.query(
-      'SELECT projects.id as id, projects.title as name, users.FULLNAME as admin, projects.totalContract, GROUP_CONCAT(projectbudgets.id) as budgetId, GROUP_CONCAT(projectbudgets.cost) as costs, GROUP_CONCAT(projectbudgets.content) as descBudget, datediff(projects.finishDate, projects.startDate) as durasi FROM projectbudgets INNER JOIN projects ON projectbudgets.projectId = projects.id INNER JOIN users ON projects.admin = users.USERID WHERE EXISTS(SELECT 1 from projectbudgets where projectbudgets.projectId = projects.id) AND projects.id IN (?) GROUP BY projects.id',
-      [arrProjectCollabId],
-    );
+    //* Check if project collaboration is available or not
+    if (arrProjectCollabId.length === 0) {
+      mappingCollabProjects = [];
+    } else {
+      const fetchCollabProjects = await this.projectRepository.query(
+        'SELECT projects.id as id, projects.title as name, users.FULLNAME as admin, projects.totalContract, DATEDIFF(projects.finishDate, projects.startDate) as duration FROM projects INNER JOIN users ON projects.admin = users.USERID WHERE projects.id IN (?)',
+        [arrProjectCollabId],
+      );
 
-    // console.log(fetchCollabProjects);
+      fetchProjectCollabSpendings = await this.projectBudgetRepository.query(
+        'SELECT projectId as id, cost FROM projectbudgets WHERE projectId IN (?) AND content != ?',
+        [arrProjectCollabId, 'Kontrak Awal'],
+      );
 
-    //* Get array of costs
-    const arrCostListCollab = fetchCollabProjects.map((item) => {
-      const arrCost = item.costs.split(',').map((cost) => parseInt(cost));
-      return arrCost;
-    });
+      // console.log(fetchProjectCollabSpendings);
 
-    //* Mapping array of cost for get a sum value
-    const mappingCollabProjects = fetchCollabProjects.map((item, idx) => {
-      const initiatedBudget = arrCostListCollab[idx][0];
+      //* Get array of project collab spendings
+      const arrSpendings = fetchProjectCollabSpendings.reduce((elem, value) => {
+        if (elem[value.id]) {
+          elem[value.id].cost = [elem[value.id].cost, value.cost].reduce(
+            (prevValue, currentValue) => prevValue + currentValue,
+            0,
+          );
+        } else {
+          elem[value.id] = value;
+        }
 
-      const sumValue = arrCostListCollab[idx].reduce((prev, current) => {
-        return prev + current;
-      }, 0);
+        return elem;
+      }, {});
 
-      const totalRealization = sumValue - initiatedBudget;
+      const formattedArrSpendings = Object.values(arrSpendings);
 
-      const objItem = {
-        id: item.id,
-        name: item.name,
-        admin: item.admin,
-        contractTotal: item.totalContract,
-        totalCost: totalRealization,
-        workDuration: item.durasi,
-      };
+      // console.log(formattedArrSpendings);
 
-      return objItem;
-    });
+      mappingCollabProjects = fetchCollabProjects.map((value) => ({
+        ...value,
+        ...fetchProjectCollabSpendings.find((id) => id.id === value.id),
+      }));
 
-    // console.log(mappingCollabProjects);
+      mappingCollabProjects.map((value) => {
+        value.duration = parseInt(value.duration);
 
-    return {
+        if (value.cost === undefined) {
+          value.cost = 0;
+        }
+
+        return value;
+      });
+
+      //* Mapping array untuk mendapatkan data total kontrak, dan total pengeluaran
+      sumCollabProjectContract = mappingCollabProjects
+        .map((contract) => contract.totalContract)
+        .reduce((prevValue, currentValue) => prevValue + currentValue, 0);
+
+      sumCollabProjectSpending = mappingCollabProjects
+        .map((contract) => contract.cost)
+        .reduce((prevValue, currentValue) => prevValue + currentValue, 0);
+    }
+
+    // console.log(resultCollabProjects);
+
+    const sumContracts = sumOwnedProjectContracts + sumCollabProjectContract;
+    const sumSpendings = sumOwnedProjectSpendings + sumCollabProjectSpending;
+    const remainingBudget = sumContracts - sumSpendings;
+
+    const result = {
       message: 'Success fetched all projects',
       data: {
-        projectsOwned: mappingProjects,
+        projectsOwned: mappingOwnedProjects,
         projectsCollab: mappingCollabProjects,
         budgets: {
           sumContracts,
@@ -241,11 +276,13 @@ export class ProjectService {
           remainingBudget,
         },
         percentageBudgets: {
-          spending: Math.round(percentageSpendings),
-          remainBudget: Math.round(percentageRemainBudget),
+          spending: (sumSpendings / sumContracts) * 100 || 0,
+          remainBudget: (remainingBudget / sumContracts) * 100 || 0,
         },
       },
     };
+
+    return result;
   }
 
   async getSpecifiedProject(projectId: string, @Request() req: any) {

@@ -157,17 +157,17 @@ Token is obtained from login response
                 "id": 29,
                 "name": "Pembangunan Jembatan",
                 "admin": "rocketmail",
-                "contractTotal": 15000000,
-                "totalCost": 4000000,
-                "workDuration": 52
+                "totalContract": 15000000,
+                "duration": 52,
+                "cost": 2000000
             },
             {
                 "id": 30,
                 "name": "Pembangunan Wc",
                 "admin": "rocketmail",
-                "contractTotal": 2000000,
-                "totalCost": 2000000,
-                "workDuration": 52
+                "totalContract": 22000000,
+                "duration": 52,
+                "cost": 1000000
             }
         ],
         "projectsCollab": [
@@ -175,27 +175,35 @@ Token is obtained from login response
                 "id": 32,
                 "name": "Pengembangan proyek homestay",
                 "admin": "john doe",
-                "contractTotal": 500000000,
-                "totalCost": 0,
-                "workDuration": 181
+                "totalContract": 500000000,
+                "duration": 181,
+                "cost": 0
+            },
+            {
+                "id": 33,
+                "name": "Pembangunan Proyek IKN",
+                "admin": "john doe",
+                "totalContract": 500000000,
+                "duration": 181,
+                "cost": 150000
             },
             {
                 "id": 35,
                 "name": "Pengembangan proyek sengketa",
                 "admin": "john doe",
-                "contractTotal": 500000000,
-                "totalCost": 0,
-                "workDuration": 181
+                "totalContract": 500000000,
+                "duration": 181,
+                "cost": 0
             }
         ],
         "budgets": {
-            "sumContracts": 17000000,
-            "sumSpendings": 6000000,
-            "remainingBudget": 11000000
+            "sumContracts": 1537000000,
+            "sumSpendings": 3150000,
+            "remainingBudget": 1533850000
         },
         "percentageBudgets": {
-            "spending": 35,
-            "remainBudget": 65
+            "spending": 0.20494469746258948,
+            "remainBudget": 99.7950553025374
         }
     }
   }
