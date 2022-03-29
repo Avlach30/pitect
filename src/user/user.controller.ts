@@ -53,9 +53,9 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @UseGuards(AuthGuard('jwt'))
-  @Get()
+  @Post()
   @HttpCode(200)
-  async searchUser(@Query('name') name: any, @Request() req: any) {
+  async searchUser(@Body('name') name: any, @Request() req: any) {
     const user = await this.userService.searchUser(name, req);
     return {
       searchResult: user,
