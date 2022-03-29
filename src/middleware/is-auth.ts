@@ -7,7 +7,7 @@ export class isAuth extends PassportStrategy(Strategy, 'jwt') {
   constructor() {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: true,
+      ignoreExpiration: false,
       secretOrKey: 'this-is-ultimate-secret-Text!',
     });
   }

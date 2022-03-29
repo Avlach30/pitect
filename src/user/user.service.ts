@@ -101,10 +101,16 @@ export class UserService {
 
     const loadUser = user[0];
 
-    const token = this.jwtService.sign({
-      email: loadUser.EMAIL,
-      userId: loadUser.USERID.toString(),
-    });
+    const token = this.jwtService.sign(
+      {
+        email: loadUser.EMAIL,
+        userId: loadUser.USERID.toString(),
+        name: loadUser.FULLNAME,
+      },
+      {
+        expiresIn: '120s',
+      },
+    );
 
     const result = {
       message: 'Login successfully',
@@ -113,8 +119,8 @@ export class UserService {
     return result;
   }
 
-  //* Search user with request query
-  async searchUser(@Query('name') name: string, @Request() req: any) {
+  //* Search user
+  async searchUser(name: string, @Request() req: any) {
     //* Logic for search user, exclude logged in user
     const users = await this.userRepository.query(
       'SELECT USERID, FULLNAME, EMAIL FROM users WHERE SOUNDEX(substring(FULLNAME, 1, ?)) = SOUNDEX(substring(?, 1, ?)) AND USERID != ?',
