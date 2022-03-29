@@ -121,6 +121,10 @@ export class UserService {
 
   //* Search user
   async searchUser(name: string, @Request() req: any) {
+    if (!name) {
+      throw new BadRequestException('Please input this fields');
+    }
+
     //* Logic for search user, exclude logged in user
     const users = await this.userRepository.query(
       'SELECT USERID, FULLNAME, EMAIL FROM users WHERE SOUNDEX(substring(FULLNAME, 1, ?)) = SOUNDEX(substring(?, 1, ?)) AND USERID != ?',
