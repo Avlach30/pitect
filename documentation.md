@@ -1,7 +1,38 @@
 # Documentations
 How to use this API for frontend / mobile usage  
 Base URL: Localhost (temporary)
-## 1. Sign up
+# Table of Contents
+* Authentication  
+  * [sign up](#sign-up)
+  * [login](#login)  
+* Project management  
+  * [create new project](#create-new-project)
+  * [get all projects](#get-all-projects)
+  * [get specified project](#get-specified-project)
+  * [update project](#update-project)
+  * [delete project](#delete-project)
+* Logged user management
+  * [get logged user data](#get-logged-user-data)
+  * [update logged user](#update-logged-user)
+  * [delete logged user](#delete-logged-user)
+* Project collaborator management 
+  * [search user](#search-user-by-fullname)
+  * [add new collaborator](#add-new-project-collaborator)
+  * [delete collaborator](#delete-project-collaborator)
+* Spending and budget management
+  * [get project spendings](#get-all-project-spending)
+  * [add project spendings](#add-new-project-spending)
+  * [delete project spending](#delete-existing-project-spending)
+  * [update total budget](#update-total-budget-of-project)
+* Task management
+  * [get single task](#get-single-task)
+  * [create task](#create-a-new-task)
+  * [update task](#update-task)
+  * [delete task](#delete-task)
+  * [finish task](#finish-task)
+* Project report
+  * [get project report](#get-specified-project-report)
+## Sign up
 * ### Endpoint   
   `/api/auth/signup`
 * ### Method  
@@ -46,7 +77,7 @@ Base URL: Localhost (temporary)
     "error": "Bad Request"
   }
   ```
-## 2. Login
+## Login
 Login user for manipulate data (CRUD)
 * ### Endpoint   
   `/api/auth/login`
@@ -85,7 +116,7 @@ Login user for manipulate data (CRUD)
   }
   ```
 
-## 3. Create new Project 
+## Create new Project 
 Token is obtained from login response
 * ### Endpoint  
   `/api/projects`
@@ -122,7 +153,7 @@ Token is obtained from login response
     }
   }
   ```
-* ### Response fail (because token not available)
+* ### Response fail (because token not available or expired)
   ```
   {
       "statusCode": 401,
@@ -137,7 +168,7 @@ Token is obtained from login response
     "error": "Bad Request"
   }
   ```
-## 4. Get all Projects
+## Get all Projects
 Token is obtained from login response
 * ### Endpoint
   `/api/projects`
@@ -213,14 +244,14 @@ Token is obtained from login response
     }
   }
   ```
-* ### Response fail (because token not available)
+* ### Response fail (because token not available or expired)
   ```
   {
       "statusCode": 401,
       "message": "Unauthorized"
   }
   ```
-## 5. Get Specified Project
+## Get Specified Project
 Token is obtained from login response
 * ### Endpoint  
   `/api/projects/:projectId`
@@ -268,14 +299,14 @@ Token is obtained from login response
       "error": "Not Found"
   }
   ```
-* ### Response fail (because token not available)
+* ### Response fail (because token not available or expired)
   ```
   {
       "statusCode": 401,
       "message": "Unauthorized"
   }
   ```
-## 6. Update Project
+## Update Project
 Token is obtained from login response
 * ### Endpoint  
   `/api/projects/:projectId`
@@ -314,7 +345,7 @@ Token is obtained from login response
       "error": "Not Found"
   }
   ```
-* ### Response fail (because token not available)
+* ### Response fail (because token not available or expired)
   ```
   {
       "statusCode": 401,
@@ -337,7 +368,7 @@ Token is obtained from login response
     "error": "Bad Request"
   }
   ```
-## 7. Delete Project
+## Delete Project
 * ### Endpoint  
   `/api/projects/:projectId`
 * ### Method
@@ -360,7 +391,7 @@ Token is obtained from login response
       "error": "Not Found"
   }
   ```
-* ### Response fail (because token not available)
+* ### Response fail (because token not available or expired)
   ```
   {
       "statusCode": 401,
@@ -376,7 +407,7 @@ Token is obtained from login response
   }
   ```
 
-## 8. Get Logged User Data
+## Get Logged User Data
 Token is obtained from login response
 * ### Endpoint  
   `/api/profile`
@@ -399,7 +430,7 @@ Token is obtained from login response
     }
   }
   ```
-* ### Response fail (because token not available)
+* ### Response fail (because token not available or expired)
   ```
   {
       "statusCode": 401,
@@ -407,7 +438,7 @@ Token is obtained from login response
   }
   ```
 
-## 9. Update logged user
+## Update logged user
 Token is obtained from login response
 * ### Endpoint  
   `/api/profile`
@@ -439,7 +470,7 @@ Token is obtained from login response
     }
   }
   ```
-* ### Response fail (because token not available)
+* ### Response fail (because token not available or expired)
   ```
   {
       "statusCode": 401,
@@ -454,7 +485,7 @@ Token is obtained from login response
     "error": "Bad Request"
   }
   ```
-## 10. Delete logged user
+## Delete logged user
 Token is obtained from login response
 * ### Endpoint  
   `/api/profile`
@@ -470,14 +501,64 @@ Token is obtained from login response
     "message": "Delete user successfully"
   }
   ```
-* ### Response fail (because token not available)
+* ### Response fail (because token not available or expired)
   ```
   {
       "statusCode": 401,
       "message": "Unauthorized"
   }
   ```
-## 11. Add new Project Collaborator
+## Search User by Fullname
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/user`
+* ### Method
+  POST
+* ### Headers
+  ```
+  Authorization: `Bearer ${token}`
+  Content-Type: application/json
+  ```
+* ### Body
+  ```
+  {
+    "name": String
+  }
+  ```
+* ### Response Success
+  ```
+  {
+    "searchResult": [
+        {
+            "USERID": 25,
+            "FULLNAME": "jane doe",
+            "EMAIL": "janedoe@gmail.com"
+        },
+        {
+            "USERID": 28,
+            "FULLNAME": "john morisson",
+            "EMAIL": "morisson@gmail.com"
+        }
+    ]
+  }
+  ```
+* ### Response fail (because request body not filled (required))
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please input this fields",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
+
+## Add new Project Collaborator
 Token is obtained from login response
 * ### Endpoint  
   `/api/projects/:projectId`
@@ -528,7 +609,7 @@ Token is obtained from login response
     "error": "Bad Request"
   }
   ```
-* ### Response fail (because token not available)
+* ### Response fail (because token not available or expired)
   ```
   {
       "statusCode": 401,
@@ -539,7 +620,8 @@ Token is obtained from login response
   ```
   {
       "statusCode": 401,
-      "message": "Unauthorized"
+      "message": "Unauthorized",
+      "error": "Unauthorized"
   }
   ```
 * ### Response fail (because project not found)
@@ -550,7 +632,7 @@ Token is obtained from login response
       "error": "Not Found"
   }
   ```
-## 12. Delete Project Collaborator
+## Delete Project Collaborator
 Token is obtained from login response
 * ### Endpoint  
   `/api/projects/:projectId/members/:userId`
@@ -574,7 +656,7 @@ Token is obtained from login response
     "error": "Bad Request"
   }
   ```
-* ### Response fail (because token not available)
+* ### Response fail (because token not available or expired)
   ```
   {
       "statusCode": 401,
@@ -585,7 +667,8 @@ Token is obtained from login response
   ```
   {
       "statusCode": 401,
-      "message": "Unauthorized"
+      "message": "Unauthorized",
+      "error": "Unauthorized",
   }
   ```
 * ### Response fail (because project not found)
@@ -604,7 +687,7 @@ Token is obtained from login response
     "error": "Not Found"
   }
   ```
-## 13. Get all project spending's  
+## Get all project spending  
 Token is obtained from login response
 * ### Endpoint  
   `/api/projects/:projectId/budgets`
@@ -637,7 +720,7 @@ Token is obtained from login response
     }
   }
   ```
-* ### Response fail (because token not available)
+* ### Response fail (because token not available or expired)
   ```
   {
       "statusCode": 401,
@@ -652,7 +735,7 @@ Token is obtained from login response
       "error": "Not Found"
   }
   ```
-## 14. Add new project spending  
+## Add new project spending  
 Token is obtained from login response
 * ### Endpoint  
   `/api/projects/:projectId/budgets`
@@ -686,7 +769,14 @@ Token is obtained from login response
     "error": "Bad Request"
   }
   ```
-* ### Response fail (because token not available & project admin isn't logged user)
+* ### Response fail (because token not available or expired)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because project admin isn't logged user)
   ```
   {
       "statusCode": 401,
@@ -702,7 +792,7 @@ Token is obtained from login response
       "error": "Not Found"
   }
   ```
-## 15. Delete existing project spending  
+## Delete existing project spending  
 Token is obtained from login response  
 * ### Endpoint  
   `/api/projects/:projectId/budgets/:budgetId`
@@ -718,7 +808,14 @@ Token is obtained from login response
     "message": "Delete existing project spending successfully"
   }
   ```
-* ### Response fail (because token not available & project admin isn't logged user)
+* ### Response fail (because token not available or expired)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because project admin isn't logged user)
   ```
   {
       "statusCode": 401,
@@ -734,7 +831,7 @@ Token is obtained from login response
       "error": "Not Found"
   }
   ```
-## 16. Update total budget of project  
+## Update total budget of project  
 Token is obtained from login response  
 * ### Endpoint  
   `/api/projects/:projectId/updateBudget`
@@ -766,7 +863,14 @@ Token is obtained from login response
     "error": "Bad Request"
   }
   ```
-* ### Response fail (because token not available & project admin isn't logged user)
+* ### Response fail (because token not available or expired)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because project admin isn't logged user)
   ```
   {
       "statusCode": 401,
@@ -782,7 +886,7 @@ Token is obtained from login response
       "error": "Not Found"
   }
   ```
-## 17. Get single task  
+## Get single task  
 Token is obtained from login response
 * ### Endpoint  
   `/api/projects/:projectId/task/:taskId`
@@ -820,7 +924,7 @@ Token is obtained from login response
       "message": "Unauthorized"
   }
   ```
-## 18. Create a new task  
+## Create a new task  
 Token is obtained from login response
 * ### Endpoint  
   `/api/projects/:projectId/task`
@@ -852,12 +956,19 @@ Token is obtained from login response
     "error": "Bad Request"
   }
   ```
-* ### Response fail (because token not available or project admin isn't logged user)
+* ### Response fail (because token not available or expired)
   ```
   {
     "statusCode": 401,
-    "message": "Unauthorized",
-    "error": "Unauthorized"
+    "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because project admin isn't logged user)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized",
+      "error": "Unauthorized"
   }
   ```
 * ### Response fail (because project or task not found)
@@ -868,7 +979,7 @@ Token is obtained from login response
       "error": "Not Found"
   }
   ```
-## 19. Update task  
+## Update task  
 Token is obtained from login response
 * ### Endpoint  
   `/api/projects/:projectId/task/:taskId`
@@ -900,12 +1011,19 @@ Token is obtained from login response
     "error": "Bad Request"
   }
   ```
-* ### Response fail (because token not available or project admin isn't logged user)
+* ### Response fail (because token not available or expired)
   ```
   {
     "statusCode": 401,
-    "message": "Unauthorized",
-    "error": "Unauthorized"
+    "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because project admin isn't logged user)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized",
+      "error": "Unauthorized"
   }
   ```
 * ### Response fail (because project or task not found)
@@ -916,7 +1034,7 @@ Token is obtained from login response
       "error": "Not Found"
   }
   ```
-## 20. Delete Task
+## Delete Task
 Token is obtained from login response
 * ### Endpoint  
   `/api/projects/:projectId/task/:taskId`
@@ -932,12 +1050,19 @@ Token is obtained from login response
     "message": "Delete project task successfully"
   }
   ```
-* ### Response fail (because token not available or project admin isn't logged user)
+* ### Response fail (because token not available or expired)
   ```
   {
     "statusCode": 401,
-    "message": "Unauthorized",
-    "error": "Unauthorized"
+    "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because project admin isn't logged user)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized",
+      "error": "Unauthorized"
   }
   ```
 * ### Response fail (because project or task not found)
@@ -948,7 +1073,7 @@ Token is obtained from login response
       "error": "Not Found"
   }
   ```
-## 21. Finish task  
+## Finish task  
 Token is obtained from login response
 * ### Endpoint  
   `/api/projects/:projectId/task/:taskId/finish`
@@ -966,12 +1091,19 @@ Token is obtained from login response
     "finishedBy": "rocketmail@gmail.com"
   }
   ```
-* ### Response fail (because token not available or project collaborator isn't logged user)
+* ### Response fail (because token not available or expired)
   ```
   {
     "statusCode": 401,
-    "message": "Unauthorized",
-    "error": "Unauthorized"
+    "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because project admin isn't logged user)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized",
+      "error": "Unauthorized"
   }
   ```
 * ### Response fail (because project or task not found)
@@ -982,7 +1114,7 @@ Token is obtained from login response
       "error": "Not Found"
   }
   ```
-## 22. Get specified project report   
+## Get specified project report   
 Token is obtained from login response
 * ### Endpoint  
   `/api/projects/:projectId/report`
@@ -1020,16 +1152,15 @@ Token is obtained from login response
         "totalSpending": 0,
         "remainingBudget": 100,
         "task": 33,
-        "total": 25
+        "total": 21
     }
   }
   ```
-* ### Response fail (because token not available)
+* ### Response fail (because token not available or expired)
   ```
   {
-      "statusCode": 401,
-      "message": "Unauthorized",
-      "error": "Unauthorized"
+    "statusCode": 401,
+    "message": "Unauthorized"
   }
   ```
 * ### Response fail (because project not found)
