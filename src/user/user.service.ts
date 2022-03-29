@@ -101,10 +101,16 @@ export class UserService {
 
     const loadUser = user[0];
 
-    const token = this.jwtService.sign({
-      email: loadUser.EMAIL,
-      userId: loadUser.USERID.toString(),
-    });
+    const token = this.jwtService.sign(
+      {
+        email: loadUser.EMAIL,
+        userId: loadUser.USERID.toString(),
+        name: loadUser.FULLNAME,
+      },
+      {
+        expiresIn: '120s',
+      },
+    );
 
     const result = {
       message: 'Login successfully',
