@@ -108,7 +108,7 @@ export class UserService {
         name: loadUser.FULLNAME,
       },
       {
-        expiresIn: '120s',
+        expiresIn: '4h',
       },
     );
 
