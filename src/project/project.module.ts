@@ -18,6 +18,9 @@ import { ProjectTasks } from './tasks/project-task.entity';
     TypeOrmModule.forFeature([ProjectTasks]),
     JwtModule.register({
       secret: 'this-is-ultimate-secret-Text!',
+      signOptions: {
+        expiresIn: '4h',
+      },
     }),
   ],
   controllers: [ProjectController],
