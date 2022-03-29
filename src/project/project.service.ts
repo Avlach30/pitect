@@ -498,8 +498,7 @@ export class ProjectService {
             getProject.totalContract) *
           100,
         task: percentageTask,
-        total:
-          (percentageWorkDay + percentageTotalSpending + percentageTask) / 3,
+        total: (percentageWorkDay + percentageTotalSpending) / 2,
       },
     };
 
