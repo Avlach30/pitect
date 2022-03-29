@@ -17,7 +17,9 @@ import { ProjectBudgetService } from './project-budget.service';
     TypeOrmModule.forFeature([Projects]),
     JwtModule.register({
       secret: 'this-is-ultimate-secret-Text!',
-      signOptions: { expiresIn: '120s' },
+      signOptions: {
+        expiresIn: '4h',
+      },
     }),
   ],
   controllers: [ProjectBudgetController, UpdateBudgetController],

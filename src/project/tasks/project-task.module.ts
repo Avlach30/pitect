@@ -16,7 +16,9 @@ import { ProjectMembers } from '../../entity/project-member.entity';
     TypeOrmModule.forFeature([ProjectMembers]),
     JwtModule.register({
       secret: 'this-is-ultimate-secret-Text!',
-      signOptions: { expiresIn: '120s' },
+      signOptions: {
+        expiresIn: '4h',
+      },
     }),
   ],
   controllers: [ProjectTaskController],
