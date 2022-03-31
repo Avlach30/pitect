@@ -2,8 +2,6 @@ import {
   Injectable,
   BadRequestException,
   UnauthorizedException,
-  NotFoundException,
-  Query,
   Request,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,12 +10,14 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
 import { Users } from '../entity/user.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(Users) private userRepository: Repository<Users>,
     private jwtService: JwtService,
+    private configService: ConfigService,
   ) {}
 
   async signup(
@@ -109,6 +109,7 @@ export class UserService {
       },
       {
         expiresIn: '4h',
+        secret: this.configService.get<string>('JWT_SERVICE'),
       },
     );
 

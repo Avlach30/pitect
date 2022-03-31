@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { JwtModule } from '@nestjs/jwt';
 
 import { Projects } from '../entity/project.entity';
 import { isAuth } from '../middleware/is-auth';
@@ -16,12 +15,6 @@ import { ProjectTasks } from '../entity/project-task.entity';
     TypeOrmModule.forFeature([ProjectBudgets]),
     TypeOrmModule.forFeature([ProjectMembers]),
     TypeOrmModule.forFeature([ProjectTasks]),
-    JwtModule.register({
-      secret: 'this-is-ultimate-secret-Text!',
-      signOptions: {
-        expiresIn: '4h',
-      },
-    }),
   ],
   controllers: [ProjectController],
   providers: [isAuth, ProjectService],
