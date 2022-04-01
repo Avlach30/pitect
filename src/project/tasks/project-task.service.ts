@@ -1,7 +1,7 @@
 import {
   Injectable,
   BadRequestException,
-  UnauthorizedException,
+  ForbiddenException,
   NotFoundException,
   Request,
 } from '@nestjs/common';
@@ -55,7 +55,7 @@ export class ProjectTaskService {
     }
 
     if (findProjectId[0].admin != parseInt(req.user.userId)) {
-      throw new UnauthorizedException('Unauthorized');
+      throw new ForbiddenException('Unpermission to access');
     }
 
     const insertQuery = await this.projectTaskRepository.query(
@@ -96,7 +96,7 @@ export class ProjectTaskService {
     }
 
     if (findProjectId[0].admin != parseInt(req.user.userId)) {
-      throw new UnauthorizedException('Unauthorized');
+      throw new ForbiddenException('Unpermission to access');
     }
 
     const updateQuery = await this.projectTaskRepository.query(
@@ -128,7 +128,7 @@ export class ProjectTaskService {
     }
 
     if (findProjectId[0].admin != parseInt(req.user.userId)) {
-      throw new UnauthorizedException('Unauthorized');
+      throw new ForbiddenException('Unpermission to access');
     }
 
     const deleteQuery = await this.projectTaskRepository.query(
@@ -171,7 +171,7 @@ export class ProjectTaskService {
       (value) => value === parseInt(req.user.userId),
     );
     if (checkInclude < 0) {
-      throw new UnauthorizedException('Unauthorized');
+      throw new ForbiddenException('Unpermission to access');
     }
 
     const finishTask = await this.projectTaskRepository.query(
