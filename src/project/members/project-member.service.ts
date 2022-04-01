@@ -1,7 +1,7 @@
 import {
   Injectable,
   BadRequestException,
-  UnauthorizedException,
+  ForbiddenException,
   NotFoundException,
   Request,
 } from '@nestjs/common';
@@ -48,7 +48,7 @@ export class ProjectMemberService {
 
     //* Check if project admin is cannot logged user
     if (getSingleProjectResult.adminId != req.user.userId) {
-      throw new UnauthorizedException('Unauthorized');
+      throw new ForbiddenException('Unpermission to access');
     }
 
     if (userId === req.user.userId) {
@@ -109,7 +109,7 @@ export class ProjectMemberService {
 
     //* Check if project admin is cannot logged user
     if (getSingleProjectResult.adminId != req.user.userId) {
-      throw new UnauthorizedException('Unauthorized');
+      throw new ForbiddenException('Unpermission to access');
     }
 
     //* Check if collaborated userId exist or not in project
