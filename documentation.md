@@ -355,9 +355,9 @@ Token is obtained from login response
 * ### Response fail (because not owned data)
   ```
   {
-      "statusCode": 401,
-      "message": "Unauthorized",
-      "error": "Unauthorized"
+    "statusCode": 403,
+    "message": "Unpermission to access",
+    "error": "Forbidden"
   }
   ```
 * ### Response fail (because one of request body not filled (required))
@@ -401,9 +401,9 @@ Token is obtained from login response
 * ### Response fail (because not owned data)
   ```
   {
-      "statusCode": 401,
-      "message": "Unauthorized",
-      "error": "Unauthorized"
+    "statusCode": 403,
+    "message": "Unpermission to access",
+    "error": "Forbidden"
   }
   ```
 
@@ -619,9 +619,9 @@ Token is obtained from login response
 * ### Response fail (because logged user isn't project admin/owner) 
   ```
   {
-      "statusCode": 401,
-      "message": "Unauthorized",
-      "error": "Unauthorized"
+    "statusCode": 403,
+    "message": "Unpermission to access",
+    "error": "Forbidden"
   }
   ```
 * ### Response fail (because project not found)
@@ -666,9 +666,9 @@ Token is obtained from login response
 * ### Response fail (because logged user isn't project admin/owner) 
   ```
   {
-      "statusCode": 401,
-      "message": "Unauthorized",
-      "error": "Unauthorized",
+    "statusCode": 403,
+    "message": "Unpermission to access",
+    "error": "Forbidden"
   }
   ```
 * ### Response fail (because project not found)
@@ -779,9 +779,9 @@ Token is obtained from login response
 * ### Response fail (because project admin isn't logged user)
   ```
   {
-      "statusCode": 401,
-      "message": "Unauthorized",
-      "error": "Unauthorized"
+    "statusCode": 403,
+    "message": "Unpermission to access",
+    "error": "Forbidden"
   }
   ```
 * ### Response fail (because project not found)
@@ -818,9 +818,9 @@ Token is obtained from login response
 * ### Response fail (because project admin isn't logged user)
   ```
   {
-      "statusCode": 401,
-      "message": "Unauthorized",
-      "error": "Unauthorized"
+    "statusCode": 403,
+    "message": "Unpermission to access",
+    "error": "Forbidden"
   }
   ```
 * ### Response fail (because project not found)
@@ -873,9 +873,9 @@ Token is obtained from login response
 * ### Response fail (because project admin isn't logged user)
   ```
   {
-      "statusCode": 401,
-      "message": "Unauthorized",
-      "error": "Unauthorized"
+    "statusCode": 403,
+    "message": "Unpermission to access",
+    "error": "Forbidden"
   }
   ```
 * ### Response fail (because data not found)
@@ -966,9 +966,9 @@ Token is obtained from login response
 * ### Response fail (because project admin isn't logged user)
   ```
   {
-      "statusCode": 401,
-      "message": "Unauthorized",
-      "error": "Unauthorized"
+    "statusCode": 403,
+    "message": "Unpermission to access",
+    "error": "Forbidden"
   }
   ```
 * ### Response fail (because project or task not found)
@@ -1021,9 +1021,9 @@ Token is obtained from login response
 * ### Response fail (because project admin isn't logged user)
   ```
   {
-      "statusCode": 401,
-      "message": "Unauthorized",
-      "error": "Unauthorized"
+    "statusCode": 403,
+    "message": "Unpermission to access",
+    "error": "Forbidden"
   }
   ```
 * ### Response fail (because project or task not found)
@@ -1060,9 +1060,9 @@ Token is obtained from login response
 * ### Response fail (because project admin isn't logged user)
   ```
   {
-      "statusCode": 401,
-      "message": "Unauthorized",
-      "error": "Unauthorized"
+    "statusCode": 403,
+    "message": "Unpermission to access",
+    "error": "Forbidden"
   }
   ```
 * ### Response fail (because project or task not found)
@@ -1098,12 +1098,12 @@ Token is obtained from login response
     "message": "Unauthorized"
   }
   ```
-* ### Response fail (because project admin isn't logged user)
+* ### Response fail (because project collaborator isn't logged user)
   ```
   {
-      "statusCode": 401,
-      "message": "Unauthorized",
-      "error": "Unauthorized"
+    "statusCode": 403,
+    "message": "Unpermission to access",
+    "error": "Forbidden"
   }
   ```
 * ### Response fail (because project or task not found)
