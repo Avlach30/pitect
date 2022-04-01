@@ -2,7 +2,7 @@ import {
   Injectable,
   BadRequestException,
   UnauthorizedException,
-  Query,
+  ForbiddenException,
   Request,
   NotFoundException,
 } from '@nestjs/common';
@@ -304,6 +304,10 @@ export class ProjectService {
       throw new NotFoundException('Project not found');
     }
 
+    if (getResult.adminId != parseInt(req.user.userId)) {
+      throw new ForbiddenException('Unpermission to access');
+    }
+
     const projectMember = await this.projectMemberRepository.query(
       'SELECT projectmembers.id as id, users.FULLNAME as name FROM projectmembers INNER JOIN users ON projectmembers.user = users.USERID WHERE projectmembers.project = ?',
       [getResult.id],
@@ -359,7 +363,7 @@ export class ProjectService {
     }
 
     if (project[0].admin != parseInt(req.user.userId)) {
-      throw new UnauthorizedException('Unathorized');
+      throw new ForbiddenException('Unpermission to access');
     }
 
     const updateProject = await this.projectRepository.query(
@@ -392,7 +396,7 @@ export class ProjectService {
     }
 
     if (project[0].admin != parseInt(req.user.userId)) {
-      throw new UnauthorizedException('Unathorized');
+      throw new ForbiddenException('Unpermission to access');
     }
 
     const deleteProject = await this.projectRepository.query(
