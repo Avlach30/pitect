@@ -2,12 +2,11 @@ import {
   Injectable,
   BadRequestException,
   UnauthorizedException,
-  Query,
+  ForbiddenException,
   Request,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { groupCollapsed } from 'console';
 import { Repository } from 'typeorm';
 
 import { ProjectMembers } from './members/project-member.entity';
@@ -215,7 +214,7 @@ export class ProjectService {
     }
 
     if (getResult.adminId != parseInt(req.user.userId)) {
-      throw new UnauthorizedException('Unauthorized');
+      throw new ForbiddenException('Unpermission to access');
     }
 
     const projectMember = await this.projectMemberRepository.query(
@@ -273,7 +272,7 @@ export class ProjectService {
     }
 
     if (project[0].admin != parseInt(req.user.userId)) {
-      throw new UnauthorizedException('Unathorized');
+      throw new ForbiddenException('Unpermission to access');
     }
 
     const updateProject = await this.projectRepository.query(
@@ -306,7 +305,7 @@ export class ProjectService {
     }
 
     if (project[0].admin != parseInt(req.user.userId)) {
-      throw new UnauthorizedException('Unathorized');
+      throw new ForbiddenException('Unpermission to access');
     }
 
     const deleteProject = await this.projectRepository.query(
