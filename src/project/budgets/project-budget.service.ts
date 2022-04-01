@@ -1,7 +1,7 @@
 import {
   Injectable,
   BadRequestException,
-  UnauthorizedException,
+  ForbiddenException,
   NotFoundException,
   Request,
 } from '@nestjs/common';
@@ -90,7 +90,7 @@ export class ProjectBudgetService {
     }
 
     if (getProjectData[0].admin != parseInt(req.user.userId)) {
-      throw new UnauthorizedException('Unauthorized');
+      throw new ForbiddenException('Unpermission to access');
     }
 
     const insertQuery = await this.projectBudgetRepository.query(
@@ -135,7 +135,7 @@ export class ProjectBudgetService {
       getProjectData[0].admin != parseInt(req.user.userId) ||
       getProjectId[0].admin != parseInt(req.user.userId)
     ) {
-      throw new UnauthorizedException('Unauthorized');
+      throw new ForbiddenException('Unpermission to access');
     }
 
     const deleteQuery = await this.projectBudgetRepository.query(
@@ -170,7 +170,7 @@ export class ProjectBudgetService {
     }
 
     if (getProjectData[0].admin != parseInt(req.user.userId)) {
-      throw new UnauthorizedException('Unauthorized');
+      throw new ForbiddenException('Unpermission to access');
     }
 
     const updatedBudgetValue = budget + getProjectData[0].totalContract;
