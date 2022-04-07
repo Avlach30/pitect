@@ -266,31 +266,51 @@ Token is obtained from login response
 * ###  Response success 
   ```
   {
-      "message": "Fetch single project successfully",
-      "project": {
-          "id": 32,
-          "title": "Pengembangan proyek homestay",
-          "admin": "john doe",
-          "adminId": 24,
-          "totalContract": 500000000,
-          "start": "2022-01-07T17:00:00.000Z",
-          "finish": "2022-07-07T17:00:00.000Z",
-          "address": "Maluku"
-      },
-      "spendings": [],
-      "members": [
-          {
-              "id": 53,
-              "name": "john doe"
-          }
-      ],
-      "tasks": [
-          {
-              "id": 4,
-              "content": "Perancangan Kontruksi",
-              "isFinished": 0
-          }
-      ]
+    "message": "Fetch single project successfully",
+    "project": {
+        "id": 29,
+        "title": "Pembangunan Jembatan",
+        "admin": "rocketmail",
+        "adminId": 27,
+        "totalContract": 15000000,
+        "start": "2021-12-22T17:00:00.000Z",
+        "finish": "2022-02-12T17:00:00.000Z",
+        "address": "Sulawesi Selatan"
+    },
+    "spendings": [
+        {
+            "id": 19,
+            "content": "Penyewaan jasa aduk semen dengan pasir",
+            "cost": 2000000
+        },
+        {
+            "id": 33,
+            "content": "Pengecoran",
+            "cost": 1500000
+        }
+    ],
+    "members": [
+        {
+            "id": 49,
+            "name": "rocketmail"
+        },
+        {
+            "id": 50,
+            "name": "john doe"
+        }
+    ],
+    "tasks": [
+        {
+            "id": 1,
+            "content": "Perancangan Kontruksi",
+            "isFinished": 1
+        },
+        {
+            "id": 10,
+            "content": "Pengadukan Semen",
+            "isFinished": 1
+        }
+    ]
   }
   ```
 * ### Response fail (because data not found)
