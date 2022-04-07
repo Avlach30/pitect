@@ -32,6 +32,8 @@ Base URL: Localhost (temporary)
   * [finish task](#finish-task)
 * Project report
   * [get project report](#get-specified-project-report)
+* Admin dashboard
+  * [get all projects & users](#get-all-projects-and-users)
 ## Sign up
 * ### Endpoint   
   `/api/auth/signup`
@@ -1169,5 +1171,144 @@ Token is obtained from login response
       "statusCode": 404,
       "message": "Data not found",
       "error": "Not Found"
+  }
+  ```
+## Get all projects and users  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/admin/dashboard`
+* ### Method
+  GET
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Fetching all project and user successfully",
+    "projects": {
+        "data": [
+            {
+                "id": 29,
+                "title": "Pembangunan Jembatan",
+                "admin": "rocketmail",
+                "totalContract": 15000000,
+                "address": "Sulawesi Selatan",
+                "startDate": "2021-12-22T17:00:00.000Z",
+                "finishDate": "2022-02-12T17:00:00.000Z",
+                "duration": 52
+            },
+            {
+                "id": 30,
+                "title": "Pembangunan Wc",
+                "admin": "rocketmail",
+                "totalContract": 22000000,
+                "address": "Sulawesi Selatan",
+                "startDate": "2021-12-22T17:00:00.000Z",
+                "finishDate": "2022-02-12T17:00:00.000Z",
+                "duration": 52
+            },
+            {
+                "id": 32,
+                "title": "Pengembangan proyek homestay",
+                "admin": "john doe",
+                "totalContract": 500000000,
+                "address": "Maluku",
+                "startDate": "2022-01-07T17:00:00.000Z",
+                "finishDate": "2022-07-07T17:00:00.000Z",
+                "duration": 181
+            },
+            {
+                "id": 33,
+                "title": "Pembangunan Proyek IKN",
+                "admin": "john doe",
+                "totalContract": 500000000,
+                "address": "Sulawesi Selatan",
+                "startDate": "2022-01-07T17:00:00.000Z",
+                "finishDate": "2022-07-07T17:00:00.000Z",
+                "duration": 181
+            },
+            {
+                "id": 35,
+                "title": "Pengembangan proyek sengketa",
+                "admin": "john doe",
+                "totalContract": 500000000,
+                "address": "Maluku",
+                "startDate": "2022-01-07T17:00:00.000Z",
+                "finishDate": "2022-07-07T17:00:00.000Z",
+                "duration": 181
+            },
+            {
+                "id": 36,
+                "title": "Pengembangan proyek kolam renang",
+                "admin": "john doe",
+                "totalContract": 20000000,
+                "address": "Yogyakarta",
+                "startDate": "2022-03-25T17:00:00.000Z",
+                "finishDate": "2022-07-25T17:00:00.000Z",
+                "duration": 122
+            },
+            {
+                "id": 37,
+                "title": "Pengembangan proyek kolam renang",
+                "admin": "john morisson",
+                "totalContract": 20000000,
+                "address": "Yogyakarta",
+                "startDate": "2022-03-25T17:00:00.000Z",
+                "finishDate": "2022-07-25T17:00:00.000Z",
+                "duration": 122
+            }
+        ],
+        "total": 7
+    },
+    "users": {
+        "data": [
+            {
+                "id": 24,
+                "name": "john doe",
+                "type": "personal",
+                "isVerified": 0,
+                "numPhone": "089123456789",
+                "email": "johndoe@gmail.com"
+            },
+            {
+                "id": 25,
+                "name": "jane doe",
+                "type": "organization",
+                "isVerified": 0,
+                "numPhone": "089123456789",
+                "email": "janedoe@gmail.com"
+            },
+            {
+                "id": 27,
+                "name": "rocketmail",
+                "type": "company",
+                "isVerified": 0,
+                "numPhone": "089123456789",
+                "email": "rocketmail@gmail.com"
+            },
+            {
+                "id": 28,
+                "name": "john morisson",
+                "type": "company",
+                "isVerified": 0,
+                "numPhone": "088987654321",
+                "email": "morisson@gmail.com"
+            }
+        ],
+        "total": 4,
+        "information": {
+            "verified": 0,
+            "unVerified": 4
+        }
+    }
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
   }
   ```

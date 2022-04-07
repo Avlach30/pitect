@@ -9,6 +9,7 @@ import { ProjectModule } from './project/project.module';
 import { ProjectBudgetModule } from './project/budgets/project-budget.module';
 import { ProjectTaskModule } from './project/tasks/project-task.module';
 import { ProjectMemberModule } from './project/members/project-member.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { ProjectMemberModule } from './project/members/project-member.module';
     ProjectMemberModule,
     ProjectBudgetModule,
     ProjectTaskModule,
+    AdminModule,
   ],
   controllers: [],
   providers: [],
