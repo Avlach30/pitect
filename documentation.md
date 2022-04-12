@@ -34,6 +34,9 @@ Base URL: Localhost (temporary)
   * [get project report](#get-specified-project-report)
 * Admin dashboard
   * [get all projects & users](#get-all-projects-and-users)
+* Marketplace  
+  * [create new product](#create-a-new-product)
+  * [create new service](#create-a-new-service)
 ## Sign up
 * ### Endpoint   
   `/api/auth/signup`
@@ -1330,5 +1333,161 @@ Token is obtained from login response
   {
     "statusCode": 401,
     "message": "Unauthorized"
+  }
+  ```
+## Create a new product
+Create a new product for marketplace (with image upload)  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace/product`
+* ### Method
+  POST
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  Content-type: multipart/form-data
+  ```
+* ### Body  
+  Because this endpoint contains file upload, make sure you added an attribute `enctype` with value `multipart/form-data` in your form. Then make sure you append each of body field in `formData()`.
+  ```
+    "image": File,
+	"title": String,
+	"description": String,
+	"category": String,
+	"cost": Number
+  ```
+* ### Response Success
+  ```
+  {
+    "Message": "Insert new product successfully",
+    "data": {
+        "title": "desain stadion",
+        "category": "design",
+        "isProduct": true,
+        "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/591e035b-a4f9-4538-af69-a9fd212b11b0.jpeg"
+    }
+  }
+  ```
+* ### Response fail (because one of request body not filled (required))
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please input all fields",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because image not uploaded (required))
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please, upload an image",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because uploaded file not an image)
+  ```
+  {
+    "statusCode": 400,
+    "message": "Invalid Image File Type",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because uploaded image size is larger than limit)
+  ```
+  {
+    "statusCode": 413,
+    "message": "File too large",
+    "error": "Payload Too Large"
+  }
+  ```
+## Create a new service
+Create a new service for marketplace (with image upload)  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace/service`
+* ### Method
+  POST
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  Content-type: multipart/form-data
+  ```
+* ### Body  
+  Because this endpoint contains file upload, make sure you added an attribute `enctype` with value `multipart/form-data` in your form. Then make sure you append each of body field in `formData()`.
+  ```
+  "image": File,
+  "title": String,
+  "description": String,
+  "category": String,
+  "cost": Number,
+  "infoTitle1": String,
+  "infoContent1": String,
+  "infoDuration1": Number,
+  "infoCost2": Number,
+  "infoTitle2": String,
+  "infoContent2": String,
+  "infoDuration2": Number,
+  "infoCost2": Number,
+  "infoTitle3": String,
+  "infoContent3": String,
+  "infoDuration3": Number,
+  "infoCost3": Number
+  ```
+* ### Response Success
+  ```
+  {
+    "Message": "Insert new service successfully",
+    "data": {
+        "title": "Rancangan Rumah tipe 36",
+        "category": "Services",
+        "isProduct": false,
+        "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/db5ab1ce-142d-43db-9013-1ed3e8a92a40.jpeg"
+    }
+  }
+  ```
+* ### Response fail (because one of request body not filled (required))
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please input all fields",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because image not uploaded (required))
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please, upload an image",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because uploaded file not an image)
+  ```
+  {
+    "statusCode": 400,
+    "message": "Invalid Image File Type",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because uploaded image size is larger than limit)
+  ```
+  {
+    "statusCode": 413,
+    "message": "File too large",
+    "error": "Payload Too Large"
   }
   ```

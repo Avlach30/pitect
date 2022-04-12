@@ -10,6 +10,8 @@ import { ProjectBudgetModule } from './project/budgets/project-budget.module';
 import { ProjectTaskModule } from './project/tasks/project-task.module';
 import { ProjectMemberModule } from './project/members/project-member.module';
 import { AdminModule } from './admin/admin.module';
+import { MarketplaceModule } from './marketplace/marketplace.module';
+import { MulterExtendedModule } from 'nestjs-multer-extended';
 
 @Module({
   imports: [
@@ -39,6 +41,7 @@ import { AdminModule } from './admin/admin.module';
     ProjectBudgetModule,
     ProjectTaskModule,
     AdminModule,
+    MarketplaceModule,
   ],
   controllers: [],
   providers: [],
