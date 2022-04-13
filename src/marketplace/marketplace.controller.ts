@@ -100,4 +100,14 @@ export class MarketplaceControllers {
     );
     return createService;
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get()
+  @HttpCode(200)
+  async getCatalogs(@Request() req: any) {
+    const getCatalogs = await this.marketplaceService.getMarketplaceCatalogs(
+      req,
+    );
+    return getCatalogs;
+  }
 }
