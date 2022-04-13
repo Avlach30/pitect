@@ -37,6 +37,8 @@ Base URL: Localhost (temporary)
 * Marketplace  
   * [create new product](#create-a-new-product)
   * [create new service](#create-a-new-service)
+  * [get all catalogs](#get-all-marketplace-catalogs)
+  * [search catalogs (by title)](#search-marketplace-catalog)
 ## Sign up
 * ### Endpoint   
   `/api/auth/signup`
@@ -1489,5 +1491,113 @@ Token is obtained from login response
     "statusCode": 413,
     "message": "File too large",
     "error": "Payload Too Large"
+  }
+  ```
+## Get all marketplace catalogs  
+Get all marketplace catalog, contains all product and service  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace`
+* ### Method
+  GET
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Get all marketplace catalogs successfully",
+    "data": {
+        "allCatalogs": [
+            {
+                "id": 2,
+                "title": "desain tugu sepeda",
+                "cost": 5000000,
+                "owner": "rocketmail"
+            },
+            {
+                "id": 11,
+                "title": "Rancangan kantor pos",
+                "cost": 5000000,
+                "owner": "rocketmail"
+            },
+            {
+                "id": 14,
+                "title": "Rancangan Rumah tipe 36",
+                "cost": 5000000,
+                "owner": "rocketmail"
+            },
+            {
+                "id": 15,
+                "title": "desain stadion",
+                "cost": 5000000,
+                "owner": "john doe"
+            }
+        ],
+        "userCatalogs": [
+            {
+                "id": 15,
+                "title": "desain stadion",
+                "cost": 5000000,
+                "owner": "john doe"
+            }
+        ]
+    },
+    "metaInfo": {
+        "totalCatalogs": 4,
+        "totalUserCatalogs": 1
+    }
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+## Search marketplace catalog  
+Search from all catalogs by title  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace`
+* ### Method
+  POST
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  Content-type: application/json
+  ```
+* ### Body
+  ```
+  {
+    "search": String
+  }
+  ```
+* ### Response Success
+  ```
+  {
+    "searchResult": [
+        {
+            "id": 11,
+            "title": "Rancangan kantor pos",
+            "cost": 5000000,
+            "owner": "rocketmail"
+        },
+        {
+            "id": 14,
+            "title": "Rancangan Rumah tipe 36",
+            "cost": 5000000,
+            "owner": "rocketmail"
+        }
+    ]
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
   }
   ```

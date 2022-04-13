@@ -153,4 +153,51 @@ export class MarketplaceService {
 
     return objResult;
   }
+
+  async getMarketplaceCatalogs(@Request() req: any) {
+    //* Get all catalogs from all users
+    const getCatalogs = await this.serviceRepository.query(
+      'SELECT services.id, services.title, services.cost, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID',
+    );
+
+    //* Get all catalogs from logged user
+    const getUserCatalogs = await this.serviceRepository.query(
+      'SELECT services.id, services.title, services.cost, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE services.creator = ?',
+      [parseInt(req.user.userId)],
+    );
+
+    const objResult = {
+      message: 'Get all marketplace catalogs successfully',
+      data: {
+        allCatalogs: getCatalogs,
+        userCatalogs: getUserCatalogs,
+      },
+      metaInfo: {
+        totalCatalogs: getCatalogs.length,
+        totalUserCatalogs: getUserCatalogs.length,
+      },
+    };
+
+    return objResult;
+  }
+
+  async filteredCatalogs(search: string) {
+    let filteredResult;
+
+    //* If search value is empty
+    if (!search) {
+      filteredResult = await this.serviceRepository.query(
+        'SELECT services.id, services.title, services.cost, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID',
+      );
+
+      return filteredResult;
+    }
+
+    filteredResult = await this.serviceRepository.query(
+      'SELECT services.id, services.title, services.cost, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE SOUNDEX(SUBSTRING(services.title, 1, ?)) = SOUNDEX(SUBSTRING(?, 1, ?))',
+      [search.length, search, search.length],
+    );
+
+    return filteredResult;
+  }
 }
