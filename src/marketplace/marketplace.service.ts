@@ -180,4 +180,24 @@ export class MarketplaceService {
 
     return objResult;
   }
+
+  async filteredCatalogs(search: string) {
+    let filteredResult;
+
+    //* If search value is empty
+    if (!search) {
+      filteredResult = await this.serviceRepository.query(
+        'SELECT services.id, services.title, services.cost, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID',
+      );
+
+      return filteredResult;
+    }
+
+    filteredResult = await this.serviceRepository.query(
+      'SELECT services.id, services.title, services.cost, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE SOUNDEX(SUBSTRING(services.title, 1, ?)) = SOUNDEX(SUBSTRING(?, 1, ?))',
+      [search.length, search, search.length],
+    );
+
+    return filteredResult;
+  }
 }
