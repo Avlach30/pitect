@@ -39,6 +39,7 @@ Base URL: Localhost (temporary)
   * [create new service](#create-a-new-service)
   * [get all catalogs](#get-all-marketplace-catalogs)
   * [search catalogs (by title)](#search-marketplace-catalog)
+  * [filter catalog (by category)](#filter-marketplace-catalog-category)
 ## Sign up
 * ### Endpoint   
   `/api/auth/signup`
@@ -1639,7 +1640,7 @@ Token is obtained from login response
     "message": "Unauthorized"
   }
   ```
-## Filtered marketplace catalog (category)
+## Filter marketplace catalog (category)
 Filter marketplace catalogs by category  
 Token is obtained from login response  
 * ### Endpoint  
