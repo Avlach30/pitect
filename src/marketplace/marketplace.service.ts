@@ -157,12 +157,12 @@ export class MarketplaceService {
   async getMarketplaceCatalogs(@Request() req: any) {
     //* Get all catalogs from all users
     const getCatalogs = await this.serviceRepository.query(
-      'SELECT services.id, services.title, services.cost, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID',
+      'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID',
     );
 
     //* Get all catalogs from logged user
     const getUserCatalogs = await this.serviceRepository.query(
-      'SELECT services.id, services.title, services.cost, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE services.creator = ?',
+      'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE services.creator = ?',
       [parseInt(req.user.userId)],
     );
 
