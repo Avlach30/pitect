@@ -114,10 +114,16 @@ export class MarketplaceControllers {
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @HttpCode(200)
-  async filteredCatalogs(@Body('search') search: any) {
-    const user = await this.marketplaceService.filteredCatalogs(search);
+  async filteredCatalogs(
+    @Body('search') search: any,
+    @Body('category') category: any,
+  ) {
+    const filteredResult = await this.marketplaceService.filteredCatalogs(
+      search,
+      category,
+    );
     return {
-      searchResult: user,
+      filteredResult: filteredResult,
     };
   }
 }

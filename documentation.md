@@ -39,6 +39,7 @@ Base URL: Localhost (temporary)
   * [create new service](#create-a-new-service)
   * [get all catalogs](#get-all-marketplace-catalogs)
   * [search catalogs (by title)](#search-marketplace-catalog)
+  * [filter catalog (by category)](#filter-marketplace-catalog-category)
 ## Sign up
 * ### Endpoint   
   `/api/auth/signup`
@@ -1513,25 +1514,41 @@ Token is obtained from login response
             {
                 "id": 2,
                 "title": "desain tugu sepeda",
-                "cost": 5000000,
+                "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/84dc9c5b-fe8b-491f-8070-c455ecfb0f63.jpeg",
+                "cost": 2000000,
+                "category": "Traditional",
                 "owner": "rocketmail"
             },
             {
                 "id": 11,
                 "title": "Rancangan kantor pos",
-                "cost": 5000000,
+                "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/b2727586-07c2-4842-b034-4618cc3ee828.png",
+                "cost": 2500000,
+                "category": "Minimalis",
                 "owner": "rocketmail"
             },
             {
                 "id": 14,
                 "title": "Rancangan Rumah tipe 36",
-                "cost": 5000000,
+                "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/db5ab1ce-142d-43db-9013-1ed3e8a92a40.jpeg",
+                "cost": 3000000,
+                "category": "Modern",
                 "owner": "rocketmail"
             },
             {
                 "id": 15,
                 "title": "desain stadion",
+                "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/591e035b-a4f9-4538-af69-a9fd212b11b0.jpeg",
                 "cost": 5000000,
+                "category": "Modern",
+                "owner": "john doe"
+            },
+            {
+                "id": 16,
+                "title": "Desain rancangan jembatan Sumatra - Jawa",
+                "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/d4e93a5d-b379-463d-a822-92fa63cbe940.jpeg",
+                "cost": 5000000,
+                "category": "Modern",
                 "owner": "john doe"
             }
         ],
@@ -1539,14 +1556,24 @@ Token is obtained from login response
             {
                 "id": 15,
                 "title": "desain stadion",
+                "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/591e035b-a4f9-4538-af69-a9fd212b11b0.jpeg",
                 "cost": 5000000,
+                "category": "Modern",
+                "owner": "john doe"
+            },
+            {
+                "id": 16,
+                "title": "Desain rancangan jembatan Sumatra - Jawa",
+                "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/d4e93a5d-b379-463d-a822-92fa63cbe940.jpeg",
+                "cost": 5000000,
+                "category": "Modern",
                 "owner": "john doe"
             }
         ]
     },
     "metaInfo": {
-        "totalCatalogs": 4,
-        "totalUserCatalogs": 1
+        "totalCatalogs": 5,
+        "totalUserCatalogs": 2
     }
   }
   ```
@@ -1578,18 +1605,86 @@ Token is obtained from login response
 * ### Response Success
   ```
   {
-    "searchResult": [
+    "filteredResult": [
         {
-            "id": 11,
-            "title": "Rancangan kantor pos",
-            "cost": 5000000,
+            "id": 2,
+            "title": "desain tugu sepeda",
+            "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/84dc9c5b-fe8b-491f-8070-c455ecfb0f63.jpeg",
+            "cost": 2000000,
+            "category": "Traditional",
             "owner": "rocketmail"
         },
         {
+            "id": 15,
+            "title": "desain stadion",
+            "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/591e035b-a4f9-4538-af69-a9fd212b11b0.jpeg",
+            "cost": 5000000,
+            "category": "Modern",
+            "owner": "john doe"
+        },
+        {
+            "id": 16,
+            "title": "Desain rancangan jembatan Sumatra - Jawa",
+            "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/d4e93a5d-b379-463d-a822-92fa63cbe940.jpeg",
+            "cost": 5000000,
+            "category": "Modern",
+            "owner": "john doe"
+        }
+    ]
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+## Filter marketplace catalog (category)
+Filter marketplace catalogs by category  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace`
+* ### Method
+  POST
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  Content-type: application/json
+  ```
+* ### Body
+  ```
+  {
+    "category": String
+  }
+  ```
+* ### Response Success
+  ```
+  {
+    "filteredResult": [
+        {
             "id": 14,
             "title": "Rancangan Rumah tipe 36",
-            "cost": 5000000,
+            "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/db5ab1ce-142d-43db-9013-1ed3e8a92a40.jpeg",
+            "cost": 3000000,
+            "category": "Modern",
             "owner": "rocketmail"
+        },
+        {
+            "id": 15,
+            "title": "desain stadion",
+            "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/591e035b-a4f9-4538-af69-a9fd212b11b0.jpeg",
+            "cost": 5000000,
+            "category": "Modern",
+            "owner": "john doe"
+        },
+        {
+            "id": 16,
+            "title": "Desain rancangan jembatan Sumatra - Jawa",
+            "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/d4e93a5d-b379-463d-a822-92fa63cbe940.jpeg",
+            "cost": 5000000,
+            "category": "Modern",
+            "owner": "john doe"
         }
     ]
   }

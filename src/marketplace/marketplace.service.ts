@@ -157,12 +157,12 @@ export class MarketplaceService {
   async getMarketplaceCatalogs(@Request() req: any) {
     //* Get all catalogs from all users
     const getCatalogs = await this.serviceRepository.query(
-      'SELECT services.id, services.title, services.cost, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID',
+      'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID',
     );
 
     //* Get all catalogs from logged user
     const getUserCatalogs = await this.serviceRepository.query(
-      'SELECT services.id, services.title, services.cost, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE services.creator = ?',
+      'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE services.creator = ?',
       [parseInt(req.user.userId)],
     );
 
@@ -181,21 +181,41 @@ export class MarketplaceService {
     return objResult;
   }
 
-  async filteredCatalogs(search: string) {
+  async filteredCatalogs(search: string, category: string) {
     let filteredResult;
 
-    //* If search value is empty
-    if (!search) {
+    //* If search and category value isn't empty
+    if (search && category) {
       filteredResult = await this.serviceRepository.query(
-        'SELECT services.id, services.title, services.cost, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID',
+        'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE SOUNDEX(SUBSTRING(services.title, 1, ?)) = SOUNDEX(SUBSTRING(?, 1, ?)) AND services.category = ?',
+        [search.length, search, search.length, category],
+      );
+
+      return filteredResult;
+    }
+
+    //* If only search value is available
+    if (search) {
+      filteredResult = await this.serviceRepository.query(
+        'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE SOUNDEX(SUBSTRING(services.title, 1, ?)) = SOUNDEX(SUBSTRING(?, 1, ?))',
+        [search.length, search, search.length],
+      );
+
+      return filteredResult;
+    }
+
+    //* If only category value is available
+    if (category) {
+      filteredResult = await this.serviceRepository.query(
+        'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE services.category = ?',
+        [category],
       );
 
       return filteredResult;
     }
 
     filteredResult = await this.serviceRepository.query(
-      'SELECT services.id, services.title, services.cost, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE SOUNDEX(SUBSTRING(services.title, 1, ?)) = SOUNDEX(SUBSTRING(?, 1, ?))',
-      [search.length, search, search.length],
+      'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID',
     );
 
     return filteredResult;
