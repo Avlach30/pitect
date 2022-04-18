@@ -40,7 +40,8 @@ Base URL: Localhost (temporary)
   * [get all catalogs](#get-all-marketplace-catalogs)
   * [search catalogs (by title)](#search-marketplace-catalog)
   * [filter catalog (by category)](#filter-marketplace-catalog-category)
-  * [filter catalog (by range price)](#filter-marketplace-catalog-price)
+  * [filter catalog (by range price)](#filter-marketplace-catalog-price)  
+  * [get specified catalog](#get-specified-catalog)  
 ## Sign up
 * ### Endpoint   
   `/api/auth/signup`
@@ -1768,5 +1769,70 @@ Token is obtained from login response
   {
     "statusCode": 401,
     "message": "Unauthorized"
+  }
+  ```
+## Get specified catalog  
+Get single or specified marketplace catalog, for more details about catalog  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace/catalogId`
+* ### Method
+  GET
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Get single catalog successfully",
+    "data": {
+        "result": {
+            "id": 11,
+            "title": "Rancangan kantor pos",
+            "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/b2727586-07c2-4842-b034-4618cc3ee828.png",
+            "cost": 2500000,
+            "category": "Minimalis",
+            "owner": "rocketmail"
+        },
+        "info": [
+            {
+                "id": 7,
+                "title": "standard",
+                "content": "desain dengan fitur seperti biasa",
+                "duration": 2,
+                "cost": 2000000
+            },
+            {
+                "id": 8,
+                "title": "advanced",
+                "content": "Penambahan fitur revisi desain 1 x",
+                "duration": 4,
+                "cost": 3500000
+            },
+            {
+                "id": 9,
+                "title": "professional",
+                "content": "Konsultrasi gratis, penyaluran dengan kontraktor professional",
+                "duration": 7,
+                "cost": 5000000
+            }
+        ]
+    }
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
   }
   ```

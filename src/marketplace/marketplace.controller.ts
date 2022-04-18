@@ -130,4 +130,13 @@ export class MarketplaceControllers {
       filteredResult: filteredResult,
     };
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':catalogId')
+  @HttpCode(200)
+  async getProject(@Param('catalogId') catalogId: string, @Request() req: any) {
+    const getSpecifiedCatalog =
+      await this.marketplaceService.getSpecifiedCatalog(catalogId, req);
+    return getSpecifiedCatalog;
+  }
 }

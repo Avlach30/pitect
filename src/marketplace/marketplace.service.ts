@@ -1,4 +1,9 @@
-import { Injectable, BadRequestException, Request } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  Request,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -369,5 +374,40 @@ export class MarketplaceService {
     );
 
     return filteredResult;
+  }
+
+  async getSpecifiedCatalog(catalogId: string, @Request() req: any) {
+    let result;
+
+    const catalog = await this.serviceRepository
+      .query(
+        'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE services.id = ?',
+        [parseInt(catalogId)],
+      )
+      .then((data) => {
+        result = data[0];
+        return result;
+      });
+
+    // console.log(result);
+
+    if (result == undefined) {
+      throw new NotFoundException('Data not found');
+    }
+
+    const catalogInfo = await this.serviceInfoRepository.query(
+      'SELECT id, title, content, duration, cost FROM serviceinfos WHERE serviceId = ?',
+      [parseInt(catalogId)],
+    );
+
+    const objResult = {
+      message: 'Get single catalog successfully',
+      data: {
+        result,
+        info: catalogInfo,
+      },
+    };
+
+    return objResult;
   }
 }
