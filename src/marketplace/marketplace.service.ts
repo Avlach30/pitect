@@ -181,10 +181,159 @@ export class MarketplaceService {
     return objResult;
   }
 
-  async filteredCatalogs(search: string, category: string) {
+  async filteredCatalogs(
+    search: string,
+    category: string,
+    minPrice: number,
+    maxPrice: number,
+  ) {
     let filteredResult;
 
-    //* If search and category value isn't empty
+    //* If search, category, min and max price isn't empty
+    if (search && category && minPrice && maxPrice) {
+      if (minPrice > maxPrice) {
+        throw new BadRequestException(
+          'Sorry, filter input for minimum price must smaller than maximum price',
+        );
+      }
+
+      filteredResult = await this.serviceRepository.query(
+        'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE SOUNDEX(SUBSTRING(services.title, 1, ?)) = SOUNDEX(SUBSTRING(?, 1, ?)) AND services.category = ? AND services.cost BETWEEN ? AND ?',
+        [search.length, search, search.length, category, minPrice, maxPrice],
+      );
+
+      return filteredResult;
+    }
+
+    //* If search, category, and min price value isn't empty
+    if (search && category && minPrice) {
+      filteredResult = await this.serviceRepository.query(
+        'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE SOUNDEX(SUBSTRING(services.title, 1, ?)) = SOUNDEX(SUBSTRING(?, 1, ?)) AND services.category = ? AND services.cost >= ?',
+        [search.length, search, search.length, category, minPrice],
+      );
+
+      return filteredResult;
+    }
+
+    //* If search, category, and max price value isn't empty
+    if (search && category && maxPrice) {
+      filteredResult = await this.serviceRepository.query(
+        'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE SOUNDEX(SUBSTRING(services.title, 1, ?)) = SOUNDEX(SUBSTRING(?, 1, ?)) AND services.category = ? AND services.cost <= ?',
+        [search.length, search, search.length, category, maxPrice],
+      );
+
+      return filteredResult;
+    }
+
+    //* If search, min, and max price value isn't empty
+    if (search && minPrice && maxPrice) {
+      if (minPrice > maxPrice) {
+        throw new BadRequestException(
+          'Sorry, filter input for minimum price must smaller than maximum price',
+        );
+      }
+
+      filteredResult = await this.serviceRepository.query(
+        'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE SOUNDEX(SUBSTRING(services.title, 1, ?)) = SOUNDEX(SUBSTRING(?, 1, ?)) AND services.cost BETWEEN ? AND ?',
+        [search.length, search, search.length, minPrice, maxPrice],
+      );
+
+      return filteredResult;
+    }
+
+    //* If only search and min price value isn't empty
+    if (search && minPrice) {
+      filteredResult = await this.serviceRepository.query(
+        'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE SOUNDEX(SUBSTRING(services.title, 1, ?)) = SOUNDEX(SUBSTRING(?, 1, ?)) AND services.cost >= ?',
+        [search.length, search, search.length, minPrice],
+      );
+
+      return filteredResult;
+    }
+
+    //* If only search and max price value isn't empty
+    if (search && maxPrice) {
+      filteredResult = await this.serviceRepository.query(
+        'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE SOUNDEX(SUBSTRING(services.title, 1, ?)) = SOUNDEX(SUBSTRING(?, 1, ?)) AND services.cost <= ?',
+        [search.length, search, search.length, maxPrice],
+      );
+
+      return filteredResult;
+    }
+
+    //* If category, min, and max price value isn't empty
+    if (category && minPrice && maxPrice) {
+      if (minPrice > maxPrice) {
+        throw new BadRequestException(
+          'Sorry, filter input for minimum price must smaller than maximum price',
+        );
+      }
+
+      filteredResult = await this.serviceRepository.query(
+        'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE services.category = ? AND services.cost BETWEEN ? AND ?',
+        [category, minPrice, maxPrice],
+      );
+
+      return filteredResult;
+    }
+
+    //* If only category and min price value isn't empty
+    if (category && minPrice) {
+      filteredResult = await this.serviceRepository.query(
+        'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE services.category = ? AND services.cost >= ?',
+        [category, minPrice],
+      );
+
+      return filteredResult;
+    }
+
+    //* If only category and max price value isn't empty
+    if (category && maxPrice) {
+      filteredResult = await this.serviceRepository.query(
+        'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE services.category = ? AND services.cost <= ?',
+        [category, maxPrice],
+      );
+
+      return filteredResult;
+    }
+
+    //* If only price range isn't empty
+    if (minPrice && maxPrice) {
+      if (minPrice > maxPrice) {
+        throw new BadRequestException(
+          'Sorry, filter input for minimum price must smaller than maximum price',
+        );
+      }
+
+      filteredResult = await this.serviceRepository.query(
+        'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE services.cost BETWEEN ? AND ?',
+        [minPrice, maxPrice],
+      );
+
+      return filteredResult;
+    }
+
+    //* If only min price value isn't empty
+    if (minPrice) {
+      filteredResult = await this.serviceRepository.query(
+        'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE services.cost >= ?',
+        [minPrice],
+      );
+
+      return filteredResult;
+    }
+
+    //* If only max price value isn't empty
+    if (maxPrice) {
+      filteredResult = await this.serviceRepository.query(
+        'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE services.cost <= ?',
+        [maxPrice],
+      );
+
+      return filteredResult;
+    }
+
+    //* If only search and category value isn't empty
     if (search && category) {
       filteredResult = await this.serviceRepository.query(
         'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE SOUNDEX(SUBSTRING(services.title, 1, ?)) = SOUNDEX(SUBSTRING(?, 1, ?)) AND services.category = ?',
@@ -214,6 +363,7 @@ export class MarketplaceService {
       return filteredResult;
     }
 
+    //* If all filter input is empty
     filteredResult = await this.serviceRepository.query(
       'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID',
     );
