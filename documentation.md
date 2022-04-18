@@ -40,6 +40,8 @@ Base URL: Localhost (temporary)
   * [get all catalogs](#get-all-marketplace-catalogs)
   * [search catalogs (by title)](#search-marketplace-catalog)
   * [filter catalog (by category)](#filter-marketplace-catalog-category)
+  * [filter catalog (by range price)](#filter-marketplace-catalog-price)  
+  * [get specified catalog](#get-specified-catalog)  
 ## Sign up
 * ### Endpoint   
   `/api/auth/signup`
@@ -1694,5 +1696,143 @@ Token is obtained from login response
   {
     "statusCode": 401,
     "message": "Unauthorized"
+  }
+  ```
+## Filter marketplace catalog (price)  
+Filter marketplace catalogs by range of price (minimum and maximum price)  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace`
+* ### Method
+  POST
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  Content-type: application/json
+  ```
+* ### Body
+  ```
+  {
+    "minPrice": Number, 
+    "maxPrice": Number
+  }
+  ```
+* ### Response Success
+  ```
+  {
+    "filteredResult": [
+        {
+            "id": 11,
+            "title": "Rancangan kantor pos",
+            "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/b2727586-07c2-4842-b034-4618cc3ee828.png",
+            "cost": 2500000,
+            "category": "Minimalis",
+            "owner": "rocketmail"
+        },
+        {
+            "id": 14,
+            "title": "Rancangan Rumah tipe 36",
+            "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/db5ab1ce-142d-43db-9013-1ed3e8a92a40.jpeg",
+            "cost": 3000000,
+            "category": "Modern",
+            "owner": "rocketmail"
+        },
+        {
+            "id": 15,
+            "title": "desain stadion",
+            "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/591e035b-a4f9-4538-af69-a9fd212b11b0.jpeg",
+            "cost": 5000000,
+            "category": "Modern",
+            "owner": "john doe"
+        },
+        {
+            "id": 16,
+            "title": "Desain rancangan jembatan Sumatra - Jawa",
+            "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/d4e93a5d-b379-463d-a822-92fa63cbe940.jpeg",
+            "cost": 5000000,
+            "category": "Modern",
+            "owner": "john doe"
+        }
+    ]
+  }
+  ```
+* ### Response fail (because minimum price is larger than maximum price)  
+  ```
+  {
+    "statusCode": 400,
+    "message": "Sorry, filter input for minimum price must smaller than maximum price",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+## Get specified catalog  
+Get single or specified marketplace catalog, for more details about catalog  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace/catalogId`
+* ### Method
+  GET
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Get single catalog successfully",
+    "data": {
+        "result": {
+            "id": 11,
+            "title": "Rancangan kantor pos",
+            "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/b2727586-07c2-4842-b034-4618cc3ee828.png",
+            "cost": 2500000,
+            "category": "Minimalis",
+            "owner": "rocketmail"
+        },
+        "info": [
+            {
+                "id": 7,
+                "title": "standard",
+                "content": "desain dengan fitur seperti biasa",
+                "duration": 2,
+                "cost": 2000000
+            },
+            {
+                "id": 8,
+                "title": "advanced",
+                "content": "Penambahan fitur revisi desain 1 x",
+                "duration": 4,
+                "cost": 3500000
+            },
+            {
+                "id": 9,
+                "title": "professional",
+                "content": "Konsultrasi gratis, penyaluran dengan kontraktor professional",
+                "duration": 7,
+                "cost": 5000000
+            }
+        ]
+    }
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
   }
   ```

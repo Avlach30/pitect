@@ -115,15 +115,28 @@ export class MarketplaceControllers {
   @Post()
   @HttpCode(200)
   async filteredCatalogs(
-    @Body('search') search: any,
-    @Body('category') category: any,
+    @Body('search') search: string,
+    @Body('category') category: string,
+    @Body('minPrice') minPrice: number,
+    @Body('maxPrice') maxPrice: number,
   ) {
     const filteredResult = await this.marketplaceService.filteredCatalogs(
       search,
       category,
+      minPrice,
+      maxPrice,
     );
     return {
       filteredResult: filteredResult,
     };
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':catalogId')
+  @HttpCode(200)
+  async getProject(@Param('catalogId') catalogId: string, @Request() req: any) {
+    const getSpecifiedCatalog =
+      await this.marketplaceService.getSpecifiedCatalog(catalogId, req);
+    return getSpecifiedCatalog;
   }
 }
