@@ -1775,7 +1775,7 @@ Token is obtained from login response
 Get single or specified marketplace catalog, for more details about catalog  
 Token is obtained from login response  
 * ### Endpoint  
-  `/api/marketplace/:catalogId`
+  `/api/marketplace/catalogs/:catalogId`
 * ### Method
   GET
 * ### Headers  
