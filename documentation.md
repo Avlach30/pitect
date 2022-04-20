@@ -1869,19 +1869,19 @@ Token is obtained from login response
     "message": "Insert to wishlist successfully"
   }
   ```
-* ### Response fail (because token not available or expired)
-  ```
-  {
-      "statusCode": 401,
-      "message": "Unauthorized"
-  }
-  ```
 * ### Response fail (because catalog already exist in wishlists)
   ```
   {
     "statusCode": 400,
     "message": "Catalog already added",
     "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
   }
   ```
 ## Get all wishlists  
@@ -1942,7 +1942,47 @@ Token is obtained from login response
             }
         }
     ]
-=======
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
+## Delete from wishlist  
+Delete existing wishlist catalog from logged user  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace/wishlists/:wishlistId`
+* ### Method  
+  DELETE
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Catalog removed from wishlists"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```
 ## Update existing product  
 Update existing product in marketplace  
 Token is obtained from login response  
@@ -1990,7 +2030,6 @@ Token is obtained from login response
     "statusCode": 400,
     "message": "Invalid Image File Type",
     "error": "Bad Request"
->>>>>>> feature/marketplace_service-crud
   }
   ```
 * ### Response fail (because token not available or expired)
@@ -1998,32 +2037,6 @@ Token is obtained from login response
   {
       "statusCode": 401,
       "message": "Unauthorized"
-  }
-  ```
-## Delete from wishlist  
-Delete existing wishlist catalog from logged user  
-Token is obtained from login response  
-* ### Endpoint  
-  `/api/marketplace/wishlists/:wishlistId`
-* ### Method  
-  DELETE
-* ### Headers  
-  ```
-  Authorization: `Bearer ${token}`
-  ```
-* ### Response Success
-  ```
-  {
-    "message": "Catalog removed from wishlists"
-  }
-  ```
-* ### Response fail (because token not available or expired)
-  ```
-  {
-      "statusCode": 401,
-      "message": "Unauthorized"
-    "statusCode": 401,
-    "message": "Unauthorized"
   }
   ```
 * ### Response fail (because not owned data)
@@ -2034,19 +2047,19 @@ Token is obtained from login response
       "error": "Forbidden"
   }
   ```
-* ### Response fail (because uploaded image size is larger than limit)
-  ```
-  {
-    "statusCode": 413,
-    "message": "File too large",
-    "error": "Payload Too Large"
-  }
-  ```
 * ### Response fail (because data not found)
   ```
   {
       "statusCode": 404,
       "message": "Data not found",
       "error": "Not Found"
+  }
+  ```
+* ### Response fail (because uploaded image size is larger than limit)
+  ```
+  {
+    "statusCode": 413,
+    "message": "File too large",
+    "error": "Payload Too Large"
   }
   ```
