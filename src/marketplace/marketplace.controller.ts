@@ -175,4 +175,35 @@ export class MarketplaceControllers {
     );
     return removeFromWishlist;
   }
+
+  @Put('product/:productId')
+  @HttpCode(200)
+  @UseInterceptors(
+    AmazonS3FileInterceptor('image', {
+      limits: { fileSize: 1 * 1024 * 1024 },
+      randomFilename: true,
+    }),
+  )
+  async updateProduct(
+    @Param('productId') productId: string,
+    @Request() req: any,
+    @UploadedFile() file: any,
+    @Body('title') title: string,
+    @Body('cost') cost: number,
+    @Body('description') description: string,
+    @Body('category') category: string,
+    @Body('imageUrl') imageUrl: string,
+  ) {
+    const updateProduct = await this.marketplaceService.updateProduct(
+      productId,
+      req,
+      file,
+      title,
+      cost,
+      description,
+      category,
+      imageUrl,
+    );
+    return updateProduct;
+  }
 }
