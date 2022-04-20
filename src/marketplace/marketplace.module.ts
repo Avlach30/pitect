@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MulterExtendedModule } from 'nestjs-multer-extended';
-import { ServiceOwns } from 'src/entity/services.own.entity';
 
-import { isAuth } from 'src/middleware/is-auth';
+import { ServiceOwns } from '../entity/services.own.entity';
+import { Wishlists } from '../entity/wishlist.entity';
+import { isAuth } from '../middleware/is-auth';
 import { Services } from '../entity/services.entity';
 import { ServiceInfos } from '../entity/services.info.entity';
 import { MarketplaceControllers } from './marketplace.controller';
@@ -15,6 +16,7 @@ import { MarketplaceService } from './marketplace.service';
     TypeOrmModule.forFeature([Services]),
     TypeOrmModule.forFeature([ServiceInfos]),
     TypeOrmModule.forFeature([ServiceOwns]),
+    TypeOrmModule.forFeature([Wishlists]),
     MulterExtendedModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({

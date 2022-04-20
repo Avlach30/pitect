@@ -3,13 +3,15 @@ import {
   BadRequestException,
   Request,
   NotFoundException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Services } from '../entity/services.entity';
 import { ServiceInfos } from '../entity/services.info.entity';
-import { ServiceOwns } from 'src/entity/services.own.entity';
+import { ServiceOwns } from '../entity/services.own.entity';
+import { Wishlists } from '../entity/wishlist.entity';
 
 @Injectable()
 export class MarketplaceService {
@@ -19,6 +21,8 @@ export class MarketplaceService {
     private serviceInfoRepository: Repository<Services>,
     @InjectRepository(ServiceOwns)
     private serviceOwnRepository: Repository<ServiceOwns>,
+    @InjectRepository(Wishlists)
+    private wishlistRepository: Repository<Wishlists>,
   ) {}
 
   async createProduct(
@@ -408,6 +412,79 @@ export class MarketplaceService {
       },
     };
 
+    return objResult;
+  }
+
+  async insertToWishlist(@Request() req: any, catalogId: number) {
+    if (!catalogId) {
+      throw new BadRequestException('Please, input this field');
+    }
+
+    //* Check if catalog already added in wishlist or not
+    const checkAvailability = await this.wishlistRepository.query(
+      'SELECT id, serviceId FROM wishlists WHERE userId = ? AND serviceId = ?',
+      [parseInt(req.user.userId), catalogId],
+    );
+    if (checkAvailability.length > 0) {
+      throw new BadRequestException('Catalog already added');
+    }
+
+    await this.wishlistRepository.query(
+      'INSERT INTO wishlists (serviceId, userId) VALUES (?, ?)',
+      [catalogId, parseInt(req.user.userId)],
+    );
+
+    const objResult = { message: 'Insert to wishlist successfully' };
+
+    return objResult;
+  }
+
+  async getWishlists(@Request() req: any) {
+    const wishlists: any = await this.wishlistRepository.query(
+      'SELECT wishlists.id as wishlistId, wishlists.serviceId as catalogId, services.title, services.image, services.cost, services.category FROM wishlists INNER JOIN services ON wishlists.serviceId = services.id WHERE wishlists.userId = ?',
+      [parseInt(req.user.userId)],
+    );
+
+    const formattedValue = wishlists.map((item) => {
+      return {
+        id: item.wishlistId,
+        catalog: {
+          id: item.catalogId,
+          title: item.title,
+          image: item.image,
+          cost: item.cost,
+          category: item.category,
+        },
+      };
+    });
+
+    // console.log(formattedValue);
+
+    const objResult = {
+      message: 'Get wishlists successfully',
+      user: req.user.name,
+      data: formattedValue,
+    };
+
+    return objResult;
+  }
+
+  async removeFromWishlist(wishlistId: string, @Request() req: any) {
+    const wishlistCatalog = await this.wishlistRepository.query(
+      'SELECT id, serviceId, userId FROM wishlists WHERE id = ? AND userId = ?',
+      [parseInt(wishlistId), parseInt(req.user.userId)],
+    );
+
+    //* Check if wishlist catalog available or not
+    if (wishlistCatalog.length == 0) {
+      throw new NotFoundException('Data not found');
+    }
+
+    await this.wishlistRepository.query('DELETE FROM wishlists WHERE id = ?', [
+      parseInt(wishlistId),
+    ]);
+
+    const objResult = { message: 'Catalog removed from wishlists' };
     return objResult;
   }
 }

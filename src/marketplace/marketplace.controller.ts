@@ -139,4 +139,40 @@ export class MarketplaceControllers {
       await this.marketplaceService.getSpecifiedCatalog(catalogId, req);
     return getSpecifiedCatalog;
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('wishlists')
+  @HttpCode(201)
+  async addToWishlist(
+    @Body('catalogId') catalogId: number,
+    @Request() req: any,
+  ) {
+    const insertToWishlist = await this.marketplaceService.insertToWishlist(
+      req,
+      catalogId,
+    );
+    return insertToWishlist;
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('wishlists')
+  @HttpCode(200)
+  async getWishlists(@Request() req: any) {
+    const getWishlists = await this.marketplaceService.getWishlists(req);
+    return getWishlists;
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('wishlists/:wishlistId')
+  @HttpCode(202)
+  async removeFromWishlist(
+    @Param('wishlistId') wishlistId: string,
+    @Request() req: any,
+  ) {
+    const removeFromWishlist = await this.marketplaceService.removeFromWishlist(
+      wishlistId,
+      req,
+    );
+    return removeFromWishlist;
+  }
 }

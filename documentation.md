@@ -34,14 +34,20 @@ Base URL: Localhost (temporary)
   * [get project report](#get-specified-project-report)
 * Admin dashboard
   * [get all projects & users](#get-all-projects-and-users)
-* Marketplace  
-  * [create new product](#create-a-new-product)
-  * [create new service](#create-a-new-service)
+* Marketplace
   * [get all catalogs](#get-all-marketplace-catalogs)
   * [search catalogs (by title)](#search-marketplace-catalog)
   * [filter catalog (by category)](#filter-marketplace-catalog-category)
-  * [filter catalog (by range price)](#filter-marketplace-catalog-price)  
-  * [get specified catalog](#get-specified-catalog)  
+  * [filter catalog (by range price)](#filter-marketplace-catalog-price)
+* Marketplace wishlists
+  * [add to wishlist](#add-to-wishlist)
+  * [get wishlists](#get-all-wishlists)
+  * [delete from wishlist](#delete-from-wishlist)
+* Matketplace data management
+  * [create new product](#create-a-new-product)
+  * [create new service](#create-a-new-service)
+  * [get all catalogs](#get-all-marketplace-catalogs)
+  * [get specified catalog](#get-specified-catalog)
 ## Sign up
 * ### Endpoint   
   `/api/auth/signup`
@@ -1826,6 +1832,144 @@ Token is obtained from login response
   {
     "statusCode": 401,
     "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```
+## Add to wishlist  
+Add existing catalog to wishlist  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace/wishlists`
+* ### Method  
+  POST
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  Content-type: application/json
+  ```
+* ### Body
+  ```
+  {
+    "catalogId": Number
+  }
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Insert to wishlist successfully"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because catalog already exist in wishlists)
+  ```
+  {
+    "statusCode": 400,
+    "message": "Catalog already added",
+    "error": "Bad Request"
+  }
+  ```
+## Get all wishlists  
+Get all wishlist catalog's from logged user  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace/wishlists`
+* ### Method  
+  GET
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Get wishlists successfully",
+    "user": "john doe",
+    "data": [
+        {
+            "id": 6,
+            "catalog": {
+                "id": 16,
+                "title": "Desain rancangan jembatan Sumatra - Jawa",
+                "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/d4e93a5d-b379-463d-a822-92fa63cbe940.jpeg",
+                "cost": 5000000,
+                "category": "Modern"
+            }
+        },
+        {
+            "id": 9,
+            "catalog": {
+                "id": 2,
+                "title": "desain tugu sepeda",
+                "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/84dc9c5b-fe8b-491f-8070-c455ecfb0f63.jpeg",
+                "cost": 2000000,
+                "category": "Traditional"
+            }
+        },
+        {
+            "id": 10,
+            "catalog": {
+                "id": 11,
+                "title": "Rancangan kantor pos",
+                "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/b2727586-07c2-4842-b034-4618cc3ee828.png",
+                "cost": 2500000,
+                "category": "Minimalis"
+            }
+        },
+        {
+            "id": 12,
+            "catalog": {
+                "id": 14,
+                "title": "Rancangan Rumah tipe 36",
+                "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/db5ab1ce-142d-43db-9013-1ed3e8a92a40.jpeg",
+                "cost": 3000000,
+                "category": "Modern"
+            }
+        }
+    ]
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
+## Delete from wishlist  
+Delete existing wishlist catalog from logged user  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace/wishlists/:wishlistId`
+* ### Method  
+  DELETE
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Catalog removed from wishlists"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
   }
   ```
 * ### Response fail (because data not found)
