@@ -3,9 +3,12 @@ import {
   BadRequestException,
   Request,
   NotFoundException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
+import * as AWS from 'aws-sdk';
 
 import { Services } from '../entity/services.entity';
 import { ServiceInfos } from '../entity/services.info.entity';
@@ -19,6 +22,7 @@ export class MarketplaceService {
     private serviceInfoRepository: Repository<Services>,
     @InjectRepository(ServiceOwns)
     private serviceOwnRepository: Repository<ServiceOwns>,
+    private configService: ConfigService,
   ) {}
 
   async createProduct(
@@ -409,5 +413,92 @@ export class MarketplaceService {
     };
 
     return objResult;
+  }
+
+  async updateProduct(
+    productId: string,
+    @Request() req: any,
+    file: any,
+    title: string,
+    cost: number,
+    description: string,
+    category: string,
+    imageUrl: string,
+  ) {
+    if (!title || !description || !category || !cost) {
+      throw new BadRequestException('Please input all fields');
+    }
+
+    let product;
+    let image;
+
+    await this.serviceRepository
+      .query(
+        'SELECT id, title, description, cost, category, image, creator FROM services WHERE id = ?',
+        [parseInt(productId)],
+      )
+      .then((data) => {
+        product = data[0];
+        return product;
+      });
+
+    if (product === undefined) {
+      throw new NotFoundException('Data not found');
+    }
+
+    if (product.creator != req.user.userId) {
+      throw new ForbiddenException('Forbidden to access');
+    }
+
+    //* If client not upload image
+    if (!file) {
+      image = product.image;
+    }
+
+    if (file) {
+      //* Config s3 for remove existing object in s3 bucket
+      const s3 = new AWS.S3({
+        credentials: {
+          accessKeyId: this.configService.get<string>('AWS_S3_ACESS_KEY'),
+          secretAccessKey: this.configService.get<string>(
+            'AWS_S3_SECRET_ACCESS_KEY',
+          ),
+        },
+        region: this.configService.get<string>('AWS_S3_BUCKET_REGION'),
+      });
+
+      const oldimage = product.image;
+      const oldImageKey = new URL(oldimage).pathname.replace(/^\//g, '');
+
+      s3.deleteObject(
+        {
+          Bucket: this.configService.get<string>('AWS_S3_BUCKET_NAME'),
+          Key: oldImageKey,
+        },
+        (error, data) => {
+          if (error) {
+            return error;
+          }
+
+          return 'Deleted existing object in S3 successfully';
+        },
+      );
+
+      image = file.Location;
+    }
+
+    await this.serviceRepository.query(
+      'UPDATE services SET title = ?, cost = ?, description = ?, category = ?, image = ? WHERE id = ?',
+      [title, cost, description, category, image, parseInt(productId)],
+    );
+
+    return {
+      message: 'Success update product data',
+      data: {
+        title,
+        description,
+        image,
+      },
+    };
   }
 }
