@@ -1797,30 +1797,31 @@ Token is obtained from login response
     "message": "Get single catalog successfully",
     "data": {
         "result": {
-            "id": 11,
-            "title": "Rancangan kantor pos",
-            "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/b2727586-07c2-4842-b034-4618cc3ee828.png",
-            "cost": 2500000,
-            "category": "Minimalis",
-            "owner": "rocketmail"
+            "id": 16,
+            "title": "Desain rancangan jembatan Sumatra - Jawa",
+            "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/d4e93a5d-b379-463d-a822-92fa63cbe940.jpeg",
+            "description": "Jasa desain untuk rancangan konstruksi jembatan Sumatra - Jawa",
+            "cost": 5000000,
+            "category": "Modern",
+            "owner": "john doe"
         },
         "info": [
             {
-                "id": 7,
+                "id": 19,
                 "title": "standard",
                 "content": "desain dengan fitur seperti biasa",
                 "duration": 2,
                 "cost": 2000000
             },
             {
-                "id": 8,
+                "id": 20,
                 "title": "advanced",
                 "content": "Penambahan fitur revisi desain 1 x",
                 "duration": 4,
                 "cost": 3500000
             },
             {
-                "id": 9,
+                "id": 21,
                 "title": "professional",
                 "content": "Konsultrasi gratis, penyaluran dengan kontraktor professional",
                 "duration": 7,

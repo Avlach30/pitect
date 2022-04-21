@@ -388,7 +388,7 @@ export class MarketplaceService {
 
     const catalog = await this.serviceRepository
       .query(
-        'SELECT services.id, services.title, services.image, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE services.id = ?',
+        'SELECT services.id, services.title, services.image, services.description, services.cost, services.category, users.FULLNAME AS owner FROM services INNER JOIN users ON services.creator = users.USERID WHERE services.id = ?',
         [parseInt(catalogId)],
       )
       .then((data) => {
