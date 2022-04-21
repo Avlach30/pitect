@@ -51,6 +51,7 @@ Base URL: Localhost (temporary)
   * [filter catalog (by range price)](#filter-marketplace-catalog-price)  
   * [get specified catalog](#get-specified-catalog)
   * [update existing product](#update-existing-product)  
+  * [update existing service](#update-existing-service)
 ## Sign up
 * ### Endpoint   
   `/api/auth/signup`
@@ -1444,7 +1445,7 @@ Token is obtained from login response
   "infoTitle1": String,
   "infoContent1": String,
   "infoDuration1": Number,
-  "infoCost2": Number,
+  "infoCost1": Number,
   "infoTitle2": String,
   "infoContent2": String,
   "infoDuration2": Number,
@@ -2003,8 +2004,7 @@ Token is obtained from login response
 	"title": String,
 	"description": String,
 	"category": String,
-	"cost": Number,
-  "imageUrl": String
+	"cost": Number
   ```
 * ### Response success
   ```
@@ -2014,6 +2014,111 @@ Token is obtained from login response
         "title": "Rancangan stadion",
         "description": "Desain / rancangan bangunan stadion bernuansa modern dan futuristik",
         "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/6c4b01fb-6ccd-4581-8c52-a35240b582fb.jpeg"
+    }
+  }
+  ```
+* ### Response fail (because one of request body not filled (required))
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please input all fields",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because uploaded file not an image)
+  ```
+  {
+    "statusCode": 400,
+    "message": "Invalid Image File Type",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because not owned data)
+  ```
+  {
+      "statusCode": 403,
+      "message": "Forbidden to access",
+      "error": "Forbidden"
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```
+* ### Response fail (because uploaded image size is larger than limit)
+  ```
+  {
+    "statusCode": 413,
+    "message": "File too large",
+    "error": "Payload Too Large"
+  }
+  ```
+## Update existing service  
+Update existing service in marketplace  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace/service/:serviceId`
+* ### Method  
+  PUT
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  Content-type: multipart/form-data
+  ```
+* ### Body  
+  Because this endpoint contains file upload, make sure you added an attribute `enctype` with value `multipart/form-data` in your form. Then make sure you append each of body field in `formData()`.
+  ```
+  "image": File,
+  "title": String,
+  "description": String,
+  "category": String,
+  "cost": Number,
+  "infoTitle1": String,
+  "infoContent1": String,
+  "infoDuration1": Number,
+  "infoCost1": Number,
+  "infoTitle2": String,
+  "infoContent2": String,
+  "infoDuration2": Number,
+  "infoCost2": Number,
+  "infoTitle3": String,
+  "infoContent3": String,
+  "infoDuration3": Number,
+  "infoCost3": Number
+  ```
+* ### Response success
+  ```
+  {
+    "message": "Success update service data",
+    "data": {
+        "title": "Desain kantor pos",
+        "description": "Desain untuk rancangan kantor pos dengan gaya khas anak muda",
+        "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/b2727586-07c2-4842-b034-4618cc3ee828.png",
+        "info": [
+            {
+                "title": "standard",
+                "content": "desain dengan fitur seperti biasa"
+            },
+            {
+                "title": "advanced",
+                "content": "Penambahan fitur revisi desain 1 x"
+            },
+            {
+                "title": "professional",
+                "content": "Konsultrasi gratis, penyaluran dengan kontraktor professional"
+            }
+        ]
     }
   }
   ```

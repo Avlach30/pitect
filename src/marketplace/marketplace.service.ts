@@ -568,7 +568,7 @@ export class MarketplaceService {
       [title, cost, description, category, image, parseInt(productId)],
     );
 
-    return {
+    const objResult = {
       message: 'Success update product data',
       data: {
         title,
@@ -576,5 +576,159 @@ export class MarketplaceService {
         image,
       },
     };
+
+    return objResult;
+  }
+
+  async updateService(
+    serviceId: string,
+    @Request() req: any,
+    file: any,
+    imageUrl: string,
+    title: string,
+    cost: number,
+    description: string,
+    category: string,
+    infotitle1: string,
+    infoContent1: string,
+    infoDuration1: number,
+    infoCost1: number,
+    infotitle2: string,
+    infoContent2: string,
+    infoDuration2: number,
+    infoCost2: number,
+    infotitle3: string,
+    infoContent3: string,
+    infoDuration3: number,
+    infoCost3: number,
+  ) {
+    //* Main input not filled
+    if (
+      !title ||
+      !description ||
+      !category ||
+      !cost ||
+      !infotitle1 ||
+      !infoContent1 ||
+      !infoCost1 ||
+      !infoDuration1 ||
+      !infotitle2 ||
+      !infoContent2 ||
+      !infoCost2 ||
+      !infoDuration2 ||
+      !infotitle3 ||
+      !infoContent3 ||
+      !infoCost3 ||
+      !infoDuration3
+    ) {
+      throw new BadRequestException('Please input all fields');
+    }
+
+    let service;
+    let image;
+
+    await this.serviceRepository
+      .query(
+        'SELECT id, title, description, cost, category, image, creator FROM services WHERE id = ?',
+        [parseInt(serviceId)],
+      )
+      .then((data) => {
+        service = data[0];
+        return service;
+      });
+
+    if (service === undefined) {
+      throw new NotFoundException('Data not found');
+    }
+
+    if (service.creator != req.user.userId) {
+      throw new ForbiddenException('Forbidden to access');
+    }
+
+    //* If client not upload image when update
+    if (!file) {
+      image = service.image;
+    }
+
+    if (file) {
+      //* Config s3 for remove existing object in s3 bucket
+      const s3 = new AWS.S3({
+        credentials: {
+          accessKeyId: this.configService.get<string>('AWS_S3_ACESS_KEY'),
+          secretAccessKey: this.configService.get<string>(
+            'AWS_S3_SECRET_ACCESS_KEY',
+          ),
+        },
+        region: this.configService.get<string>('AWS_S3_BUCKET_REGION'),
+      });
+
+      const oldimage = service.image;
+      const oldImageKey = new URL(oldimage).pathname.replace(/^\//g, '');
+
+      s3.deleteObject(
+        {
+          Bucket: this.configService.get<string>('AWS_S3_BUCKET_NAME'),
+          Key: oldImageKey,
+        },
+        (error, data) => {
+          if (error) {
+            return error;
+          }
+
+          return 'Deleted existing object in S3 successfully';
+        },
+      );
+
+      image = file.Location;
+    }
+
+    await this.serviceRepository.query(
+      'UPDATE services SET title = ?, cost = ?, description = ?, category = ?, image = ? WHERE id = ?',
+      [title, cost, description, category, image, parseInt(serviceId)],
+    );
+
+    await this.serviceInfoRepository.query(
+      'UPDATE serviceinfos SET title = CASE WHEN title = "standard" THEN ? WHEN title = "advanced" THEN ? WHEN title = "professional" THEN ? END, content = CASE WHEN title = "standard" THEN ? WHEN title = "advanced" THEN ? WHEN title = "professional" THEN ? END, cost = CASE WHEN title = "standard" THEN ? WHEN title = "advanced" THEN ? WHEN title = "professional" THEN ? END, duration = CASE WHEN title = "standard" THEN ? WHEN title = "advanced" THEN ? WHEN title = "professional" THEN ? END WHERE title IN ("standard", "advanced", "professional") AND serviceId = ?',
+      [
+        infotitle1,
+        infotitle2,
+        infotitle3,
+        infoContent1,
+        infoContent2,
+        infoContent3,
+        infoCost1,
+        infoCost2,
+        infoCost3,
+        infoDuration1,
+        infoDuration2,
+        infoDuration3,
+        parseInt(serviceId),
+      ],
+    );
+
+    const objResult = {
+      message: 'Success update service data',
+      data: {
+        title,
+        description,
+        image,
+        info: [
+          {
+            title: infotitle1,
+            content: infoContent1,
+          },
+          {
+            title: infotitle2,
+            content: infoContent2,
+          },
+          {
+            title: infotitle3,
+            content: infoContent3,
+          },
+        ],
+      },
+    };
+
+    return objResult;
   }
 }
