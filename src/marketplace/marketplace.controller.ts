@@ -265,4 +265,18 @@ export class MarketplaceControllers {
     );
     return updateService;
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('catalogs/:catalogId')
+  @HttpCode(202)
+  async deleteCatalog(
+    @Param('catalogId') catalogId: string,
+    @Request() req: any,
+  ) {
+    const deleteCatalog = await this.marketplaceService.deleteCatalog(
+      catalogId,
+      req,
+    );
+    return deleteCatalog;
+  }
 }

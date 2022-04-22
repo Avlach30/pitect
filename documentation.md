@@ -52,6 +52,7 @@ Base URL: Localhost (temporary)
   * [get specified catalog](#get-specified-catalog)
   * [update existing product](#update-existing-product)  
   * [update existing service](#update-existing-service)
+  * [delete catalog](#delete-existing-catalog)
 ## Sign up
 * ### Endpoint   
   `/api/auth/signup`
@@ -2167,5 +2168,45 @@ Token is obtained from login response
     "statusCode": 413,
     "message": "File too large",
     "error": "Payload Too Large"
+  }
+  ```
+## Delete existing catalog  
+Delete existing catalog in marketplace  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace/catalogs/:catalogId`
+* ### Method  
+  DELETE
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response success
+  ```
+  {
+    "message": "Delete existing catalog successfully"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because not owned data)
+  ```
+  {
+      "statusCode": 403,
+      "message": "Forbidden to access",
+      "error": "Forbidden"
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
   }
   ```

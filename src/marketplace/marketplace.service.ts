@@ -731,4 +731,62 @@ export class MarketplaceService {
 
     return objResult;
   }
+
+  async deleteCatalog(catalogId: string, @Request() req: any) {
+    let catalog;
+
+    await this.serviceRepository
+      .query(
+        'SELECT id, title, description, cost, category, image, creator FROM services WHERE id = ?',
+        [parseInt(catalogId)],
+      )
+      .then((data) => {
+        catalog = data[0];
+        return catalog;
+      });
+
+    if (catalog === undefined) {
+      throw new NotFoundException('Data not found');
+    }
+
+    if (catalog.creator != req.user.userId) {
+      throw new ForbiddenException('Forbidden to access');
+    }
+
+    //* Config aws s3 for delete object from bucket
+    const s3 = new AWS.S3({
+      credentials: {
+        accessKeyId: this.configService.get<string>('AWS_S3_ACESS_KEY'),
+        secretAccessKey: this.configService.get<string>(
+          'AWS_S3_SECRET_ACCESS_KEY',
+        ),
+      },
+      region: this.configService.get<string>('AWS_S3_BUCKET_REGION'),
+    });
+
+    const image = catalog.image;
+    const imageKey = new URL(image).pathname.replace(/^\//g, '');
+
+    s3.deleteObject(
+      {
+        Bucket: this.configService.get<string>('AWS_S3_BUCKET_NAME'),
+        Key: imageKey,
+      },
+      (error, data) => {
+        if (error) {
+          return error;
+        }
+
+        return 'Deleted existing object in S3 successfully';
+      },
+    );
+
+    await this.serviceRepository.query('DELETE FROM services WHERE id = ?', [
+      parseInt(catalogId),
+    ]);
+
+    const objResult = { message: 'Delete existing catalog successfully' };
+
+    return objResult;
+  }
 }
