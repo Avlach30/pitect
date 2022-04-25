@@ -7,8 +7,8 @@ import { CartItems } from '../../entity/cart-item.entity';
 import { Services } from '../../entity/services.entity';
 import { ServiceInfos } from '../../entity/services.info.entity';
 import { isAuth } from '../../middleware/is-auth';
-// import {  } from './cart.controller';
-// import {  } from './cart.service';
+import { CartController } from './cart.controller';
+import { CartService } from './cart.service';
 
 @Module({
   imports: [
@@ -18,7 +18,7 @@ import { isAuth } from '../../middleware/is-auth';
     TypeOrmModule.forFeature([Carts]),
     TypeOrmModule.forFeature([CartItems]),
   ],
-  controllers: [],
-  providers: [isAuth],
+  controllers: [CartController],
+  providers: [isAuth, CartService],
 })
 export class CartModule {}

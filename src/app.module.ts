@@ -11,7 +11,7 @@ import { ProjectTaskModule } from './project/tasks/project-task.module';
 import { ProjectMemberModule } from './project/members/project-member.module';
 import { AdminModule } from './admin/admin.module';
 import { MarketplaceModule } from './marketplace/marketplace.module';
-import { MulterExtendedModule } from 'nestjs-multer-extended';
+import { CartModule } from './marketplace/cart/cart.module';
 
 @Module({
   imports: [
@@ -42,6 +42,7 @@ import { MulterExtendedModule } from 'nestjs-multer-extended';
     ProjectTaskModule,
     AdminModule,
     MarketplaceModule,
+    CartModule,
   ],
   controllers: [],
   providers: [],
