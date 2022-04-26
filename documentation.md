@@ -53,6 +53,10 @@ Base URL: Localhost (temporary)
   * [update existing product](#update-existing-product)  
   * [update existing service](#update-existing-service)
   * [delete catalog](#delete-existing-catalog)
+* Marketplace cart management  
+  * [add to cart](#add-item-to-cart)
+  * [get carts](#get-carts)
+  * [delete from cart](#delete-from-cart)
 ## Sign up
 * ### Endpoint   
   `/api/auth/signup`
@@ -2200,6 +2204,133 @@ Token is obtained from login response
       "statusCode": 403,
       "message": "Forbidden to access",
       "error": "Forbidden"
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```
+## Add item to cart  
+Add marketplace item/catalog to cart, before order  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace/catalogs/:catalogId/cart`
+* ### Method  
+  POST
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  Content-type: application/json
+  ```
+* ### Body  
+  ```
+  {
+    "catalogItemId": Number
+  }
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Insert to cart successfully",
+    "data": {
+      "catalog": "Rancangan stadion",
+    }
+  }
+  ```
+* ### Response fail (because request body not filled (required))
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please, choose a variation firstly",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```
+## Get carts  
+Get all item in carts  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace/carts`
+* ### Method  
+  GET
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Fetch carts successfully",
+    "data": [
+        {
+            "cartItemId": 1,
+            "catalog": "Desain rancangan jembatan Sumatra - Jawa",
+            "catalogInfo": {
+                "title": "advanced",
+                "content": "Penambahan fitur revisi desain 1 x",
+                "duration": 4,
+                "cost": 3500000
+            },
+            "date": {
+                "current": "2022-04-26T02:02:10.808Z",
+                "finishDate": "2022-04-30T02:02:10.808Z",
+                "status": "On Going"
+            }
+        },
+        {
+            "cartItemId": 2,
+            "catalog": "Desain kantor pos",
+            "catalogInfo": {
+                "title": "standard",
+                "content": "desain dengan fitur seperti biasa",
+                "duration": 2,
+                "cost": 2000000
+            },
+            "date": {
+                "current": "2022-04-26T02:02:10.809Z",
+                "finishDate": "2022-04-28T02:02:10.809Z",
+                "status": "On Going"
+            }
+        }
+    ],
+    "totalCost": 5500000
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```
+## Delete from cart  
+Delete existing item in cart  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace/carts/:cartItemId`
+* ### Method  
+  DELETE
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Delete item from cart successfully",
+    "status": "Successful"
   }
   ```
 * ### Response fail (because data not found)
