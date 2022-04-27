@@ -32,7 +32,7 @@ export class MarketplaceService {
     @Request() req: any,
     file: any,
     title: string,
-    cost: number,
+    cost: string,
     description: string,
     category: string,
   ) {
@@ -78,21 +78,21 @@ export class MarketplaceService {
     @Request() req: any,
     file: any,
     title: string,
-    cost: number,
+    cost: string,
     description: string,
     category: string,
     infotitle1: string,
     infoContent1: string,
-    infoDuration1: number,
-    infoCost1: number,
+    infoDuration1: string,
+    infoCost1: string,
     infotitle2: string,
     infoContent2: string,
-    infoDuration2: number,
-    infoCost2: number,
+    infoDuration2: string,
+    infoCost2: string,
     infotitle3: string,
     infoContent3: string,
-    infoDuration3: number,
-    infoCost3: number,
+    infoDuration3: string,
+    infoCost3: string,
   ) {
     if (!file) {
       throw new BadRequestException('Please, upload an image');
@@ -124,7 +124,14 @@ export class MarketplaceService {
 
     const insertMainData = await this.serviceRepository.query(
       'INSERT INTO services (title, description, cost, category, image, creator) VALUES (?, ?, ?, ?, ?, ?)',
-      [title, description, cost, category, imageUrl, parseInt(req.user.userId)],
+      [
+        title,
+        description,
+        parseInt(cost),
+        category,
+        imageUrl,
+        parseInt(req.user.userId),
+      ],
     );
 
     await this.serviceOwnRepository.query(
@@ -137,18 +144,18 @@ export class MarketplaceService {
       [
         infotitle1,
         infoContent1,
-        infoDuration1,
-        infoCost1,
+        parseInt(infoDuration1),
+        parseInt(infoCost1),
         insertMainData.insertId,
         infotitle2,
         infoContent2,
-        infoDuration2,
-        infoCost2,
+        parseInt(infoDuration2),
+        parseInt(infoCost2),
         insertMainData.insertId,
         infotitle3,
         infoContent3,
-        infoDuration3,
-        infoCost3,
+        parseInt(infoDuration3),
+        parseInt(infoCost3),
         insertMainData.insertId,
       ],
     );
@@ -496,10 +503,9 @@ export class MarketplaceService {
     @Request() req: any,
     file: any,
     title: string,
-    cost: number,
+    cost: string,
     description: string,
     category: string,
-    imageUrl: string,
   ) {
     if (!title || !description || !category || !cost) {
       throw new BadRequestException('Please input all fields');
@@ -565,7 +571,14 @@ export class MarketplaceService {
 
     await this.serviceRepository.query(
       'UPDATE services SET title = ?, cost = ?, description = ?, category = ?, image = ? WHERE id = ?',
-      [title, cost, description, category, image, parseInt(productId)],
+      [
+        title,
+        parseInt(cost),
+        description,
+        category,
+        image,
+        parseInt(productId),
+      ],
     );
 
     const objResult = {
@@ -586,21 +599,21 @@ export class MarketplaceService {
     file: any,
     imageUrl: string,
     title: string,
-    cost: number,
+    cost: string,
     description: string,
     category: string,
     infotitle1: string,
     infoContent1: string,
-    infoDuration1: number,
-    infoCost1: number,
+    infoDuration1: string,
+    infoCost1: string,
     infotitle2: string,
     infoContent2: string,
-    infoDuration2: number,
-    infoCost2: number,
+    infoDuration2: string,
+    infoCost2: string,
     infotitle3: string,
     infoContent3: string,
-    infoDuration3: number,
-    infoCost3: number,
+    infoDuration3: string,
+    infoCost3: string,
   ) {
     //* Main input not filled
     if (
@@ -684,7 +697,14 @@ export class MarketplaceService {
 
     await this.serviceRepository.query(
       'UPDATE services SET title = ?, cost = ?, description = ?, category = ?, image = ? WHERE id = ?',
-      [title, cost, description, category, image, parseInt(serviceId)],
+      [
+        title,
+        parseInt(cost),
+        description,
+        category,
+        image,
+        parseInt(serviceId),
+      ],
     );
 
     await this.serviceInfoRepository.query(
@@ -696,12 +716,12 @@ export class MarketplaceService {
         infoContent1,
         infoContent2,
         infoContent3,
-        infoCost1,
-        infoCost2,
-        infoCost3,
-        infoDuration1,
-        infoDuration2,
-        infoDuration3,
+        parseInt(infoCost1),
+        parseInt(infoCost2),
+        parseInt(infoCost3),
+        parseInt(infoDuration1),
+        parseInt(infoDuration2),
+        parseInt(infoDuration3),
         parseInt(serviceId),
       ],
     );
