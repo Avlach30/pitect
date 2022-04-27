@@ -1379,7 +1379,7 @@ Token is obtained from login response
 	"title": String,
 	"description": String,
 	"category": String,
-	"cost": Number
+	"cost": String
   ```
 * ### Response Success
   ```
@@ -1451,19 +1451,19 @@ Token is obtained from login response
   "title": String,
   "description": String,
   "category": String,
-  "cost": Number,
+  "cost": String,
   "infoTitle1": String,
   "infoContent1": String,
-  "infoDuration1": Number,
-  "infoCost1": Number,
+  "infoDuration1": String,
+  "infoCost1": String,
   "infoTitle2": String,
   "infoContent2": String,
-  "infoDuration2": Number,
-  "infoCost2": Number,
+  "infoDuration2": String,
+  "infoCost2": String,
   "infoTitle3": String,
   "infoContent3": String,
-  "infoDuration3": Number,
-  "infoCost3": Number
+  "infoDuration3": String,
+  "infoCost3": String
   ```
 * ### Response Success
   ```
@@ -2014,7 +2014,7 @@ Token is obtained from login response
 	"title": String,
 	"description": String,
 	"category": String,
-	"cost": Number
+	"cost": String
   ```
 * ### Response success
   ```
@@ -2093,19 +2093,19 @@ Token is obtained from login response
   "title": String,
   "description": String,
   "category": String,
-  "cost": Number,
+  "cost": String,
   "infoTitle1": String,
   "infoContent1": String,
-  "infoDuration1": Number,
-  "infoCost1": Number,
+  "infoDuration1": String,
+  "infoCost1": String,
   "infoTitle2": String,
   "infoContent2": String,
-  "infoDuration2": Number,
-  "infoCost2": Number,
+  "infoDuration2": String,
+  "infoCost2": String,
   "infoTitle3": String,
   "infoContent3": String,
-  "infoDuration3": Number,
-  "infoCost3": Number
+  "infoDuration3": String,
+  "infoCost3": String
   ```
 * ### Response success
   ```
