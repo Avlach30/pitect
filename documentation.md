@@ -57,8 +57,11 @@ Base URL: Localhost (temporary)
   * [add to cart](#add-item-to-cart)
   * [get carts](#get-carts)
   * [delete from cart](#delete-from-cart)
-* Marketplace order management
-  * [create order]()
+* Marketplace order management  
+  * [create order](#create-order)  
+  * [get orders](#get-orders)  
+  * [get specified order](#get-specified-order)  
+  * [upload slip](#upload-slip-transfer)  
 ## Sign up
 * ### Endpoint   
   `/api/auth/signup`
@@ -2362,5 +2365,216 @@ Token is obtained from login response
       "statusCode": 404,
       "message": "Data not found",
       "error": "Not Found"
+  }
+  ```
+## Create order  
+Create new order, after adding item to cart  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace/orders`
+* ### Method  
+  POST
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Create new order successfully",
+    "cost": 5500000
+  }
+  ```
+* ### Response failed (because cart item is empty)  
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please, add catalog to cart firstly",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```
+## Get orders  
+Get list of orders from logged user  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace/orders`
+* ### Method  
+  GET
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Get orders successfully",
+    "data": [
+        {
+            "id": 2,
+            "data": {
+                "date": "2022-04-25T21:26:03.000Z",
+                "cost": 5500000,
+                "status": "Belum bayar",
+                "slipPayment": "Some image"
+            }
+        }
+    ]
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
+## Get specified order  
+Get single data of order from logged user, data more specified include order item  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace/orders/:orderId`
+* ### Method  
+  GET
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Fetch single order successfully",
+    "data": {
+        "id": 2,
+        "date": "2022-04-25T21:26:03.000Z",
+        "cost": 5500000,
+        "status": "Belum bayar",
+        "slipPayment": "Some image",
+        "item": [
+            {
+                "id": 1,
+                "title": "advanced",
+                "description": "Jasa desain untuk rancangan konstruksi jembatan Sumatra - Jawa",
+                "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/d4e93a5d-b379-463d-a822-92fa63cbe940.jpeg",
+                "info": {
+                    "title": "advanced",
+                    "content": "Penambahan fitur revisi desain 1 x",
+                    "duration": 4,
+                    "cost": 3500000
+                }
+            },
+            {
+                "id": 2,
+                "title": "standard",
+                "description": "Jasa desain kantor pos dengan gaya modern",
+                "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/23a17ffc-cb2b-427e-9470-7f5201e331c8.jpeg",
+                "info": {
+                    "title": "standard",
+                    "content": "desain dengan fitur seperti biasa",
+                    "duration": 2,
+                    "cost": 2000000
+                }
+            }
+        ]
+    }
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```
+## Upload slip transfer  
+Upload slip transfer for order confirmation  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace/orders/:orderId/upload-slip`
+* ### Method  
+  POST
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Body  
+  Because this endpoint contains file upload, make sure you added an attribute `enctype` with value `multipart/form-data` in your form. Then make sure you append each of body field in `formData()`.
+  ```
+  "image": File
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Upload slip transfer successfully",
+    "slip": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/slip-transfers/ed7e4379-06a6-4d93-8b54-b4ab1e4d6c9e.jpeg"
+  }
+  ```
+* ### Response fail (because image not uploaded (required))
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please, upload a slip transfer",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because uploaded file not an image)
+  ```
+  {
+    "statusCode": 400,
+    "message": "Invalid Image File Type",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because not owned data)
+  ```
+  {
+      "statusCode": 403,
+      "message": "Forbidden to access",
+      "error": "Forbidden"
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```
+* ### Response fail (because uploaded image size is larger than limit)
+  ```
+  {
+    "statusCode": 413,
+    "message": "File too large",
+    "error": "Payload Too Large"
   }
   ```
