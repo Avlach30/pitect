@@ -57,6 +57,8 @@ Base URL: Localhost (temporary)
   * [add to cart](#add-item-to-cart)
   * [get carts](#get-carts)
   * [delete from cart](#delete-from-cart)
+* Marketplace order management
+  * [create order]()
 ## Sign up
 * ### Endpoint   
   `/api/auth/signup`
@@ -2249,6 +2251,13 @@ Token is obtained from login response
     "error": "Bad Request"
   }
   ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
 * ### Response fail (because data not found)
   ```
   {
@@ -2307,6 +2316,13 @@ Token is obtained from login response
     "totalCost": 5500000
   }
   ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
 * ### Response fail (because data not found)
   ```
   {
@@ -2331,6 +2347,13 @@ Token is obtained from login response
   {
     "message": "Delete item from cart successfully",
     "status": "Successful"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
   }
   ```
 * ### Response fail (because data not found)
