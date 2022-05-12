@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 12, 2022 at 08:54 AM
+-- Generation Time: May 12, 2022 at 02:11 AM
 -- Server version: 8.0.21
 -- PHP Version: 7.3.21
 
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `cartitems` (
   KEY `serviceId` (`serviceId`,`serviceInfoId`,`cartId`),
   KEY `cartId` (`cartId`),
   KEY `serviceInfoId` (`serviceInfoId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -55,6 +55,33 @@ CREATE TABLE IF NOT EXISTS `carts` (
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `carts`
+--
+
+INSERT INTO `carts` (`id`, `userId`, `created_at`) VALUES
+(1, 27, '2022-04-25 03:08:56'),
+(2, 24, '2022-04-25 03:15:06');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `inspirations`
+--
+
+DROP TABLE IF EXISTS `inspirations`;
+CREATE TABLE IF NOT EXISTS `inspirations` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) DEFAULT NULL,
+  `creator` int DEFAULT NULL,
+  `description` varchar(256) DEFAULT NULL,
+  `instagramUserId` varchar(256) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `creator` (`creator`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -75,7 +102,17 @@ CREATE TABLE IF NOT EXISTS `orderitems` (
   KEY `orderId` (`orderId`,`serviceId`,`serviceInfoId`),
   KEY `serviceId` (`serviceId`),
   KEY `serviceInfoId` (`serviceInfoId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `orderitems`
+--
+
+INSERT INTO `orderitems` (`id`, `orderId`, `serviceId`, `serviceInfoId`, `created_at`) VALUES
+(1, 2, 16, 20, '2022-04-26 04:26:03'),
+(2, 2, 17, 22, '2022-04-26 04:26:03'),
+(3, 3, 16, 21, '2022-04-26 08:19:26'),
+(4, 3, 17, 24, '2022-04-26 08:19:26');
 
 -- --------------------------------------------------------
 
@@ -107,13 +144,25 @@ DROP TABLE IF EXISTS `orders`;
 CREATE TABLE IF NOT EXISTS `orders` (
   `id` int NOT NULL AUTO_INCREMENT,
   `date` datetime DEFAULT NULL,
-  `isSuccess` tinyint(1) DEFAULT '0',
+  `cost` int DEFAULT NULL,
+  `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'Belum bayar',
+  `cancelDate` date DEFAULT NULL,
+  `slipPayment` varchar(512) NOT NULL DEFAULT 'Some image',
+  `isApprove` tinyint NOT NULL DEFAULT '1',
   `userId` int DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `date`, `cost`, `status`, `cancelDate`, `slipPayment`, `isApprove`, `userId`, `created_at`) VALUES
+(2, '2022-04-26 04:26:03', 5500000, 'Perlu konfirmasi', NULL, 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/slip-transfers/4c7906fa-6b91-4d32-a252-255a98105e06.jpeg', 1, 27, '2022-04-26 04:26:03'),
+(3, '2022-04-26 08:19:27', 10000000, 'Perlu konfirmasi', NULL, 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/slip-transfers/70fcbb01-b11e-41f5-a64c-021e2fa3da54.jpeg', 1, 27, '2022-04-26 08:19:26');
 
 -- --------------------------------------------------------
 
@@ -241,19 +290,22 @@ CREATE TABLE IF NOT EXISTS `serviceinfos` (
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `serviceId` (`serviceId`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `serviceinfos`
 --
 
 INSERT INTO `serviceinfos` (`id`, `title`, `content`, `duration`, `cost`, `serviceId`, `created_at`) VALUES
-(7, 'standard', 'desain dengan fitur seperti biasa', 2, 2000000, 11, '2022-04-12 04:16:18'),
-(8, 'advanced', 'Penambahan fitur revisi desain 1 x', 4, 3500000, 11, '2022-04-12 04:16:18'),
-(9, 'professional', 'Konsultrasi gratis, penyaluran dengan kontraktor professional', 7, 5000000, 11, '2022-04-12 04:16:18'),
-(16, 'standard', 'desain dengan fitur seperti biasa', 2, 2000000, 14, '2022-04-12 04:57:25'),
-(17, 'advanced', 'Penambahan fitur revisi desain 1 x', 4, 3500000, 14, '2022-04-12 04:57:25'),
-(18, 'professional', 'Konsultrasi gratis, penyaluran dengan kontraktor professional', 7, 5000000, 14, '2022-04-12 04:57:25');
+(19, 'standard', 'desain dengan fitur seperti biasa', 2, 2000000, 16, '2022-04-14 03:23:32'),
+(20, 'advanced', 'Penambahan fitur revisi desain 1 x', 4, 3500000, 16, '2022-04-14 03:23:32'),
+(21, 'professional', 'Konsultrasi gratis, penyaluran dengan kontraktor professional', 7, 5000000, 16, '2022-04-14 03:23:32'),
+(22, 'standard', 'desain dengan fitur seperti biasa', 2, 2000000, 17, '2022-04-22 02:28:01'),
+(23, 'advanced', 'Penambahan fitur revisi desain 1 x', 4, 3500000, 17, '2022-04-22 02:28:01'),
+(24, 'professional', 'Konsultrasi gratis, penyaluran dengan kontraktor professional', 7, 5000000, 17, '2022-04-22 02:28:01'),
+(25, 'standard', 'Tanpa revisi dan tanpa konsultasi', 3, 45000000, 18, '2022-04-27 07:18:04'),
+(26, 'advanced', 'Penambahan fitur desain dengan revisi maksimal 2 kali', 6, 75000000, 18, '2022-04-27 07:18:04'),
+(27, 'professional', 'Revisi maksimal 1 kali per hari, disertai dengan konsultasi dan penyaluran dengan kontraktor', 9, 150000000, 18, '2022-04-27 07:18:04');
 
 -- --------------------------------------------------------
 
@@ -272,7 +324,7 @@ CREATE TABLE IF NOT EXISTS `serviceowns` (
   PRIMARY KEY (`id`),
   KEY `serviceId` (`serviceId`,`userId`),
   KEY `userId` (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `serviceowns`
@@ -280,9 +332,10 @@ CREATE TABLE IF NOT EXISTS `serviceowns` (
 
 INSERT INTO `serviceowns` (`id`, `serviceId`, `userId`, `ownStatus`, `created_at`) VALUES
 (2, 2, 27, 'Creator', '2022-04-12 03:39:44'),
-(4, 11, 27, 'Creator', '2022-04-12 04:16:18'),
-(7, 14, 27, 'Creator', '2022-04-12 04:57:25'),
-(8, 15, 24, 'Creator', '2022-04-12 05:00:50');
+(8, 15, 24, 'Creator', '2022-04-12 05:00:50'),
+(9, 16, 24, 'Creator', '2022-04-14 03:23:32'),
+(10, 17, 27, 'Creator', '2022-04-22 02:28:01'),
+(11, 18, 27, 'Creator', '2022-04-27 07:18:04');
 
 -- --------------------------------------------------------
 
@@ -304,17 +357,18 @@ CREATE TABLE IF NOT EXISTS `services` (
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `creator` (`creator`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `services`
 --
 
 INSERT INTO `services` (`id`, `title`, `description`, `isService`, `cost`, `category`, `image`, `creator`, `created_at`) VALUES
-(2, 'desain tugu sepeda', 'Perancangan tugu sepeda untuk provinsi DKI Jakarta', 0, 5000000, 'statue', 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/84dc9c5b-fe8b-491f-8070-c455ecfb0f63.jpeg', 27, '2022-04-12 03:39:44'),
-(11, 'Rancangan kantor pos', 'Jasa perancangan kantor pos di daerah manado', 1, 5000000, 'Services', 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/b2727586-07c2-4842-b034-4618cc3ee828.png', 27, '2022-04-12 04:16:18'),
-(14, 'Rancangan Rumah tipe 36', 'Jasa perancangan denah rumah dengan tipe 36', 1, 5000000, 'Services', 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/db5ab1ce-142d-43db-9013-1ed3e8a92a40.jpeg', 27, '2022-04-12 04:57:25'),
-(15, 'desain stadion', 'desain untuk perancangan stadion JIS', 0, 5000000, 'design', 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/591e035b-a4f9-4538-af69-a9fd212b11b0.jpeg', 24, '2022-04-12 05:00:50');
+(2, 'desain tugu sepeda', 'Perancangan tugu sepeda untuk provinsi DKI Jakarta', 0, 2000000, 'Traditional', 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/84dc9c5b-fe8b-491f-8070-c455ecfb0f63.jpeg', 27, '2022-04-12 03:39:44'),
+(15, 'Rancangan stadion', 'Desain / rancangan bangunan stadion bernuansa modern dan futuristik', 0, 5000000, 'Modern', 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/6c4b01fb-6ccd-4581-8c52-a35240b582fb.jpeg', 24, '2022-04-12 05:00:50'),
+(16, 'Desain rancangan jembatan Sumatra - Jawa', 'Jasa desain untuk rancangan konstruksi jembatan Sumatra - Jawa', 1, 5000000, 'Modern', 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/d4e93a5d-b379-463d-a822-92fa63cbe940.jpeg', 24, '2022-04-14 03:23:32'),
+(17, 'Desain kantor pos', 'Jasa desain kantor pos dengan gaya modern', 1, 5000000, 'modern', 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/23a17ffc-cb2b-427e-9470-7f5201e331c8.jpeg', 27, '2022-04-22 02:28:01'),
+(18, 'Desain GWK full', 'Jasa desain GWK secara keseluruhan', 1, 150000000, 'Modern', 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg', 27, '2022-04-27 07:18:04');
 
 -- --------------------------------------------------------
 
@@ -362,6 +416,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `USERID` int NOT NULL AUTO_INCREMENT,
   `FULLNAME` varchar(24) NOT NULL,
   `TYPE` varchar(18) DEFAULT NULL,
+  `Avatar` varchar(512) NOT NULL DEFAULT 'Some Avatar',
   `isVerified` tinyint NOT NULL DEFAULT '0',
   `numPhone` varchar(15) NOT NULL,
   `EMAIL` varchar(48) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
@@ -375,11 +430,11 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`USERID`, `FULLNAME`, `TYPE`, `isVerified`, `numPhone`, `EMAIL`, `PASSWORD`, `created_at`) VALUES
-(24, 'john doe', 'personal', 0, '089123456789', 'johndoe@gmail.com', '$2b$12$WE4aqiUH.xnnF32tJwkrpeaJswHjO5wPBGZ0.Dx7/EX151XbXrjkO', '2022-04-11 02:30:26'),
-(25, 'jane doe', 'organization', 0, '089123456789', 'janedoe@gmail.com', '$2b$12$DIm3lsm26uhDU8k43uk9RuANaR0lS7LqqODvpwfAVIyTzrycCWJvi', '2022-04-11 02:30:26'),
-(27, 'rocketmail', 'company', 0, '089123456789', 'rocketmail@gmail.com', '$2b$12$kr2GTTc03U.dpN7dgBsWZuntHTj3ObJBk62zfOsFLg17LnThPGcx2', '2022-04-11 02:30:26'),
-(28, 'john morisson', 'company', 0, '088987654321', 'morisson@gmail.com', '$2b$12$O5E3Ft/NVG2dlfdAh/GoB.jMxrxljac3W9qlwDIYuZUkhh.mzuUea', '2022-04-11 02:30:26');
+INSERT INTO `users` (`USERID`, `FULLNAME`, `TYPE`, `Avatar`, `isVerified`, `numPhone`, `EMAIL`, `PASSWORD`, `created_at`) VALUES
+(24, 'john doe', 'personal', 'Some Avatar', 0, '089123456789', 'johndoe@gmail.com', '$2b$12$WE4aqiUH.xnnF32tJwkrpeaJswHjO5wPBGZ0.Dx7/EX151XbXrjkO', '2022-04-11 02:30:26'),
+(25, 'jane doe', 'organization', 'Some Avatar', 0, '089123456789', 'janedoe@gmail.com', '$2b$12$DIm3lsm26uhDU8k43uk9RuANaR0lS7LqqODvpwfAVIyTzrycCWJvi', '2022-04-11 02:30:26'),
+(27, 'rocketmail', 'company', 'Some Avatar', 0, '089123456789', 'rocketmail@gmail.com', '$2b$12$kr2GTTc03U.dpN7dgBsWZuntHTj3ObJBk62zfOsFLg17LnThPGcx2', '2022-04-11 02:30:26'),
+(28, 'john morisson', 'company', 'Some Avatar', 0, '088987654321', 'morisson@gmail.com', '$2b$12$O5E3Ft/NVG2dlfdAh/GoB.jMxrxljac3W9qlwDIYuZUkhh.mzuUea', '2022-04-11 02:30:26');
 
 -- --------------------------------------------------------
 
@@ -395,9 +450,18 @@ CREATE TABLE IF NOT EXISTS `wishlists` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `serviceId` (`serviceId`,`userId`),
+  KEY `serviceId` (`serviceId`),
   KEY `userId` (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `wishlists`
+--
+
+INSERT INTO `wishlists` (`id`, `serviceId`, `userId`, `created_at`) VALUES
+(6, 16, 24, '2022-04-19 07:07:50'),
+(9, 2, 24, '2022-04-19 07:12:28'),
+(13, 2, 27, '2022-04-20 08:15:53');
 
 --
 -- Constraints for dumped tables
@@ -416,6 +480,12 @@ ALTER TABLE `cartitems`
 --
 ALTER TABLE `carts`
   ADD CONSTRAINT `carts_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`USERID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `inspirations`
+--
+ALTER TABLE `inspirations`
+  ADD CONSTRAINT `inspirations_ibfk_1` FOREIGN KEY (`creator`) REFERENCES `users` (`USERID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `orderitems`
@@ -486,8 +556,8 @@ ALTER TABLE `tasks`
 -- Constraints for table `wishlists`
 --
 ALTER TABLE `wishlists`
-  ADD CONSTRAINT `wishlists_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`USERID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `wishlists_ibfk_2` FOREIGN KEY (`serviceId`) REFERENCES `services` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `wishlists_ibfk_1` FOREIGN KEY (`serviceId`) REFERENCES `services` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `wishlists_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`USERID`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
