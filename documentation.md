@@ -62,6 +62,7 @@ Base URL: Localhost (temporary)
 * Marketplace order management  
   * [create order](#create-order)  
   * [get orders](#get-orders)  
+  * [get orders (seller)](#get-orders-data-for-seller)
   * [get specified order](#get-specified-order)  
   * [upload slip](#upload-slip-transfer)  
 ## Sign up
@@ -2676,5 +2677,52 @@ Token is obtained from login response
       "statusCode": 404,
       "message": "Data not found",
       "error": "Not Found"
+  }
+  ```
+## Get orders data (for seller)  
+Get all orders data to seller with logged user type seller  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace/seller/orders`
+* ### Method  
+  GET
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Get order for seller successfully",
+    "data": [
+        {
+            "id": 2,
+            "date": "2022-04-25T20:26:03.000Z",
+            "cost": 5500000,
+            "status": "Perlu konfirmasi",
+            "cancelDate": null,
+            "slipPayment": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/slip-transfers/4c7906fa-6b91-4d32-a252-255a98105e06.jpeg",
+            "isApprove": 1,
+            "buyer": "rocketmail"
+        },
+        {
+            "id": 3,
+            "date": "2022-04-26T00:19:27.000Z",
+            "cost": 10000000,
+            "status": "Perlu konfirmasi",
+            "cancelDate": null,
+            "slipPayment": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/slip-transfers/70fcbb01-b11e-41f5-a64c-021e2fa3da54.jpeg",
+            "isApprove": 1,
+            "buyer": "rocketmail"
+        }
+    ],
+    "total": 2
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
   }
   ```
