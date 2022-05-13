@@ -35,6 +35,7 @@ Base URL: Localhost (temporary)
 * Admin dashboard
   * [get all projects & users](#get-all-projects-and-users)
   * [get all orders](#get-order-dashboards)
+  * [confirm order](#verification-order-by-admin)
 * Marketplace
   * [get all catalogs](#get-all-marketplace-catalogs)
   * [search catalogs (by title)](#search-marketplace-catalog)
@@ -2623,5 +2624,57 @@ Token is obtained from login response
   {
     "statusCode": 401,
     "message": "Unauthorized"
+  }
+  ```
+## Verification order by admin  
+Verification order by admin dashboard  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/admin/dashboard/orders/:orderId/verification`
+* ### Method  
+  POST
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Admin verification for order successfully",
+    "order": {
+        "id": 2,
+        "status": "Pesanan aktif"
+    }
+  }
+  ```
+* ### Response fail (because order already confirmed)  
+  ```
+  {
+    "statusCode": 400,
+    "message": "Order already confirmed",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because confirm an order not uploaded a slip transfer)  
+  ``` 
+  {
+    "statusCode": 400,
+    "message": "Please, confirm an order which is already uploaded a slip transfer",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
   }
   ```
