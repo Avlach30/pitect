@@ -14,4 +14,12 @@ export class DashboardController {
     const getDashboards = await this.dashboardService.getDashboards();
     return getDashboards;
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('orders')
+  @HttpCode(200)
+  async getOrderDashboards() {
+    const getOrderDashboards = await this.dashboardService.getOrderDashboards();
+    return getOrderDashboards;
+  }
 }
