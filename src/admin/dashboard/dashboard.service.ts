@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -62,6 +66,48 @@ export class DashboardService {
     const objResult = {
       message: 'Get all orders successfully',
       data: getOrders,
+    };
+
+    return objResult;
+  }
+
+  async confirmOrder(id: string) {
+    let order;
+    await this.orderRepository
+      .query('SELECT id, cost, slipPayment FROM orders WHERE id = ?', [
+        parseInt(id),
+      ])
+      .then((data) => {
+        return (order = data[0]);
+      });
+
+    // console.log(order);
+
+    if (order == undefined) {
+      throw new NotFoundException('Data not found');
+    }
+
+    if (order.status == 'Pesanan aktif') {
+      throw new BadRequestException('Order already confirmed');
+    }
+
+    if (order.slipPayment == 'Some image') {
+      throw new BadRequestException(
+        'Please, confirm an order which is already uploaded a slip transfer',
+      );
+    }
+
+    await this.orderRepository.query(
+      'UPDATE orders SET status = "Pesanan aktif" WHERE id = ?',
+      [parseInt(id)],
+    );
+
+    const objResult = {
+      message: 'Admin verification for order successfully',
+      order: {
+        id: parseInt(id),
+        status: 'Pesanan aktif',
+      },
     };
 
     return objResult;

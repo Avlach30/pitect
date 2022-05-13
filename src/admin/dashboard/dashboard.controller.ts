@@ -1,4 +1,11 @@
-import { Controller, Get, HttpCode, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  HttpCode,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 import { DashboardService } from './dashboard.service';
@@ -21,5 +28,13 @@ export class DashboardController {
   async getOrderDashboards() {
     const getOrderDashboards = await this.dashboardService.getOrderDashboards();
     return getOrderDashboards;
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('orders/:orderId/verification')
+  @HttpCode(201)
+  async confirmOrder(@Param('orderId') orderId: string) {
+    const confirmOrder = await this.dashboardService.confirmOrder(orderId);
+    return confirmOrder;
   }
 }
