@@ -2583,9 +2583,9 @@ Token is obtained from login response
 Get all orders data for admin dashboard  
 Token is obtained from login response  
 * ### Endpoint  
-  `/api/marketplace/orders/:orderId/upload-slip`
+  `/api/admin/dashboard/orders`
 * ### Method  
-  POST
+  GET
 * ### Headers  
   ```
   Authorization: `Bearer ${token}`
