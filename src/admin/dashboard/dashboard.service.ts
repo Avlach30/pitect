@@ -74,7 +74,7 @@ export class DashboardService {
   async confirmOrder(id: string) {
     let order;
     await this.orderRepository
-      .query('SELECT id, cost, slipPayment FROM orders WHERE id = ?', [
+      .query('SELECT id, cost, status, slipPayment FROM orders WHERE id = ?', [
         parseInt(id),
       ])
       .then((data) => {
