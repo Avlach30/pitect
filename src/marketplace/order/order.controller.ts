@@ -60,4 +60,12 @@ export class OrderController {
     const uploadSlip = await this.orderService.uploadSlip(req, file, orderId);
     return uploadSlip;
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('seller/orders')
+  @HttpCode(200)
+  async getSellerOrder(@Request() req: any) {
+    const getSellerOrder = await this.orderService.getSellerOrders(req);
+    return getSellerOrder;
+  }
 }

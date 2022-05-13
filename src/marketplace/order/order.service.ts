@@ -199,4 +199,37 @@ export class OrderService {
 
     return objResult;
   }
+
+  async getSellerOrders(req: any) {
+    //* Get order id from orderItems where item creator logged user
+    let orderId;
+
+    orderId = await this.orderItemRepository.query(
+      'SELECT orderitems.id, orderitems.orderId, orderitems.serviceId FROM orderitems INNER JOIN services ON orderitems.serviceId = services.id WHERE services.creator = ?',
+      [parseInt(req.user.userId)],
+    );
+
+    if (orderId.length < 1) {
+      orderId = [{ orderId: 0 }];
+    }
+
+    const arrOrderIds = orderId.map((order) => order.orderId);
+
+    // console.log(arrOrderIds);
+
+    const getSellerOrderData = await this.orderRepository.query(
+      'SELECT orders.id, orders.date, orders.cost, orders.status, orders.cancelDate, orders.slipPayment, orders.isApprove, users.FULLNAME as buyer FROM orders INNER JOIN users ON orders.userId = users.USERID WHERE orders.id IN (?)',
+      [arrOrderIds],
+    );
+
+    // console.log(getSellerOrderData);
+
+    const objResult = {
+      message: 'Get seller order successfully',
+      data: getSellerOrderData,
+      total: getSellerOrderData.length,
+    };
+
+    return objResult;
+  }
 }
