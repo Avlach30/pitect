@@ -68,6 +68,7 @@ Base URL: Localhost (temporary)
 * Marketplace order management (seller)
   * [get orders (seller)](#get-orders-data-for-seller)
   * [get specified order](#get-specified-order)  
+  * [approve order](#approve-order-by-seller)  
 
 ## Sign up
 * ### Endpoint   
