@@ -59,12 +59,15 @@ Base URL: Localhost (temporary)
   * [add to cart](#add-item-to-cart)
   * [get carts](#get-carts)
   * [delete from cart](#delete-from-cart)
-* Marketplace order management  
+* Marketplace order management (buyer)
   * [create order](#create-order)  
   * [get orders](#get-orders)  
-  * [get orders (seller)](#get-orders-data-for-seller)
   * [get specified order](#get-specified-order)  
   * [upload slip](#upload-slip-transfer)  
+* Marketplace order management (seller)
+  * [get orders (seller)](#get-orders-data-for-seller)
+  * [get specified order](#get-specified-order)  
+
 ## Sign up
 * ### Endpoint   
   `/api/auth/signup`
@@ -2724,5 +2727,61 @@ Token is obtained from login response
   {
     "statusCode": 401,
     "message": "Unauthorized"
+  }
+  ```
+## Done order by buyer  
+Done or finish order by buyer  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace/orders/:orderId/done`
+* ### Method  
+  PUT
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response success  
+  ```  
+  {
+      "message": "Orders successfully done"
+  }
+  ```
+* ### Response fail (because order status not activated)  
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please, done an order which is already activated",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because order not approved by seller)
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please, done an order which is already approved by seller",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because buyer isn't logged user)  
+  ```
+  {
+      "statusCode": 403,
+      "message": "Forbidden to access",
+      "error": "Forbidden"
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
   }
   ```

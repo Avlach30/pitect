@@ -232,4 +232,49 @@ export class OrderService {
 
     return objResult;
   }
+
+  async doneOrder(req: any, orderId: string) {
+    let getOrder;
+
+    await this.orderRepository
+      .query(
+        'SELECT id, date, cost, status, slipPayment, isApprove, userId FROM orders WHERE id = ?',
+        [parseInt(orderId)],
+      )
+      .then((data) => {
+        return (getOrder = data[0]);
+      });
+
+    //! Handle any errors
+    if (getOrder === undefined) {
+      throw new NotFoundException('Data not found');
+    }
+
+    if (getOrder.userId !== parseInt(req.user.userId)) {
+      throw new ForbiddenException('Forbidden to access');
+    }
+
+    if (getOrder.status != 'Pesanan aktif') {
+      throw new BadRequestException(
+        'Please, done an order which is already activated',
+      );
+    }
+
+    if (getOrder.isApprove != 1) {
+      throw new BadRequestException(
+        'Please, done an order which is already approved by seller',
+      );
+    }
+
+    const currentDate = new Date().toISOString();
+
+    await this.orderRepository.query(
+      'UPDATE orders SET status = "Selesai", doneDate = ? WHERE id = ?',
+      [currentDate, parseInt(orderId)],
+    );
+
+    const objResult = { message: 'Orders successfully done' };
+
+    return objResult;
+  }
 }

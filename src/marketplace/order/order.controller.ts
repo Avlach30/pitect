@@ -9,6 +9,7 @@ import {
   HttpCode,
   UseInterceptors,
   UploadedFile,
+  Put,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AmazonS3FileInterceptor } from 'nestjs-multer-extended';
@@ -59,6 +60,14 @@ export class OrderController {
   ) {
     const uploadSlip = await this.orderService.uploadSlip(req, file, orderId);
     return uploadSlip;
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Put('orders/:orderId/done')
+  @HttpCode(200)
+  async doneOrder(@Request() req: any, @Param('orderId') orderId: string) {
+    const doneOrder = await this.orderService.doneOrder(req, orderId);
+    return doneOrder;
   }
 
   @UseGuards(AuthGuard('jwt'))
