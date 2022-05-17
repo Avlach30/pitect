@@ -277,4 +277,31 @@ export class OrderService {
 
     return objResult;
   }
+
+  async approveOrder(orderId: string, req: any) {
+    let order;
+
+    await this.orderItemRepository
+      .query(
+        'SELECT orderitems.id, orderitems.orderId, orderitems.serviceId, services.creator FROM orderitems INNER JOIN services ON orderitems.serviceId = services.id WHERE services.creator = ? AND orderitems.orderId = ?',
+        [parseInt(req.user.userId), parseInt(orderId)],
+      )
+      .then((data) => {
+        order = data[0];
+        return order;
+      });
+
+    if (order == undefined) {
+      throw new NotFoundException('Data not found');
+    }
+
+    await this.orderRepository.query(
+      'UPDATE orders SET isApprove = ? WHERE id = ?',
+      [1, parseInt(orderId)],
+    );
+
+    const objResult = { message: 'Order approved by seller' };
+
+    return objResult;
+  }
 }

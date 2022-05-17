@@ -77,4 +77,12 @@ export class OrderController {
     const getSellerOrder = await this.orderService.getSellerOrders(req);
     return getSellerOrder;
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Put('seller/orders/:orderId/approve')
+  @HttpCode(200)
+  async approveOrder(@Request() req: any, @Param('orderId') orderId: string) {
+    const approveOrder = await this.orderService.approveOrder(orderId, req);
+    return approveOrder;
+  }
 }
