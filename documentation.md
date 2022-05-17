@@ -2786,3 +2786,35 @@ Token is obtained from login response
       "error": "Not Found"
   }
   ```
+## Approve order by seller  
+Approve order by seller  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace/seller/orders/:orderId/approve`
+* ### Method  
+  PUT
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Order approved by seller"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```
