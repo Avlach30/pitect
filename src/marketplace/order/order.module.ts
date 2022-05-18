@@ -11,11 +11,13 @@ import { CartItems } from '../../entity/cart-item.entity';
 import { isAuth } from '../../middleware/is-auth';
 import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
+import { OrderReviews } from '../../entity/order-review.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Orders]),
     TypeOrmModule.forFeature([OrderItems]),
+    TypeOrmModule.forFeature([OrderReviews]),
     TypeOrmModule.forFeature([Users]),
     TypeOrmModule.forFeature([Carts]),
     TypeOrmModule.forFeature([CartItems]),
