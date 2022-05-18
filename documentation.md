@@ -2468,30 +2468,30 @@ Token is obtained from login response
     "message": "Fetch single order successfully",
     "data": {
         "id": 2,
-        "date": "2022-04-25T21:26:03.000Z",
+        "date": "2022-04-25T20:26:03.000Z",
         "cost": 5500000,
-        "status": "Belum bayar",
-        "slipPayment": "Some image",
+        "status": "Perlu konfirmasi",
+        "slipPayment": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/slip-transfers/4c7906fa-6b91-4d32-a252-255a98105e06.jpeg",
         "item": [
             {
-                "id": 1,
-                "title": "advanced",
+                "id": 16,
+                "title": "Desain rancangan jembatan Sumatra - Jawa",
                 "description": "Jasa desain untuk rancangan konstruksi jembatan Sumatra - Jawa",
                 "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/d4e93a5d-b379-463d-a822-92fa63cbe940.jpeg",
                 "info": {
-                    "title": "advanced",
+                    "variation": "advanced",
                     "content": "Penambahan fitur revisi desain 1 x",
                     "duration": 4,
                     "cost": 3500000
                 }
             },
             {
-                "id": 2,
-                "title": "standard",
+                "id": 17,
+                "title": "Desain kantor pos",
                 "description": "Jasa desain kantor pos dengan gaya modern",
                 "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/23a17ffc-cb2b-427e-9470-7f5201e331c8.jpeg",
                 "info": {
-                    "title": "standard",
+                    "variation": "standard",
                     "content": "desain dengan fitur seperti biasa",
                     "duration": 2,
                     "cost": 2000000

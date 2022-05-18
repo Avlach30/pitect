@@ -125,18 +125,18 @@ export class OrderService {
     }
 
     const getOrderItem = await this.orderItemRepository.query(
-      'SELECT orderitems.id, services.title, services.description, serviceinfos.title, serviceinfos.content, serviceinfos.duration, serviceinfos.cost, services.image FROM orderitems INNER JOIN services ON orderitems.serviceId = services.id INNER JOIN serviceinfos ON orderitems.serviceInfoId = serviceinfos.id AND services.id = serviceinfos.serviceId WHERE orderitems.orderId = ?',
+      'SELECT orderitems.id, services.id AS serviceId, services.title, services.description, serviceinfos.title AS variation, serviceinfos.content, serviceinfos.duration, serviceinfos.cost, services.image FROM orderitems INNER JOIN services ON orderitems.serviceId = services.id INNER JOIN serviceinfos ON orderitems.serviceInfoId = serviceinfos.id AND services.id = serviceinfos.serviceId WHERE orderitems.orderId = ?',
       [getOrder.id],
     );
 
     const mappingOrderItem = getOrderItem.map((item) => {
       const obj = {
-        id: item.id,
+        id: item.serviceId,
         title: item.title,
         description: item.description,
         image: item.image,
         info: {
-          title: item.title,
+          variation: item.variation,
           content: item.content,
           duration: item.duration,
           cost: item.cost,
