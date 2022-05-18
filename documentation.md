@@ -69,6 +69,8 @@ Base URL: Localhost (temporary)
   * [get orders (seller)](#get-orders-data-for-seller)
   * [get specified order](#get-specified-order)  
   * [approve order](#approve-order-by-seller)  
+* Marketplace reviews
+  * [create new review](#create-new-reviews)
 
 ## Sign up
 * ### Endpoint   
@@ -2802,6 +2804,57 @@ Token is obtained from login response
   ```
   {
     "message": "Order approved by seller"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```
+## Create new reviews  
+Create a new review for finished order by buyer  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace/orders/:orderId/items/:itemId/review`
+* ### Method  
+  POST
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`,
+  Content-type: application/json
+  ```
+* ### Body
+  ```
+  {
+    "rating": Number,
+    "comment": String
+  }
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Successfully insert new reviews",
+    "rating": 3.5,
+    "comment": "Ya biasa ajasii",
+    "reviewer": "rocketmail"
+  }
+  ```
+* ### Response fail (because an order unfinished)
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please, give a review and comment to order which is already done",
+    "error": "Bad Request"
   }
   ```
 * ### Response fail (because token not available or expired)
