@@ -85,4 +85,24 @@ export class OrderController {
     const approveOrder = await this.orderService.approveOrder(orderId, req);
     return approveOrder;
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('orders/:orderId/items/:itemId/review')
+  @HttpCode(201)
+  async createReview(
+    @Request() req: any,
+    @Param('orderId') orderId: string,
+    @Param('itemId') itemId: string,
+    @Body('comment') comment: string,
+    @Body('rating') rating: number,
+  ) {
+    const createReview = await this.orderService.createReview(
+      orderId,
+      itemId,
+      req,
+      comment,
+      rating,
+    );
+    return createReview;
+  }
 }

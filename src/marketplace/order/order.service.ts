@@ -12,6 +12,7 @@ import { Carts } from '../../entity/cart.entity';
 import { CartItems } from '../../entity/cart-item.entity';
 import { Orders } from '../../entity/order.entity';
 import { OrderItems } from '../../entity/order-item.entity';
+import { OrderReviews } from 'src/entity/order-review.entity';
 
 @Injectable()
 export class OrderService {
@@ -19,6 +20,8 @@ export class OrderService {
     @InjectRepository(Orders) private orderRepository: Repository<Orders>,
     @InjectRepository(OrderItems)
     private orderItemRepository: Repository<Orders>,
+    @InjectRepository(OrderReviews)
+    private reviewRepository: Repository<OrderReviews>,
     @InjectRepository(Carts)
     private cartRepository: Repository<Carts>,
     @InjectRepository(CartItems)
@@ -301,6 +304,64 @@ export class OrderService {
     );
 
     const objResult = { message: 'Order approved by seller' };
+
+    return objResult;
+  }
+
+  async createReview(
+    orderId: string,
+    serviceId: string,
+    req: any,
+    comment: string,
+    rating: number,
+  ) {
+    let getOrder;
+
+    await this.orderRepository
+      .query('SELECT id, status FROM orders WHERE userId = ? AND id = ?', [
+        parseInt(req.user.userId),
+        parseInt(orderId),
+      ])
+      .then((data) => {
+        return (getOrder = data[0]);
+      });
+
+    if (getOrder === undefined) {
+      throw new NotFoundException('Data not found');
+    }
+
+    const getOrderItem = await this.orderItemRepository.query(
+      'SELECT id, serviceId, orderId FROM orderitems WHERE orderId = ? AND serviceId = ?',
+      [parseInt(orderId), parseInt(serviceId)],
+    );
+
+    if (getOrderItem.length < 1) {
+      throw new NotFoundException('Data not found');
+    }
+
+    if (getOrder.status != 'Selesai') {
+      throw new BadRequestException(
+        'Please, give a review and comment to order which is already done',
+      );
+    }
+
+    await this.reviewRepository.query(
+      'INSERT INTO orderreviews (comment, rating, orderId, serviceId, reviewer) VALUES (?, ?, ?, ?, ?)',
+      [
+        comment,
+        rating,
+        parseInt(orderId),
+        parseInt(serviceId),
+        parseInt(req.user.userId),
+      ],
+    );
+
+    const objResult = {
+      message: 'Successfully insert new reviews',
+      rating: rating,
+      comment: comment,
+      reviewer: req.user.name,
+    };
 
     return objResult;
   }
