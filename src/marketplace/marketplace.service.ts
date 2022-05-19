@@ -14,6 +14,7 @@ import { Services } from '../entity/services.entity';
 import { ServiceInfos } from '../entity/services.info.entity';
 import { ServiceOwns } from '../entity/services.own.entity';
 import { Wishlists } from '../entity/wishlist.entity';
+import { OrderReviews } from 'src/entity/order-review.entity';
 
 @Injectable()
 export class MarketplaceService {
@@ -25,6 +26,8 @@ export class MarketplaceService {
     private serviceOwnRepository: Repository<ServiceOwns>,
     @InjectRepository(Wishlists)
     private wishlistRepository: Repository<Wishlists>,
+    @InjectRepository(OrderReviews)
+    private reviewRepository: Repository<OrderReviews>,
     private configService: ConfigService,
   ) {}
 
@@ -414,11 +417,17 @@ export class MarketplaceService {
       [parseInt(catalogId)],
     );
 
+    const reviews = await this.reviewRepository.query(
+      'SELECT orderreviews.id, orderreviews.comment, orderreviews.rating, users.FULLNAME AS reviewer FROM orderreviews INNER JOIN users ON orderreviews.reviewer = users.USERID WHERE orderreviews.serviceId = ?',
+      [parseInt(catalogId)],
+    );
+
     const objResult = {
       message: 'Get single catalog successfully',
       data: {
         result,
         info: catalogInfo,
+        reviews: reviews,
       },
     };
 

@@ -49,7 +49,7 @@ Base URL: Localhost (temporary)
   * [create new product](#create-a-new-product)
   * [create new service](#create-a-new-service)
   * [get all catalogs](#get-all-marketplace-catalogs)
-  * [get specified catalog](#get-specified-catalog)
+  * [get specified catalog (with reviews)](#get-specified-catalog)
   * [filter catalog (by range price)](#filter-marketplace-catalog-price)  
   * [get specified catalog](#get-specified-catalog)
   * [update existing product](#update-existing-product)  
@@ -1802,7 +1802,7 @@ Token is obtained from login response
   }
   ```
 ## Get specified catalog  
-Get single or specified marketplace catalog, for more details about catalog  
+Get single or specified marketplace catalog, for more details about catalog include reviews from previous buyer  
 Token is obtained from login response  
 * ### Endpoint  
   `/api/marketplace/catalogs/:catalogId`
@@ -1847,6 +1847,14 @@ Token is obtained from login response
                 "content": "Konsultrasi gratis, penyaluran dengan kontraktor professional",
                 "duration": 7,
                 "cost": 5000000
+            }
+        ],
+        "reviews": [
+            {
+                "id": 1,
+                "comment": "Ya biasa ajasii",
+                "rating": 4,
+                "reviewer": "rocketmail"
             }
         ]
     }

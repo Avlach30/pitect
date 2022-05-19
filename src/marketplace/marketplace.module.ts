@@ -10,6 +10,7 @@ import { Services } from '../entity/services.entity';
 import { ServiceInfos } from '../entity/services.info.entity';
 import { MarketplaceControllers } from './marketplace.controller';
 import { MarketplaceService } from './marketplace.service';
+import { OrderReviews } from 'src/entity/order-review.entity';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { MarketplaceService } from './marketplace.service';
     TypeOrmModule.forFeature([ServiceInfos]),
     TypeOrmModule.forFeature([ServiceOwns]),
     TypeOrmModule.forFeature([Wishlists]),
+    TypeOrmModule.forFeature([OrderReviews]),
     MulterExtendedModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
