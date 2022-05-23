@@ -16,6 +16,9 @@ export class Inspirations {
   @Column()
   title: string;
 
+  @Column()
+  imgaeUrl: string;
+
   @ManyToOne((type) => Users, (user) => user.id) //Reference to Users entity
   @JoinColumn()
   creator: Users;
