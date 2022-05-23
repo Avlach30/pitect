@@ -71,6 +71,8 @@ Base URL: Localhost (temporary)
   * [approve order](#approve-order-by-seller)  
 * Marketplace reviews
   * [create new review](#create-new-reviews)
+* Inspirations
+  * [create new inspiration](#create-new-inspiration)
 
 ## Sign up
 * ### Endpoint   
@@ -2878,5 +2880,74 @@ Token is obtained from login response
       "statusCode": 404,
       "message": "Data not found",
       "error": "Not Found"
+  }
+  ```
+## Create new inspiration  
+Create a new portfolio for other user's inpiration to make a new construction project  
+Include image upload, image stored in AWS S3 cloud storage  
+Token is obtained from login response 
+* ### Endpoint  
+  `/api/inspirations`
+* ### Method
+  POST
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  Content-type: multipart/form-data
+  ```
+* ### Body  
+  Because this endpoint contains file upload, make sure you added an attribute `enctype` with value `multipart/form-data` in your form. Then make sure you append each of body field in `formData()`.
+  ```
+  "title": String,
+  "description": String,
+  "image": File,
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Create new inspiration successfully",
+    "data": {
+        "title": "Desain rumah pohon",
+        "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/6e521187-caff-4e65-8526-ac98e5ed5613.jpeg"
+    }
+  }
+  ```
+* ### Response fail (because one of request body not filled (required))
+  ```
+  {
+    "statusCode": 400,
+    "message": "Sorry, all input field must required",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because image not uploaded (required))
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please, upload an image",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because uploaded file not an image)
+  ```
+  {
+    "statusCode": 400,
+    "message": "Invalid Image File Type",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because uploaded image size is larger than limit)
+  ```
+  {
+    "statusCode": 413,
+    "message": "File too large",
+    "error": "Payload Too Large"
   }
   ```
