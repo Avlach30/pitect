@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 12, 2022 at 02:11 AM
+-- Generation Time: May 23, 2022 at 03:02 PM
 -- Server version: 8.0.21
 -- PHP Version: 7.3.21
 
@@ -75,14 +75,24 @@ DROP TABLE IF EXISTS `inspirations`;
 CREATE TABLE IF NOT EXISTS `inspirations` (
   `id` int NOT NULL AUTO_INCREMENT,
   `title` varchar(50) DEFAULT NULL,
+  `imageUrl` varchar(256) NOT NULL,
   `creator` int DEFAULT NULL,
   `description` varchar(256) DEFAULT NULL,
-  `instagramUserId` varchar(256) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `creator` (`creator`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `inspirations`
+--
+
+INSERT INTO `inspirations` (`id`, `title`, `imageUrl`, `creator`, `description`, `created_at`) VALUES
+(1, 'Inspirasi rumah arsitektur bali', 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/5a8c18b4-04e9-4733-b678-fdd72ec46cda.jpeg', 27, 'Desain rumah dengan gaya arsitektur bali, cocok untuk tempat beriklim tropis namun sejuk', '2022-05-23 06:15:44'),
+(2, 'Inspirasi rumah bahan kayu', 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/4bc84fa4-4f2c-4271-b116-5df40c9b77fa.jpeg', 24, 'Desain rumah dengan gaya arsitektur rumah panggung, dengan berbahan kayu', '2022-05-23 06:18:16'),
+(3, 'Inspirasi rumah kontainer', 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/b0281b48-9825-4add-ad4b-0d161be55a86.jpeg', 24, 'Desain rumah dengan gaya arsitektur rumah minimalis, dengan berbahan kontainer', '2022-05-23 08:49:16'),
+(4, 'Desain rumah pohon', 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/6e521187-caff-4e65-8526-ac98e5ed5613.jpeg', 27, 'Desain rumah pohon dengan gaya minimalis namun nyaman. Dengan konsep menyatu degan alam', '2022-05-23 14:48:15');
 
 -- --------------------------------------------------------
 
@@ -127,12 +137,22 @@ CREATE TABLE IF NOT EXISTS `orderreviews` (
   `rating` int DEFAULT NULL,
   `orderId` int DEFAULT NULL,
   `serviceId` int NOT NULL,
+  `reviewer` int NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `orderId` (`orderId`),
-  KEY `serviceId` (`serviceId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `serviceId` (`serviceId`),
+  KEY `reviewer` (`reviewer`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `orderreviews`
+--
+
+INSERT INTO `orderreviews` (`id`, `comment`, `rating`, `orderId`, `serviceId`, `reviewer`, `created_at`) VALUES
+(1, 'Ya biasa ajasii', 4, 3, 16, 27, '2022-05-18 04:14:35'),
+(2, 'Membuatku bahagia :*', 5, 3, 16, 27, '2022-05-19 09:45:08');
 
 -- --------------------------------------------------------
 
@@ -148,7 +168,8 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'Belum bayar',
   `cancelDate` date DEFAULT NULL,
   `slipPayment` varchar(512) NOT NULL DEFAULT 'Some image',
-  `isApprove` tinyint NOT NULL DEFAULT '1',
+  `isApprove` tinyint NOT NULL DEFAULT '0',
+  `doneDate` date DEFAULT NULL,
   `userId` int DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -160,9 +181,9 @@ CREATE TABLE IF NOT EXISTS `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `date`, `cost`, `status`, `cancelDate`, `slipPayment`, `isApprove`, `userId`, `created_at`) VALUES
-(2, '2022-04-26 04:26:03', 5500000, 'Perlu konfirmasi', NULL, 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/slip-transfers/4c7906fa-6b91-4d32-a252-255a98105e06.jpeg', 1, 27, '2022-04-26 04:26:03'),
-(3, '2022-04-26 08:19:27', 10000000, 'Perlu konfirmasi', NULL, 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/slip-transfers/70fcbb01-b11e-41f5-a64c-021e2fa3da54.jpeg', 1, 27, '2022-04-26 08:19:26');
+INSERT INTO `orders` (`id`, `date`, `cost`, `status`, `cancelDate`, `slipPayment`, `isApprove`, `doneDate`, `userId`, `created_at`) VALUES
+(2, '2022-04-26 04:26:03', 5500000, 'Perlu konfirmasi', NULL, 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/slip-transfers/4c7906fa-6b91-4d32-a252-255a98105e06.jpeg', 1, NULL, 27, '2022-04-26 04:26:03'),
+(3, '2022-04-26 08:19:27', 10000000, 'Selesai', NULL, 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/slip-transfers/70fcbb01-b11e-41f5-a64c-021e2fa3da54.jpeg', 1, '2022-05-17', 27, '2022-04-26 08:19:26');
 
 -- --------------------------------------------------------
 
@@ -500,7 +521,8 @@ ALTER TABLE `orderitems`
 --
 ALTER TABLE `orderreviews`
   ADD CONSTRAINT `orderreviews_ibfk_1` FOREIGN KEY (`orderId`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `orderreviews_ibfk_2` FOREIGN KEY (`serviceId`) REFERENCES `services` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `orderreviews_ibfk_2` FOREIGN KEY (`serviceId`) REFERENCES `services` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `orderreviews_ibfk_3` FOREIGN KEY (`reviewer`) REFERENCES `users` (`USERID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `orders`
