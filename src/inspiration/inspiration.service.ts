@@ -23,7 +23,7 @@ export class InspirationService {
     );
 
     const userInspirations = await this.inspirationRepository.query(
-      'SELECT inspirations.id, inspirations.title, inspirations.description, users.FULLNAME FROM inspirations INNER JOIN users ON inspirations.creator = users.USERID WHERE inspirations.creator = ?',
+      'SELECT inspirations.id, inspirations.title, inspirations.description, users.FULLNAME as creator FROM inspirations INNER JOIN users ON inspirations.creator = users.USERID WHERE inspirations.creator = ?',
       [parseInt(req.user.userId)],
     );
 
