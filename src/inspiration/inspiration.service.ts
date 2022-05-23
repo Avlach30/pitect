@@ -8,7 +8,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { Inspirations } from 'src/entity/inspiration.entity';
+import { Inspirations } from '../entity/inspiration.entity';
 
 @Injectable()
 export class InspirationService {
