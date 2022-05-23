@@ -28,4 +28,28 @@ export class InspirationController {
     const getInspirations = await this.inspirationService.getInspirations(req);
     return getInspirations;
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post()
+  @HttpCode(201)
+  @UseInterceptors(
+    AmazonS3FileInterceptor('image', {
+      limits: { fileSize: 1 * 1024 * 1024 },
+      randomFilename: true,
+    }),
+  )
+  async createInspiration(
+    @Request() req: any,
+    @UploadedFile() file: any,
+    @Body('title') title: string,
+    @Body('description') description: string,
+  ) {
+    const createInspiration = await this.inspirationService.createInspiration(
+      req,
+      title,
+      description,
+      file,
+    );
+    return createInspiration;
+  }
 }
