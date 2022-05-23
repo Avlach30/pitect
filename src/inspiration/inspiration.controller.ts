@@ -9,17 +9,23 @@ import {
   HttpCode,
   Put,
   Delete,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { AmazonS3FileInterceptor } from 'nestjs-multer-extended';
+
+import { InspirationService } from './inspiration.service';
 
 @Controller('api/inspirations')
 export class InspirationController {
-  constructor(private inspirationService: null) {}
+  constructor(private inspirationService: InspirationService) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   @HttpCode(200)
-  async getInspirations() {
-    const getInspirations = await this.projectService.getInspirations();
+  async getInspirations(@Request() req: any) {
+    const getInspirations = await this.inspirationService.getInspirations(req);
     return getInspirations;
   }
 }
