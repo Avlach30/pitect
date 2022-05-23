@@ -73,6 +73,7 @@ Base URL: Localhost (temporary)
   * [create new review](#create-new-reviews)
 * Inspirations
   * [create new inspiration](#create-new-inspiration)
+  * [get all inspiration](#get-all-inspirations)
 
 ## Sign up
 * ### Endpoint   
@@ -2949,5 +2950,74 @@ Token is obtained from login response
     "statusCode": 413,
     "message": "File too large",
     "error": "Payload Too Large"
+  }
+  ```
+## Get all inspirations  
+Get all inspiration from all users, with total data    
+Include with inspiration from logged user, but splitted in another arrays  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/inspirations`
+* ### Method
+  GET
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response Success  
+  ```
+  {
+    "message": "Get all inspirations successfully",
+    "inspirations": [
+        {
+            "id": 1,
+            "title": "Inspirasi rumah arsitektur bali",
+            "description": "Desain rumah dengan gaya arsitektur bali, cocok untuk tempat beriklim tropis namun sejuk",
+            "creator": "rocketmail"
+        },
+        {
+            "id": 2,
+            "title": "Inspirasi rumah bahan kayu",
+            "description": "Desain rumah dengan gaya arsitektur rumah panggung, dengan berbahan kayu",
+            "creator": "john doe"
+        },
+        {
+            "id": 3,
+            "title": "Inspirasi rumah kontainer",
+            "description": "Desain rumah dengan gaya arsitektur rumah minimalis, dengan berbahan kontainer",
+            "creator": "john doe"
+        },
+        {
+            "id": 4,
+            "title": "Desain rumah pohon",
+            "description": "Desain rumah pohon dengan gaya minimalis namun nyaman. Dengan konsep menyatu degan alam",
+            "creator": "rocketmail"
+        }
+    ],
+    "userInspirations": [
+        {
+            "id": 1,
+            "title": "Inspirasi rumah arsitektur bali",
+            "description": "Desain rumah dengan gaya arsitektur bali, cocok untuk tempat beriklim tropis namun sejuk",
+            "creator": "rocketmail"
+        },
+        {
+            "id": 4,
+            "title": "Desain rumah pohon",
+            "description": "Desain rumah pohon dengan gaya minimalis namun nyaman. Dengan konsep menyatu degan alam",
+            "creator": "rocketmail"
+        }
+    ],
+    "total": {
+        "inspirations": 4,
+        "userInspirations": 2
+    }
+  }
+  ```
+* ### Response fail (because token not available or expired)  
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
   }
   ```
