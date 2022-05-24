@@ -75,6 +75,7 @@ Base URL: Localhost (temporary)
   * [create new inspiration](#create-new-inspiration)
   * [get all inspiration](#get-all-inspirations)
   * [get specified inspiration](#get-detail-inspirations)
+  * [update inspiration](#update-existing-inspiration)
 
 ## Sign up
 * ### Endpoint   
@@ -3067,5 +3068,70 @@ Token is obtained from login response
       "statusCode": 404,
       "message": "Data not found",
       "error": "Not Found"
+  }
+  ```
+## Update existing inspiration  
+Update existing inspiration, all input include file upload is not required    
+Token is obtained from login response 
+* ### Endpoint  
+  `/api/inspirations/:inspirationId`
+* ### Method
+  PUT
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  Content-type: multipart/form-data
+  ```
+* ### Body  
+  Because this endpoint contains file upload, make sure you added an attribute `enctype` with value `multipart/form-data` in your form. Then make sure you append each of body field in `formData()`.
+  ```
+  "title": String,
+  "description": String,
+  "image": File,
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Update inspiration successfully",
+    "affectedId": 2
+  }
+  ```
+* ### Response fail (because uploaded file not an image)
+  ```
+  {
+    "statusCode": 400,
+    "message": "Invalid Image File Type",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available or expired)  
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because inspiration creator isn't logged user)  
+  ```
+  {
+      "statusCode": 403,
+      "message": "Forbidden to access",
+      "error": "Forbidden"
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```
+* ### Response fail (because uploaded image size is larger than limit)
+  ```
+  {
+    "statusCode": 413,
+    "message": "File too large",
+    "error": "Payload Too Large"
   }
   ```
