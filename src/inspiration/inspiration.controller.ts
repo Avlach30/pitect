@@ -52,4 +52,13 @@ export class InspirationController {
     );
     return createInspiration;
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':inspirationId')
+  @HttpCode(200)
+  async getDetailInspiration(@Param('inspirationId') inspirationId: string) {
+    const getDetailInspiration =
+      await this.inspirationService.getDetailInspiration(inspirationId);
+    return getDetailInspiration;
+  }
 }

@@ -66,4 +66,29 @@ export class InspirationService {
 
     return objResult;
   }
+
+  async getDetailInspiration(inspirationId: string) {
+    let inspiration: any;
+
+    await this.inspirationRepository
+      .query(
+        'SELECT inspirations.id, inspirations.title, inspirations.imageUrl, inspirations.description, users.FULLNAME as creator, users.facebookId, users.instagramId FROM inspirations INNER JOIN users ON inspirations.creator = users.USERID WHERE inspirations.id = ?',
+        [parseInt(inspirationId)],
+      )
+      .then((data) => {
+        inspiration = data[0];
+        return inspiration;
+      });
+
+    if (inspiration == undefined) {
+      throw new NotFoundException('Data not found');
+    }
+
+    const objResult = {
+      message: 'Get single inspiration successfully',
+      data: inspiration,
+    };
+
+    return objResult;
+  }
 }
