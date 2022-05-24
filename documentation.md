@@ -76,6 +76,7 @@ Base URL: Localhost (temporary)
   * [get all inspiration](#get-all-inspirations)
   * [get specified inspiration](#get-detail-inspirations)
   * [update inspiration](#update-existing-inspiration)
+  * [delete inspiration](#delete-inspiration)
 
 ## Sign up
 * ### Endpoint   
@@ -3133,5 +3134,45 @@ Token is obtained from login response
     "statusCode": 413,
     "message": "File too large",
     "error": "Payload Too Large"
+  }
+  ```
+## Delete inspiration  
+Delete existing inspiration, include stored image in aws s3 cloud storage  
+Token is obtained from login response 
+* ### Endpoint  
+  `/api/inspirations/:inspirationId`
+* ### Method
+  DELETE
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Delete existing inspiration data successfully",
+  }
+  ```
+* ### Response fail (because token not available or expired)  
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because inspiration creator isn't logged user)  
+  ```
+  {
+      "statusCode": 403,
+      "message": "Forbidden to access",
+      "error": "Forbidden"
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
   }
   ```
