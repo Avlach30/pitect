@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 23, 2022 at 03:02 PM
+-- Generation Time: May 24, 2022 at 12:21 PM
 -- Server version: 8.0.21
 -- PHP Version: 7.3.21
 
@@ -82,17 +82,17 @@ CREATE TABLE IF NOT EXISTS `inspirations` (
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `creator` (`creator`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `inspirations`
 --
 
 INSERT INTO `inspirations` (`id`, `title`, `imageUrl`, `creator`, `description`, `created_at`) VALUES
-(1, 'Inspirasi rumah arsitektur bali', 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/5a8c18b4-04e9-4733-b678-fdd72ec46cda.jpeg', 27, 'Desain rumah dengan gaya arsitektur bali, cocok untuk tempat beriklim tropis namun sejuk', '2022-05-23 06:15:44'),
-(2, 'Inspirasi rumah bahan kayu', 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/4bc84fa4-4f2c-4271-b116-5df40c9b77fa.jpeg', 24, 'Desain rumah dengan gaya arsitektur rumah panggung, dengan berbahan kayu', '2022-05-23 06:18:16'),
-(3, 'Inspirasi rumah kontainer', 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/b0281b48-9825-4add-ad4b-0d161be55a86.jpeg', 24, 'Desain rumah dengan gaya arsitektur rumah minimalis, dengan berbahan kontainer', '2022-05-23 08:49:16'),
-(4, 'Desain rumah pohon', 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/6e521187-caff-4e65-8526-ac98e5ed5613.jpeg', 27, 'Desain rumah pohon dengan gaya minimalis namun nyaman. Dengan konsep menyatu degan alam', '2022-05-23 14:48:15');
+(3, 'Rumah kontainer', 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/cdc08021-e0a7-4362-bccb-3dfc6f150817.jpeg', 24, 'Arsitektur dengan gaya minimalis', '2022-05-23 08:49:16'),
+(4, 'Desain rumah pohon', 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/6e521187-caff-4e65-8526-ac98e5ed5613.jpeg', 27, 'Desain rumah pohon dengan gaya minimalis namun nyaman. Dengan konsep menyatu degan alam', '2022-05-23 14:48:15'),
+(5, 'Desain rumah bali', 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/61630f10-7105-49ab-b9f7-3c7ddc15b982.jpeg', 27, 'Desain rumah bali dengan konsep tradisional', '2022-05-24 04:36:09'),
+(6, 'Joglo', 'https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/2085c93d-b6a6-4cf6-9690-73633ceb3c9b.jpeg', 27, 'Desain rumah bergaya tradisional khas joglo. Menjunjung tinggi nilai persatuan dengan alam.', '2022-05-24 04:38:14');
 
 -- --------------------------------------------------------
 
@@ -439,6 +439,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `TYPE` varchar(18) DEFAULT NULL,
   `Avatar` varchar(512) NOT NULL DEFAULT 'Some Avatar',
   `isVerified` tinyint NOT NULL DEFAULT '0',
+  `facebookId` varchar(256) DEFAULT NULL,
+  `instagramId` varchar(256) DEFAULT NULL,
   `numPhone` varchar(15) NOT NULL,
   `EMAIL` varchar(48) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `PASSWORD` varchar(256) DEFAULT NULL,
@@ -451,11 +453,11 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`USERID`, `FULLNAME`, `TYPE`, `Avatar`, `isVerified`, `numPhone`, `EMAIL`, `PASSWORD`, `created_at`) VALUES
-(24, 'john doe', 'personal', 'Some Avatar', 0, '089123456789', 'johndoe@gmail.com', '$2b$12$WE4aqiUH.xnnF32tJwkrpeaJswHjO5wPBGZ0.Dx7/EX151XbXrjkO', '2022-04-11 02:30:26'),
-(25, 'jane doe', 'organization', 'Some Avatar', 0, '089123456789', 'janedoe@gmail.com', '$2b$12$DIm3lsm26uhDU8k43uk9RuANaR0lS7LqqODvpwfAVIyTzrycCWJvi', '2022-04-11 02:30:26'),
-(27, 'rocketmail', 'company', 'Some Avatar', 0, '089123456789', 'rocketmail@gmail.com', '$2b$12$kr2GTTc03U.dpN7dgBsWZuntHTj3ObJBk62zfOsFLg17LnThPGcx2', '2022-04-11 02:30:26'),
-(28, 'john morisson', 'company', 'Some Avatar', 0, '088987654321', 'morisson@gmail.com', '$2b$12$O5E3Ft/NVG2dlfdAh/GoB.jMxrxljac3W9qlwDIYuZUkhh.mzuUea', '2022-04-11 02:30:26');
+INSERT INTO `users` (`USERID`, `FULLNAME`, `TYPE`, `Avatar`, `isVerified`, `facebookId`, `instagramId`, `numPhone`, `EMAIL`, `PASSWORD`, `created_at`) VALUES
+(24, 'john doe', 'personal', 'Some Avatar', 0, NULL, NULL, '089123456789', 'johndoe@gmail.com', '$2b$12$WE4aqiUH.xnnF32tJwkrpeaJswHjO5wPBGZ0.Dx7/EX151XbXrjkO', '2022-04-11 02:30:26'),
+(25, 'jane doe', 'organization', 'Some Avatar', 0, NULL, NULL, '089123456789', 'janedoe@gmail.com', '$2b$12$DIm3lsm26uhDU8k43uk9RuANaR0lS7LqqODvpwfAVIyTzrycCWJvi', '2022-04-11 02:30:26'),
+(27, 'rocketmail', 'company', 'Some Avatar', 0, NULL, NULL, '089123456789', 'rocketmail@gmail.com', '$2b$12$kr2GTTc03U.dpN7dgBsWZuntHTj3ObJBk62zfOsFLg17LnThPGcx2', '2022-04-11 02:30:26'),
+(28, 'john morisson', 'company', 'Some Avatar', 0, NULL, NULL, '088987654321', 'morisson@gmail.com', '$2b$12$O5E3Ft/NVG2dlfdAh/GoB.jMxrxljac3W9qlwDIYuZUkhh.mzuUea', '2022-04-11 02:30:26');
 
 -- --------------------------------------------------------
 
