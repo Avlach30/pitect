@@ -61,4 +61,30 @@ export class InspirationController {
       await this.inspirationService.getDetailInspiration(inspirationId);
     return getDetailInspiration;
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Put(':inspirationId')
+  @HttpCode(200)
+  @UseInterceptors(
+    AmazonS3FileInterceptor('image', {
+      limits: { fileSize: 1 * 1024 * 1024 },
+      randomFilename: true,
+    }),
+  )
+  async updateInspiration(
+    @Request() req: any,
+    @Param('inspirationId') inspirationId: string,
+    @UploadedFile() file: any,
+    @Body('title') title: string,
+    @Body('description') description: string,
+  ) {
+    const updateInspiration = await this.inspirationService.updateInspiration(
+      inspirationId,
+      req,
+      title,
+      description,
+      file,
+    );
+    return updateInspiration;
+  }
 }
