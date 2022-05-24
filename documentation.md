@@ -74,6 +74,7 @@ Base URL: Localhost (temporary)
 * Inspirations
   * [create new inspiration](#create-new-inspiration)
   * [get all inspiration](#get-all-inspirations)
+  * [get specified inspiration](#get-detail-inspirations)
 
 ## Sign up
 * ### Endpoint   
@@ -3025,5 +3026,46 @@ Token is obtained from login response
   {
     "statusCode": 401,
     "message": "Unauthorized"
+  }
+  ```
+## Get detail inspirations  
+Get detail inspiration for more detailed information about inspiration    
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/inspirations/:inspirationId`
+* ### Method
+  GET
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Get single inspiration successfully",
+    "data": {
+        "id": 3,
+        "title": "Inspirasi rumah kontainer",
+        "imageUrl": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/b0281b48-9825-4add-ad4b-0d161be55a86.jpeg",
+        "description": "Desain rumah dengan gaya arsitektur rumah minimalis, dengan berbahan kontainer",
+        "creator": "john doe",
+        "facebookId": null,
+        "instagramId": null
+    }
+  }
+  ```
+* ### Response fail (because token not available or expired)  
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
   }
   ```
