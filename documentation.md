@@ -2972,24 +2972,28 @@ Token is obtained from login response
         {
             "id": 1,
             "title": "Inspirasi rumah arsitektur bali",
+            "imageUrl": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/5a8c18b4-04e9-4733-b678-fdd72ec46cda.jpeg",
             "description": "Desain rumah dengan gaya arsitektur bali, cocok untuk tempat beriklim tropis namun sejuk",
             "creator": "rocketmail"
         },
         {
             "id": 2,
             "title": "Inspirasi rumah bahan kayu",
+            "imageUrl": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/4bc84fa4-4f2c-4271-b116-5df40c9b77fa.jpeg",
             "description": "Desain rumah dengan gaya arsitektur rumah panggung, dengan berbahan kayu",
             "creator": "john doe"
         },
         {
             "id": 3,
             "title": "Inspirasi rumah kontainer",
+            "imageUrl": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/b0281b48-9825-4add-ad4b-0d161be55a86.jpeg",
             "description": "Desain rumah dengan gaya arsitektur rumah minimalis, dengan berbahan kontainer",
             "creator": "john doe"
         },
         {
             "id": 4,
             "title": "Desain rumah pohon",
+            "imageUrl": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/6e521187-caff-4e65-8526-ac98e5ed5613.jpeg",
             "description": "Desain rumah pohon dengan gaya minimalis namun nyaman. Dengan konsep menyatu degan alam",
             "creator": "rocketmail"
         }
@@ -2998,12 +3002,14 @@ Token is obtained from login response
         {
             "id": 1,
             "title": "Inspirasi rumah arsitektur bali",
+            "imageUrl": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/5a8c18b4-04e9-4733-b678-fdd72ec46cda.jpeg",
             "description": "Desain rumah dengan gaya arsitektur bali, cocok untuk tempat beriklim tropis namun sejuk",
             "creator": "rocketmail"
         },
         {
             "id": 4,
             "title": "Desain rumah pohon",
+            "imageUrl": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/6e521187-caff-4e65-8526-ac98e5ed5613.jpeg",
             "description": "Desain rumah pohon dengan gaya minimalis namun nyaman. Dengan konsep menyatu degan alam",
             "creator": "rocketmail"
         }

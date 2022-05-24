@@ -19,11 +19,11 @@ export class InspirationService {
 
   async getInspirations(req: any) {
     const inspirations = await this.inspirationRepository.query(
-      'SELECT inspirations.id, inspirations.title, inspirations.description, users.FULLNAME as creator FROM inspirations INNER JOIN users ON inspirations.creator = users.USERID',
+      'SELECT inspirations.id, inspirations.title, inspirations.imageUrl, inspirations.description, users.FULLNAME as creator FROM inspirations INNER JOIN users ON inspirations.creator = users.USERID',
     );
 
     const userInspirations = await this.inspirationRepository.query(
-      'SELECT inspirations.id, inspirations.title, inspirations.description, users.FULLNAME as creator FROM inspirations INNER JOIN users ON inspirations.creator = users.USERID WHERE inspirations.creator = ?',
+      'SELECT inspirations.id, inspirations.title, inspirations.imageUrl, inspirations.description, users.FULLNAME as creator FROM inspirations INNER JOIN users ON inspirations.creator = users.USERID WHERE inspirations.creator = ?',
       [parseInt(req.user.userId)],
     );
 
