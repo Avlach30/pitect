@@ -171,4 +171,64 @@ export class InspirationService {
 
     return objResult;
   }
+
+  async deleteInspiration(inspirationId: string, req: any) {
+    let inspiration: any;
+
+    await this.inspirationRepository
+      .query(
+        'SELECT id, title, imageUrl, description, creator FROM inspirations WHERE id = ?',
+        [parseInt(inspirationId)],
+      )
+      .then((data) => {
+        inspiration = data[0];
+        return inspiration;
+      });
+
+    if (inspiration == undefined) {
+      throw new NotFoundException('Data not found');
+    }
+
+    if (inspiration.creator != parseInt(req.user.userId)) {
+      throw new ForbiddenException('Forbidden to access');
+    }
+
+    //* Delete image from S3 cloud storage
+    const s3 = new AWS.S3({
+      credentials: {
+        accessKeyId: this.configService.get<string>('AWS_S3_ACESS_KEY'),
+        secretAccessKey: this.configService.get<string>(
+          'AWS_S3_SECRET_ACCESS_KEY',
+        ),
+      },
+      region: this.configService.get<string>('AWS_S3_BUCKET_REGION'),
+    });
+
+    const oldimage = inspiration.imageUrl;
+    const oldImageKey = new URL(oldimage).pathname.replace(/^\//g, '');
+
+    s3.deleteObject(
+      {
+        Bucket: this.configService.get<string>('AWS_S3_BUCKET_NAME'),
+        Key: oldImageKey,
+      },
+      (error, data) => {
+        if (error) {
+          return error;
+        }
+
+        return 'Deleted existing object in S3 successfully';
+      },
+    );
+
+    await this.inspirationRepository.query(
+      'DELETE FROM inspirations WHERE id = ?',
+      [parseInt(inspirationId)],
+    );
+
+    const objResult = {
+      message: 'Delete existing inspiration data successfully',
+    };
+    return objResult;
+  }
 }

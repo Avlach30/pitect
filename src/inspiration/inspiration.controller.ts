@@ -87,4 +87,18 @@ export class InspirationController {
     );
     return updateInspiration;
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Delete(':inspirationId')
+  @HttpCode(202)
+  async deleteInspiration(
+    @Request() req: any,
+    @Param('inspirationId') inspirationId: string,
+  ) {
+    const deleteInspiration = await this.inspirationService.deleteInspiration(
+      inspirationId,
+      req,
+    );
+    return deleteInspiration;
+  }
 }
