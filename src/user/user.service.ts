@@ -223,7 +223,7 @@ export class UserService {
       });
 
     if (!file) {
-      image = profile.avatar;
+      image = profile.Avatar;
     }
 
     if (file) {
@@ -238,24 +238,22 @@ export class UserService {
         region: this.configService.get<string>('AWS_S3_BUCKET_REGION'),
       });
 
-      const oldimage = profile.avatar;
-      if (oldimage != 'Some Avatar') {
-        const oldImageKey = new URL(oldimage).pathname.replace(/^\//g, '');
+      const oldimage = profile.Avatar;
+      const oldImageKey = new URL(oldimage).pathname.replace(/^\//g, '');
 
-        s3.deleteObject(
-          {
-            Bucket: this.configService.get<string>('AWS_S3_BUCKET_NAME'),
-            Key: oldImageKey,
-          },
-          (error, data) => {
-            if (error) {
-              return error;
-            }
+      s3.deleteObject(
+        {
+          Bucket: this.configService.get<string>('AWS_S3_BUCKET_NAME'),
+          Key: oldImageKey,
+        },
+        (error, data) => {
+          if (error) {
+            return error;
+          }
 
-            return 'Deleted existing object in S3 successfully';
-          },
-        );
-      }
+          return 'Deleted existing object in S3 successfully';
+        },
+      );
 
       image = file.Location;
     }
