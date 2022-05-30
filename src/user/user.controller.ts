@@ -84,6 +84,8 @@ export class ProfileController {
     @Body('type') type: string,
     @Body('numberPhone') numberPhone: string,
     @Body('email') email: string,
+    @Body('facebook') facebook: string,
+    @Body('instagram') instagram: string,
   ) {
     const updateProfile = await this.userService.updateProfile(
       req,
@@ -91,6 +93,8 @@ export class ProfileController {
       type,
       numberPhone,
       email,
+      facebook,
+      instagram,
     );
     return updateProfile;
   }
