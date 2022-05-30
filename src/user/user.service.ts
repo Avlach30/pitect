@@ -137,7 +137,7 @@ export class UserService {
 
   async getUser(@Request() req: any) {
     const user = await this.userRepository.query(
-      'SELECT FULLNAME, TYPE, isVerified, numPhone, EMAIL FROM users WHERE USERID = ?',
+      'SELECT FULLNAME, TYPE, isVerified, numPhone, EMAIL, avatar, facebookId, instagramId FROM users WHERE USERID = ?',
       [parseInt(req.user.userId)],
     );
 
@@ -145,10 +145,13 @@ export class UserService {
       message: 'Fetch user logged in successfully',
       data: {
         name: user[0].FULLNAME,
+        photo: user[0].avatar,
         accountType: user[0].TYPE,
         isVerified: user[0].isVerified,
         numberPhone: parseInt(`+62${Number(user[0].numPhone)}`),
         email: user[0].EMAIL,
+        facebook: user[0].facebookId,
+        instagram: user[0].instagramId,
       },
     };
 
@@ -161,28 +164,31 @@ export class UserService {
     type: string,
     numberPhone: string,
     email: string,
+    facebook: string,
+    instagram: string,
   ) {
-    if (!name || !type || !numberPhone || !email) {
+    if (!name || !type || !numberPhone || !email || !facebook || !instagram) {
       throw new BadRequestException('Please input all fields');
     }
 
-    const updateUser = await this.userRepository.query(
-      'UPDATE users SET FULLNAME = ?, TYPE = ?, numPhone = ?, EMAIL = ? WHERE USERID = ?',
-      [name, type, numberPhone, email, parseInt(req.user.userId)],
-    );
-
-    const result = await this.userRepository.query(
-      'SELECT FULLNAME, TYPE, numPhone, EMAIL FROM users WHERE USERID = ?',
-      [parseInt(req.user.userId)],
+    await this.userRepository.query(
+      'UPDATE users SET FULLNAME = ?, TYPE = ?, numPhone = ?, EMAIL = ?, facebookId = ?, instagramId = ? WHERE USERID = ?',
+      [
+        name,
+        type,
+        numberPhone,
+        email,
+        facebook,
+        instagram,
+        parseInt(req.user.userId),
+      ],
     );
 
     const objResult = {
       message: 'Update user logged in successfully',
       data: {
-        name: result[0].FULLNAME,
-        accountType: result[0].TYPE,
-        numberPhone: parseInt(`+62${Number(result[0].numPhone)}`),
-        email: result[0].EMAIL,
+        facebook: facebook,
+        instagram: instagram,
       },
     };
 
