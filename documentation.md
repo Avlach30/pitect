@@ -524,7 +524,9 @@ Token is obtained from login response
     "name": String,
     "type": String,
     "numberPhone": String,
-    "email": String
+    "email": String,
+    "facebook": String,
+    "instagram": String,
   }
   ```
 * ### Response Success
@@ -532,10 +534,8 @@ Token is obtained from login response
   {
     "message": "Update user logged in successfully",
     "data": {
-        "name": "john revisian",
-        "accountType": "organization",
-        "numberPhone": 6288123456789,
-        "email": "revisian@gmail.com"
+        "facebook": "rocketmail FB",
+        "instagram": "rocketmail_"
     }
   }
   ```
