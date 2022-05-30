@@ -8,9 +8,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import * as AWS from 'aws-sdk';
+import { ConfigService } from '@nestjs/config';
 
 import { Users } from '../entity/user.entity';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
@@ -205,5 +206,69 @@ export class UserService {
     return {
       message: 'Delete user successfully',
     };
+  }
+
+  async updateAvatarProfile(req: any, file: any) {
+    let image: any;
+    let profile: any;
+
+    await this.userRepository
+      .query('SELECT Avatar FROM users WHERE USERID = ?', [
+        parseInt(req.user.userId),
+      ])
+      .then((data) => {
+        profile = data[0];
+        return profile;
+      });
+
+    if (!file) {
+      image = profile.avatar;
+    }
+
+    if (file) {
+      //* Config s3 for remove existing object in s3 bucket
+      const s3 = new AWS.S3({
+        credentials: {
+          accessKeyId: this.configService.get<string>('AWS_S3_ACESS_KEY'),
+          secretAccessKey: this.configService.get<string>(
+            'AWS_S3_SECRET_ACCESS_KEY',
+          ),
+        },
+        region: this.configService.get<string>('AWS_S3_BUCKET_REGION'),
+      });
+
+      const oldimage = profile.avatar;
+      if (oldimage != 'Some Avatar') {
+        const oldImageKey = new URL(oldimage).pathname.replace(/^\//g, '');
+
+        s3.deleteObject(
+          {
+            Bucket: this.configService.get<string>('AWS_S3_BUCKET_NAME'),
+            Key: oldImageKey,
+          },
+          (error, data) => {
+            if (error) {
+              return error;
+            }
+
+            return 'Deleted existing object in S3 successfully';
+          },
+        );
+      }
+
+      image = file.Location;
+    }
+
+    await this.userRepository.query(
+      'UPDATE users SET Avatar = ? WHERE USERID = ?',
+      [image, parseInt(req.user.userId)],
+    );
+
+    const objResult = {
+      message: 'Update photo successfully',
+      photo: image,
+    };
+
+    return objResult;
   }
 }

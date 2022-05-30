@@ -5,12 +5,14 @@ import {
   Get,
   Put,
   Delete,
-  Query,
   Request,
   UseGuards,
   HttpCode,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { AmazonS3FileInterceptor } from 'nestjs-multer-extended';
 
 import { UserService } from './user.service';
 
@@ -105,5 +107,22 @@ export class ProfileController {
   async deleteProfile(@Request() req: any) {
     const deleteProfile = await this.userService.deleteProfile(req);
     return deleteProfile;
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Put()
+  @HttpCode(200)
+  @UseInterceptors(
+    AmazonS3FileInterceptor('image', {
+      limits: { fileSize: 1 * 1024 * 1024 },
+      randomFilename: true,
+    }),
+  )
+  async updateAvatarProfile(@Request() req: any, @UploadedFile() file: any) {
+    const updateAvatarProfile = await this.userService.updateAvatarProfile(
+      req,
+      file,
+    );
+    return updateAvatarProfile;
   }
 }
