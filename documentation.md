@@ -489,10 +489,13 @@ Token is obtained from login response
     "message": "Fetch user logged in successfully",
     "data": {
         "name": "rocketmail",
+        "photo": "Some Avatar",
         "accountType": "company",
         "isVerified": 0,
         "numberPhone": 6289123456789,
-        "email": "rocketmail@gmail.com"
+        "email": "rocketmail@gmail.com",
+        "facebook": null,
+        "instagram": null
     }
   }
   ```
