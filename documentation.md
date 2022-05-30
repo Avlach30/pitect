@@ -14,6 +14,7 @@ Base URL: Localhost (temporary)
 * Logged user management
   * [get logged user data](#get-logged-user-data)
   * [update logged user](#update-logged-user)
+  * [update logged user photo](#update-photo-profile)
   * [delete logged user](#delete-logged-user)
 * Project collaborator management 
   * [search user](#search-user-by-fullname)
@@ -552,6 +553,53 @@ Token is obtained from login response
     "statusCode": 400,
     "message": "Please input all fields",
     "error": "Bad Request"
+  }
+  ```
+## Update photo profile 
+Update photo profile for logged user  
+token is obtained from login response 
+* ### Endpoint  
+  `/api/profile/photo`
+* ### Method
+  PUT
+* ### Headers
+  ```
+  Authorization: `Bearer ${token}`
+  Content-type: multipart/form-data
+  ```
+* ### Body  
+  Because this endpoint contains file upload, make sure you added an attribute `enctype` with value `multipart/form-data` in your form. Then make sure you append each of body field in `formData()`.
+  ```
+  "image": File
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Update photo successfully",
+    "photo": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-user-avatar/93ffb31c-db9e-4d7f-8df3-4f8a0d62585f.jpeg"
+  }
+  ```
+* ### Response fail (because uploaded file not an image)
+  ```
+  {
+    "statusCode": 400,
+    "message": "Invalid Image File Type",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+      "statusCode": 401,
+      "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because uploaded image size is larger than limit)
+  ```
+  {
+    "statusCode": 413,
+    "message": "File too large",
+    "error": "Payload Too Large"
   }
   ```
 ## Delete logged user
