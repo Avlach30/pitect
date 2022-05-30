@@ -110,7 +110,7 @@ export class ProfileController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Put()
+  @Put('photo')
   @HttpCode(200)
   @UseInterceptors(
     AmazonS3FileInterceptor('image', {
