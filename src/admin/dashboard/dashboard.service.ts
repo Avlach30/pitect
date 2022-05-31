@@ -47,11 +47,11 @@ export class DashboardService {
     const objResult = {
       message: 'get all total data successfully',
       total: {
-        user: getTotalUsers[0].totalUser,
-        project: getTotalProjects[0].totalProject,
-        serviceCatalog: getTotalServices[0].totalService,
-        order: getTotalOrders[0].totalOrder,
-        inspiration: getTotalInspiration[0].totalInspiration,
+        user: parseInt(getTotalUsers[0].totalUser),
+        project: parseInt(getTotalProjects[0].totalProject),
+        serviceCatalog: parseInt(getTotalServices[0].totalService),
+        order: parseInt(getTotalOrders[0].totalOrder),
+        inspiration: parseInt(getTotalInspiration[0].totalInspiration),
       },
     };
 
