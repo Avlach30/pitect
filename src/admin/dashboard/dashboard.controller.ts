@@ -63,4 +63,13 @@ export class DashboardController {
       await this.dashboardService.getServiceCatalogDashboards();
     return getServiceCatalogDashboards;
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('inspirations')
+  @HttpCode(200)
+  async getInspirationDashboards() {
+    const getInspirationDashboards =
+      await this.dashboardService.getInspirationDashboards();
+    return getInspirationDashboards;
+  }
 }

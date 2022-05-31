@@ -170,4 +170,18 @@ export class DashboardService {
 
     return objResult;
   }
+
+  async getInspirationDashboards() {
+    const getInspirations = await this.inspirationRepository.query(
+      'SELECT inspirations.id, inspirations.title, users.FULLNAME as creator, inspirations.imageUrl, inspirations.description FROM inspirations INNER JOIN users ON inspirations.creator = users.USERID',
+    );
+
+    const objResult = {
+      message: 'Get all inspirations successfully',
+      inspirations: getInspirations,
+      total: getInspirations.length,
+    };
+
+    return objResult;
+  }
 }
