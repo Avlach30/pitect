@@ -20,7 +20,7 @@ export class DashboardService {
     @InjectRepository(Orders) private orderRepository: Repository<Orders>,
     @InjectRepository(Services) private serviceRepository: Repository<Services>,
     @InjectRepository(Inspirations)
-    private inspirationRepository: Repository<Inspiratios>,
+    private inspirationRepository: Repository<Inspirations>,
   ) {}
 
   async getDashboards() {
