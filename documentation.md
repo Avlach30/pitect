@@ -36,6 +36,7 @@ Base URL: Localhost (temporary)
 * Admin dashboard
   * [get total for each data](#get-total-for-each-data)
   * [get all users](#get-all-users)
+  * [get all projects](#get-all-projects-admin)
   * [get all orders](#get-order-dashboards)
   * [confirm order](#verification-order-by-admin)
 * Marketplace
@@ -1374,6 +1375,103 @@ Token is obtained from login response
         "verified": 0,
         "unVerified": 4
     }
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+## Get all projects (admin)
+Get all projects data for dashboard admin, include total data  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/admin/dashboard/projects`
+* ### Method
+  GET
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Get all project data successfully",
+    "projects": [
+        {
+            "id": 29,
+            "title": "Pembangunan Jembatan",
+            "owner": "Rocket mail",
+            "totalContract": 15000000,
+            "address": "Sulawesi Selatan",
+            "startDate": "2021-12-22T16:00:00.000Z",
+            "finishDate": "2022-02-12T16:00:00.000Z",
+            "duration": 52
+        },
+        {
+            "id": 30,
+            "title": "Pembangunan Wc",
+            "owner": "Rocket mail",
+            "totalContract": 22000000,
+            "address": "Sulawesi Selatan",
+            "startDate": "2021-12-22T16:00:00.000Z",
+            "finishDate": "2022-02-12T16:00:00.000Z",
+            "duration": 52
+        },
+        {
+            "id": 32,
+            "title": "Pengembangan proyek homestay",
+            "owner": "john doe",
+            "totalContract": 500000000,
+            "address": "Maluku",
+            "startDate": "2022-01-07T16:00:00.000Z",
+            "finishDate": "2022-07-07T16:00:00.000Z",
+            "duration": 181
+        },
+        {
+            "id": 33,
+            "title": "Pembangunan Proyek IKN",
+            "owner": "john doe",
+            "totalContract": 500000000,
+            "address": "Sulawesi Selatan",
+            "startDate": "2022-01-07T16:00:00.000Z",
+            "finishDate": "2022-07-07T16:00:00.000Z",
+            "duration": 181
+        },
+        {
+            "id": 35,
+            "title": "Pengembangan proyek sengketa",
+            "owner": "john doe",
+            "totalContract": 500000000,
+            "address": "Maluku",
+            "startDate": "2022-01-07T16:00:00.000Z",
+            "finishDate": "2022-07-07T16:00:00.000Z",
+            "duration": 181
+        },
+        {
+            "id": 36,
+            "title": "Pengembangan proyek kolam renang",
+            "owner": "john doe",
+            "totalContract": 20000000,
+            "address": "Yogyakarta",
+            "startDate": "2022-03-25T16:00:00.000Z",
+            "finishDate": "2022-07-25T16:00:00.000Z",
+            "duration": 122
+        },
+        {
+            "id": 37,
+            "title": "Pengembangan proyek kolam renang",
+            "owner": "john morisson",
+            "totalContract": 20000000,
+            "address": "Yogyakarta",
+            "startDate": "2022-03-25T16:00:00.000Z",
+            "finishDate": "2022-07-25T16:00:00.000Z",
+            "duration": 122
+        }
+    ],
+    "total": 7
   }
   ```
 * ### Response fail (because token not available or expired)
