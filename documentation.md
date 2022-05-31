@@ -37,6 +37,7 @@ Base URL: Localhost (temporary)
   * [get total for each data](#get-total-for-each-data)
   * [get all users](#get-all-users)
   * [get all projects](#get-all-projects-admin)
+  * [get all catalogs](#get-all-catalogs-admin)
   * [get all orders](#get-order-dashboards)
   * [confirm order](#verification-order-by-admin)
 * Marketplace
@@ -1472,6 +1473,78 @@ Token is obtained from login response
         }
     ],
     "total": 7
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+## Get all catalogs (admin)
+Get all marketplace catalogs data for dashboard admin, include total data  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/admin/dashboard/catalogs`
+* ### Method
+  GET
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Get all marketplace catalog data successfully",
+    "catalogs": [
+        {
+            "id": 2,
+            "title": "desain tugu sepeda",
+            "creator": "Rocket mail",
+            "description": "Perancangan tugu sepeda untuk provinsi DKI Jakarta",
+            "cost": 2000000,
+            "category": "Traditional",
+            "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/84dc9c5b-fe8b-491f-8070-c455ecfb0f63.jpeg"
+        },
+        {
+            "id": 15,
+            "title": "Rancangan stadion",
+            "creator": "john doe",
+            "description": "Desain / rancangan bangunan stadion bernuansa modern dan futuristik",
+            "cost": 5000000,
+            "category": "Modern",
+            "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/6c4b01fb-6ccd-4581-8c52-a35240b582fb.jpeg"
+        },
+        {
+            "id": 16,
+            "title": "Desain rancangan jembatan Sumatra - Jawa",
+            "creator": "john doe",
+            "description": "Jasa desain untuk rancangan konstruksi jembatan Sumatra - Jawa",
+            "cost": 5000000,
+            "category": "Modern",
+            "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/d4e93a5d-b379-463d-a822-92fa63cbe940.jpeg"
+        },
+        {
+            "id": 17,
+            "title": "Desain kantor pos",
+            "creator": "Rocket mail",
+            "description": "Jasa desain kantor pos dengan gaya modern",
+            "cost": 5000000,
+            "category": "modern",
+            "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/23a17ffc-cb2b-427e-9470-7f5201e331c8.jpeg"
+        },
+        {
+            "id": 18,
+            "title": "Desain GWK full",
+            "creator": "Rocket mail",
+            "description": "Jasa desain GWK secara keseluruhan",
+            "cost": 150000000,
+            "category": "Modern",
+            "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg"
+        }
+    ],
+    "total": 5
   }
   ```
 * ### Response fail (because token not available or expired)
