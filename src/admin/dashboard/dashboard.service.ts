@@ -9,6 +9,8 @@ import { Repository } from 'typeorm';
 import { Users } from '../../entity/user.entity';
 import { Projects } from '../../entity/project.entity';
 import { Orders } from '../../entity/order.entity';
+import { Services } from '../../entity/services.entity';
+import { Inspirations } from '../../entity/inspiration.entity';
 
 @Injectable()
 export class DashboardService {
@@ -16,13 +18,47 @@ export class DashboardService {
     @InjectRepository(Users) private userRepository: Repository<Users>,
     @InjectRepository(Projects) private projectRepository: Repository<Projects>,
     @InjectRepository(Orders) private orderRepository: Repository<Orders>,
+    @InjectRepository(Services) private serviceRepository: Repository<Services>,
+    @InjectRepository(Inspirations)
+    private inspirationRepository: Repository<Inspiratios>,
   ) {}
 
   async getDashboards() {
-    const getAllProjects = await this.projectRepository.query(
-      'SELECT projects.id, projects.title, users.FULLNAME as admin, projects.totalContract, projects.address, projects.startDate, projects.finishDate, DATEDIFF(projects.finishDate, projects.startDate) as duration FROM projects INNER JOIN users ON projects.admin = users.USERID',
+    const getTotalProjects = await this.projectRepository.query(
+      'SELECT COUNT(*) as totalProject FROM projects',
     );
 
+    const getTotalUsers = await this.userRepository.query(
+      'SELECT COUNT(*) as totalUser FROM users',
+    );
+
+    const getTotalServices = await this.serviceRepository.query(
+      'SELECT COUNT(*) as totalService FROM services',
+    );
+
+    const getTotalOrders = await this.orderRepository.query(
+      'SELECT COUNT(*) as totalOrder FROM orders',
+    );
+
+    const getTotalInspiration = await this.inspirationRepository.query(
+      'SELECT COUNT(*) as totalInspiration FROM inspirations',
+    );
+
+    const objResult = {
+      message: 'get all total data successfully',
+      total: {
+        user: getTotalUsers[0].totalUser,
+        project: getTotalProjects[0].totalProject,
+        serviceCatalog: getTotalServices[0].totalService,
+        order: getTotalOrders[0].totalOrder,
+        inspiration: getTotalInspiration[0].totalInspiration,
+      },
+    };
+
+    return objResult;
+  }
+
+  async getUserDashboards() {
     const getAllUsers = await this.userRepository.query(
       'SELECT USERID as id, FULLNAME as name, TYPE as type, isVerified, numPhone, EMAIL as email FROM users',
     );
@@ -32,6 +68,24 @@ export class DashboardService {
       return user.isVerified === 1;
     }).length;
 
+    const objResult = {
+      message: 'Get all user data successfully',
+      data: getAllUsers,
+      total: getAllUsers.length,
+      information: {
+        verified: countVerifiedUser,
+        unVerified: getAllUsers.length - countVerifiedUser,
+      },
+    };
+
+    return objResult;
+  }
+
+  async getProjectDashboards() {
+    const getAllProjects = await this.projectRepository.query(
+      'SELECT projects.id, projects.title, users.FULLNAME as owner, projects.totalContract, projects.address, projects.startDate, projects.finishDate, DATEDIFF(projects.finishDate, projects.startDate) as duration FROM projects INNER JOIN users ON projects.admin = users.USERID',
+    );
+
     //* Convert project duration to integer
     getAllProjects.map((project: any) => {
       project.duration = parseInt(project.duration);
@@ -40,19 +94,23 @@ export class DashboardService {
     });
 
     const objResult = {
-      message: 'Fetching all project and user successfully',
-      projects: {
-        data: getAllProjects,
-        total: getAllProjects.length,
-      },
-      users: {
-        data: getAllUsers,
-        total: getAllUsers.length,
-        information: {
-          verified: countVerifiedUser,
-          unVerified: getAllUsers.length - countVerifiedUser,
-        },
-      },
+      message: 'Get all project data successfully',
+      projects: getAllProjects,
+      total: getAllProjects.length,
+    };
+
+    return objResult;
+  }
+
+  async getServiceCatalogDashboards() {
+    const getCatalogs = await this.serviceRepository.query(
+      'SELECT services.id, services.title, users.FULLNAME as creator, services.description, services.cost, services.category, services.image FROM services INNER JOIN users ON services.creator = users.USERID',
+    );
+
+    const objResult = {
+      message: 'Get all marketplace catalog data successfully',
+      catalogs: getCatalogs,
+      total: getCatalogs.length,
     };
 
     return objResult;
@@ -66,6 +124,7 @@ export class DashboardService {
     const objResult = {
       message: 'Get all orders successfully',
       data: getOrders,
+      total: getOrders.length,
     };
 
     return objResult;
@@ -108,6 +167,20 @@ export class DashboardService {
         id: parseInt(id),
         status: 'Pesanan aktif',
       },
+    };
+
+    return objResult;
+  }
+
+  async getInspirationDashboards() {
+    const getInspirations = await this.inspirationRepository.query(
+      'SELECT inspirations.id, inspirations.title, users.FULLNAME as creator, inspirations.imageUrl, inspirations.description FROM inspirations INNER JOIN users ON inspirations.creator = users.USERID',
+    );
+
+    const objResult = {
+      message: 'Get all inspirations successfully',
+      inspirations: getInspirations,
+      total: getInspirations.length,
     };
 
     return objResult;

@@ -37,4 +37,39 @@ export class DashboardController {
     const confirmOrder = await this.dashboardService.confirmOrder(orderId);
     return confirmOrder;
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('users')
+  @HttpCode(200)
+  async getUserDashboards() {
+    const getUserDashboards = await this.dashboardService.getUserDashboards();
+    return getUserDashboards;
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('projects')
+  @HttpCode(200)
+  async getProjectDashboards() {
+    const getProjectDashboards =
+      await this.dashboardService.getProjectDashboards();
+    return getProjectDashboards;
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('catalogs')
+  @HttpCode(200)
+  async getServiceCatalogDashboards() {
+    const getServiceCatalogDashboards =
+      await this.dashboardService.getServiceCatalogDashboards();
+    return getServiceCatalogDashboards;
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('inspirations')
+  @HttpCode(200)
+  async getInspirationDashboards() {
+    const getInspirationDashboards =
+      await this.dashboardService.getInspirationDashboards();
+    return getInspirationDashboards;
+  }
 }
