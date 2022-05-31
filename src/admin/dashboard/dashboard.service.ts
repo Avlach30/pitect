@@ -121,6 +121,16 @@ export class DashboardService {
       'SELECT orders.id, orders.date, orders.cost, orders.status, orders.cancelDate, orders.slipPayment, orders.isApprove, users.FULLNAME as buyer FROM orders INNER JOIN users on orders.userId = users.USERID',
     );
 
+    getOrders.map((order: any) => {
+      if (order.isApprove == 1) {
+        order.isApprove = true;
+      } else {
+        order.isApprove = false;
+      }
+
+      return order;
+    });
+
     const objResult = {
       message: 'Get all orders successfully',
       data: getOrders,
