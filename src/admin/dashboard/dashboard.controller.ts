@@ -37,4 +37,12 @@ export class DashboardController {
     const confirmOrder = await this.dashboardService.confirmOrder(orderId);
     return confirmOrder;
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('users')
+  @HttpCode(200)
+  async getUserDashboards() {
+    const getUserDashboards = await this.dashboardService.getUserDashboards();
+    return getUserDashboards;
+  }
 }

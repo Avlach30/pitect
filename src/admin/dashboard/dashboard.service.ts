@@ -20,7 +20,7 @@ export class DashboardService {
     @InjectRepository(Orders) private orderRepository: Repository<Orders>,
     @InjectRepository(Services) private serviceRepository: Repository<Services>,
     @InjectRepository(Inspirations)
-    private inspirationRepository: Repository<Inspiratios>
+    private inspirationRepository: Repository<Inspiratios>,
   ) {}
 
   async getDashboards() {
@@ -52,6 +52,29 @@ export class DashboardService {
         serviceCatalog: getTotalServices[0].totalService,
         order: getTotalOrders[0].totalOrder,
         inspiration: getTotalInspiration[0].totalInspiration,
+      },
+    };
+
+    return objResult;
+  }
+
+  async getUserDashboards() {
+    const getAllUsers = await this.userRepository.query(
+      'SELECT USERID as id, FULLNAME as name, TYPE as type, isVerified, numPhone, EMAIL as email FROM users',
+    );
+
+    //* Count verified users
+    const countVerifiedUser = getAllUsers.filter((user: any) => {
+      return user.isVerified === 1;
+    }).length;
+
+    const objResult = {
+      message: 'Get all user data successfully',
+      data: getAllUsers,
+      total: getAllUsers.length,
+      information: {
+        verified: countVerifiedUser,
+        unVerified: getAllUsers.length - countVerifiedUser,
       },
     };
 
