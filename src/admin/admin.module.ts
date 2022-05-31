@@ -8,6 +8,7 @@ import { isAuth } from '../middleware/is-auth';
 import { DashboardController } from './dashboard/dashboard.controller';
 import { DashboardService } from './dashboard/dashboard.service';
 import { Inspirations } from '../entity/inspiration.entity';
+import { Services } from '../entity/services.entity';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { Inspirations } from '../entity/inspiration.entity';
     TypeOrmModule.forFeature([Users]),
     TypeOrmModule.forFeature([Orders]),
     TypeOrmModule.forFeature([Inspirations]),
+    TypeOrmModule.forFeature([Services]),
   ],
   controllers: [DashboardController],
   providers: [isAuth, DashboardService],
