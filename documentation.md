@@ -35,6 +35,7 @@ Base URL: Localhost (temporary)
   * [get project report](#get-specified-project-report)
 * Admin dashboard
   * [get total for each data](#get-total-for-each-data)
+  * [get all users](#get-all-users)
   * [get all orders](#get-order-dashboards)
   * [confirm order](#verification-order-by-admin)
 * Marketplace
