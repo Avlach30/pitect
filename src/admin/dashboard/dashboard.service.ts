@@ -9,6 +9,8 @@ import { Repository } from 'typeorm';
 import { Users } from '../../entity/user.entity';
 import { Projects } from '../../entity/project.entity';
 import { Orders } from '../../entity/order.entity';
+import { Services } from '../../entity/services.entity';
+import { Inspirations } from '../../entity/inspiration.entity';
 
 @Injectable()
 export class DashboardService {
@@ -16,42 +18,40 @@ export class DashboardService {
     @InjectRepository(Users) private userRepository: Repository<Users>,
     @InjectRepository(Projects) private projectRepository: Repository<Projects>,
     @InjectRepository(Orders) private orderRepository: Repository<Orders>,
+    @InjectRepository(Services) private serviceRepository: Repository<Services>,
+    @InjectRepository(Inspirations)
+    private inspirationRepository: Repository<Inspiratios>
   ) {}
 
   async getDashboards() {
-    const getAllProjects = await this.projectRepository.query(
-      'SELECT projects.id, projects.title, users.FULLNAME as admin, projects.totalContract, projects.address, projects.startDate, projects.finishDate, DATEDIFF(projects.finishDate, projects.startDate) as duration FROM projects INNER JOIN users ON projects.admin = users.USERID',
+    const getTotalProjects = await this.projectRepository.query(
+      'SELECT COUNT(*) as totalProject FROM projects',
     );
 
-    const getAllUsers = await this.userRepository.query(
-      'SELECT USERID as id, FULLNAME as name, TYPE as type, isVerified, numPhone, EMAIL as email FROM users',
+    const getTotalUsers = await this.userRepository.query(
+      'SELECT COUNT(*) as totalUser FROM users',
     );
 
-    //* Count verified users
-    const countVerifiedUser = getAllUsers.filter((user: any) => {
-      return user.isVerified === 1;
-    }).length;
+    const getTotalServices = await this.serviceRepository.query(
+      'SELECT COUNT(*) as totalService FROM services',
+    );
 
-    //* Convert project duration to integer
-    getAllProjects.map((project: any) => {
-      project.duration = parseInt(project.duration);
+    const getTotalOrders = await this.orderRepository.query(
+      'SELECT COUNT(*) as totalOrder FROM orders',
+    );
 
-      return project;
-    });
+    const getTotalInspiration = await this.inspirationRepository.query(
+      'SELECT COUNT(*) as totalInspiration FROM inspirations',
+    );
 
     const objResult = {
-      message: 'Fetching all project and user successfully',
-      projects: {
-        data: getAllProjects,
-        total: getAllProjects.length,
-      },
-      users: {
-        data: getAllUsers,
-        total: getAllUsers.length,
-        information: {
-          verified: countVerifiedUser,
-          unVerified: getAllUsers.length - countVerifiedUser,
-        },
+      message: 'get all total data successfully',
+      total: {
+        user: getTotalUsers[0].totalUser,
+        project: getTotalProjects[0].totalProject,
+        serviceCatalog: getTotalServices[0].totalService,
+        order: getTotalOrders[0].totalOrder,
+        inspiration: getTotalInspiration[0].totalInspiration,
       },
     };
 
