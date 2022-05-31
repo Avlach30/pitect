@@ -1319,6 +1319,69 @@ Token is obtained from login response
     "message": "Unauthorized"
   }
   ```
+## Get all users
+Get all users data for dashboard admin, include total data  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/admin/dashboard/users`
+* ### Method
+  GET
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Get all user data successfully",
+    "data": [
+        {
+            "id": 24,
+            "name": "john doe",
+            "type": "personal",
+            "isVerified": 0,
+            "numPhone": "089123456789",
+            "email": "johndoe@gmail.com"
+        },
+        {
+            "id": 25,
+            "name": "jane doe",
+            "type": "organization",
+            "isVerified": 0,
+            "numPhone": "089123456789",
+            "email": "janedoe@gmail.com"
+        },
+        {
+            "id": 27,
+            "name": "Rocket mail",
+            "type": "organization",
+            "isVerified": 0,
+            "numPhone": "088123456789",
+            "email": "rocketmail@gmail.com"
+        },
+        {
+            "id": 28,
+            "name": "john morisson",
+            "type": "company",
+            "isVerified": 0,
+            "numPhone": "088987654321",
+            "email": "morisson@gmail.com"
+        }
+    ],
+    "total": 4,
+    "information": {
+        "verified": 0,
+        "unVerified": 4
+    }
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
 ## Create a new product
 Create a new product for marketplace (with image upload)  
 Token is obtained from login response  
