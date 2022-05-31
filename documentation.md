@@ -2859,7 +2859,7 @@ Token is obtained from login response
             "status": "Perlu konfirmasi",
             "cancelDate": null,
             "slipPayment": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/slip-transfers/4c7906fa-6b91-4d32-a252-255a98105e06.jpeg",
-            "isApprove": 1,
+            "isApprove": true,
             "buyer": "Rocket mail"
         },
         {
@@ -2869,7 +2869,7 @@ Token is obtained from login response
             "status": "Selesai",
             "cancelDate": null,
             "slipPayment": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/slip-transfers/70fcbb01-b11e-41f5-a64c-021e2fa3da54.jpeg",
-            "isApprove": 1,
+            "isApprove": true,
             "buyer": "Rocket mail"
         }
     ],
