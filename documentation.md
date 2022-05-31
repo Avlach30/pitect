@@ -2610,7 +2610,7 @@ Token is obtained from login response
   }
   ```
 ## Get order dashboards  
-Get all orders data for admin dashboard  
+Get all orders data for admin dashboard, include total data  
 Token is obtained from login response  
 * ### Endpoint  
   `/api/admin/dashboard/orders`
@@ -2633,19 +2633,20 @@ Token is obtained from login response
             "cancelDate": null,
             "slipPayment": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/slip-transfers/4c7906fa-6b91-4d32-a252-255a98105e06.jpeg",
             "isApprove": 1,
-            "buyer": "rocketmail"
+            "buyer": "Rocket mail"
         },
         {
             "id": 3,
             "date": "2022-04-26T00:19:27.000Z",
             "cost": 10000000,
-            "status": "Perlu konfirmasi",
+            "status": "Selesai",
             "cancelDate": null,
             "slipPayment": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/slip-transfers/70fcbb01-b11e-41f5-a64c-021e2fa3da54.jpeg",
             "isApprove": 1,
-            "buyer": "rocketmail"
+            "buyer": "Rocket mail"
         }
-    ]
+    ],
+    "total": 2
   }
   ```
 * ### Response fail (because token not available or expired)
