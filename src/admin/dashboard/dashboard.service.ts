@@ -102,6 +102,20 @@ export class DashboardService {
     return objResult;
   }
 
+  async getServiceCatalogDashboards() {
+    const getCatalogs = await this.serviceRepository.query(
+      'SELECT services.id, services.title, users.FULLNAME as creator, services.description, services.cost, services.category, services.image FROM services INNER JOIN users ON services.creator = users.USERID',
+    );
+
+    const objResult = {
+      message: 'Get all marketplace catalog data successfully',
+      catalogs: getCatalogs,
+      total: getCatalogs.length,
+    };
+
+    return objResult;
+  }
+
   async getOrderDashboards() {
     const getOrders = await this.orderRepository.query(
       'SELECT orders.id, orders.date, orders.cost, orders.status, orders.cancelDate, orders.slipPayment, orders.isApprove, users.FULLNAME as buyer FROM orders INNER JOIN users on orders.userId = users.USERID',
