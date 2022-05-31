@@ -34,7 +34,7 @@ Base URL: Localhost (temporary)
 * Project report
   * [get project report](#get-specified-project-report)
 * Admin dashboard
-  * [get all projects & users](#get-all-projects-and-users)
+  * [get total for each data](#get-total-for-each-data)
   * [get all orders](#get-order-dashboards)
   * [confirm order](#verification-order-by-admin)
 * Marketplace
@@ -1288,7 +1288,8 @@ Token is obtained from login response
       "error": "Not Found"
   }
   ```
-## Get all projects and users  
+## Get total for each data
+Get total for each important data for admin. Such as users, projects, catalogs, orders, and inspirations  
 Token is obtained from login response  
 * ### Endpoint  
   `/api/admin/dashboard`
@@ -1301,122 +1302,13 @@ Token is obtained from login response
 * ### Response Success
   ```
   {
-    "message": "Fetching all project and user successfully",
-    "projects": {
-        "data": [
-            {
-                "id": 29,
-                "title": "Pembangunan Jembatan",
-                "admin": "rocketmail",
-                "totalContract": 15000000,
-                "address": "Sulawesi Selatan",
-                "startDate": "2021-12-22T17:00:00.000Z",
-                "finishDate": "2022-02-12T17:00:00.000Z",
-                "duration": 52
-            },
-            {
-                "id": 30,
-                "title": "Pembangunan Wc",
-                "admin": "rocketmail",
-                "totalContract": 22000000,
-                "address": "Sulawesi Selatan",
-                "startDate": "2021-12-22T17:00:00.000Z",
-                "finishDate": "2022-02-12T17:00:00.000Z",
-                "duration": 52
-            },
-            {
-                "id": 32,
-                "title": "Pengembangan proyek homestay",
-                "admin": "john doe",
-                "totalContract": 500000000,
-                "address": "Maluku",
-                "startDate": "2022-01-07T17:00:00.000Z",
-                "finishDate": "2022-07-07T17:00:00.000Z",
-                "duration": 181
-            },
-            {
-                "id": 33,
-                "title": "Pembangunan Proyek IKN",
-                "admin": "john doe",
-                "totalContract": 500000000,
-                "address": "Sulawesi Selatan",
-                "startDate": "2022-01-07T17:00:00.000Z",
-                "finishDate": "2022-07-07T17:00:00.000Z",
-                "duration": 181
-            },
-            {
-                "id": 35,
-                "title": "Pengembangan proyek sengketa",
-                "admin": "john doe",
-                "totalContract": 500000000,
-                "address": "Maluku",
-                "startDate": "2022-01-07T17:00:00.000Z",
-                "finishDate": "2022-07-07T17:00:00.000Z",
-                "duration": 181
-            },
-            {
-                "id": 36,
-                "title": "Pengembangan proyek kolam renang",
-                "admin": "john doe",
-                "totalContract": 20000000,
-                "address": "Yogyakarta",
-                "startDate": "2022-03-25T17:00:00.000Z",
-                "finishDate": "2022-07-25T17:00:00.000Z",
-                "duration": 122
-            },
-            {
-                "id": 37,
-                "title": "Pengembangan proyek kolam renang",
-                "admin": "john morisson",
-                "totalContract": 20000000,
-                "address": "Yogyakarta",
-                "startDate": "2022-03-25T17:00:00.000Z",
-                "finishDate": "2022-07-25T17:00:00.000Z",
-                "duration": 122
-            }
-        ],
-        "total": 7
-    },
-    "users": {
-        "data": [
-            {
-                "id": 24,
-                "name": "john doe",
-                "type": "personal",
-                "isVerified": 0,
-                "numPhone": "089123456789",
-                "email": "johndoe@gmail.com"
-            },
-            {
-                "id": 25,
-                "name": "jane doe",
-                "type": "organization",
-                "isVerified": 0,
-                "numPhone": "089123456789",
-                "email": "janedoe@gmail.com"
-            },
-            {
-                "id": 27,
-                "name": "rocketmail",
-                "type": "company",
-                "isVerified": 0,
-                "numPhone": "089123456789",
-                "email": "rocketmail@gmail.com"
-            },
-            {
-                "id": 28,
-                "name": "john morisson",
-                "type": "company",
-                "isVerified": 0,
-                "numPhone": "088987654321",
-                "email": "morisson@gmail.com"
-            }
-        ],
-        "total": 4,
-        "information": {
-            "verified": 0,
-            "unVerified": 4
-        }
+    "message": "get all total data successfully",
+    "total": {
+        "user": 4,
+        "project": 7,
+        "serviceCatalog": 5,
+        "order": 2,
+        "inspiration": 4
     }
   }
   ```
