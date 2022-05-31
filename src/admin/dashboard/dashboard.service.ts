@@ -124,6 +124,7 @@ export class DashboardService {
     const objResult = {
       message: 'Get all orders successfully',
       data: getOrders,
+      total: getOrders.length,
     };
 
     return objResult;
