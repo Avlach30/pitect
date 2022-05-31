@@ -45,4 +45,12 @@ export class DashboardController {
     const getUserDashboards = await this.dashboardService.getUserDashboards();
     return getUserDashboards;
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('projects')
+  @HttpCode(200)
+  async getProjectDashboards() {
+    const getProjectDashboards = await this.dashboardService.getProjectDashboards();
+    return getProjectDashboards;
+  }
 }

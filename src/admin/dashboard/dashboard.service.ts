@@ -81,6 +81,27 @@ export class DashboardService {
     return objResult;
   }
 
+  async getProjectDashboards() {
+    const getAllProjects = await this.projectRepository.query(
+      'SELECT projects.id, projects.title, users.FULLNAME as owner, projects.totalContract, projects.address, projects.startDate, projects.finishDate, DATEDIFF(projects.finishDate, projects.startDate) as duration FROM projects INNER JOIN users ON projects.admin = users.USERID',
+    );
+
+    //* Convert project duration to integer
+    getAllProjects.map((project: any) => {
+      project.duration = parseInt(project.duration);
+
+      return project;
+    });
+
+    const objResult = {
+      message: 'Get all project data successfully',
+      projects: getAllProjects,
+      total: getAllProjects.length,
+    };
+
+    return objResult;
+  }
+
   async getOrderDashboards() {
     const getOrders = await this.orderRepository.query(
       'SELECT orders.id, orders.date, orders.cost, orders.status, orders.cancelDate, orders.slipPayment, orders.isApprove, users.FULLNAME as buyer FROM orders INNER JOIN users on orders.userId = users.USERID',
