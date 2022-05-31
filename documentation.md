@@ -39,6 +39,7 @@ Base URL: Localhost (temporary)
   * [get all projects](#get-all-projects-admin)
   * [get all catalogs](#get-all-catalogs-admin)
   * [get all orders](#get-order-dashboards)
+  * [get all inspirations](#get-all-inspirations-admin)
   * [confirm order](#verification-order-by-admin)
 * Marketplace
   * [get all catalogs](#get-all-marketplace-catalogs)
@@ -1545,6 +1546,61 @@ Token is obtained from login response
         }
     ],
     "total": 5
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+## Get all inspirations (admin)
+Get all inspirations data for dashboard admin, include total data  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/admin/dashboard/inspirations`
+* ### Method
+  GET
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response Success
+  ```
+  {
+    "message": "Get all inspirations successfully",
+    "inspirations": [
+        {
+            "id": 3,
+            "title": "Rumah kontainer",
+            "creator": "john doe",
+            "imageUrl": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/cdc08021-e0a7-4362-bccb-3dfc6f150817.jpeg",
+            "description": "Arsitektur dengan gaya minimalis"
+        },
+        {
+            "id": 4,
+            "title": "Desain rumah pohon",
+            "creator": "Rocket mail",
+            "imageUrl": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/6e521187-caff-4e65-8526-ac98e5ed5613.jpeg",
+            "description": "Desain rumah pohon dengan gaya minimalis namun nyaman. Dengan konsep menyatu degan alam"
+        },
+        {
+            "id": 5,
+            "title": "Desain rumah bali",
+            "creator": "Rocket mail",
+            "imageUrl": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/61630f10-7105-49ab-b9f7-3c7ddc15b982.jpeg",
+            "description": "Desain rumah bali dengan konsep tradisional"
+        },
+        {
+            "id": 6,
+            "title": "Joglo",
+            "creator": "Rocket mail",
+            "imageUrl": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/pitect-inspirations/2085c93d-b6a6-4cf6-9690-73633ceb3c9b.jpeg",
+            "description": "Desain rumah bergaya tradisional khas joglo. Menjunjung tinggi nilai persatuan dengan alam."
+        }
+    ],
+    "total": 4
   }
   ```
 * ### Response fail (because token not available or expired)
