@@ -8,11 +8,11 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { Carts } from '../../entity/cart.entity';
-import { CartItems } from '../../entity/cart-item.entity';
 import { Orders } from '../../entity/order.entity';
 import { OrderItems } from '../../entity/order-item.entity';
 import { OrderReviews } from 'src/entity/order-review.entity';
+import { Services } from '../../entity/services.entity';
+import { Users } from '../../entity/user.entity';
 
 @Injectable()
 export class OrderService {
@@ -22,18 +22,22 @@ export class OrderService {
     private orderItemRepository: Repository<Orders>,
     @InjectRepository(OrderReviews)
     private reviewRepository: Repository<OrderReviews>,
-    @InjectRepository(Carts)
-    private cartRepository: Repository<Carts>,
-    @InjectRepository(CartItems)
-    private cartItemRepository: Repository<CartItems>,
+    @InjectRepository(Services) private serviceRepository: Repository<Services>,
+    @InjectRepository(Services)
+    private serviceInfoRepository: Repository<Services>,
+    @InjectRepository(Users) private userRepository: Repository<Users>,
   ) {}
 
-  async createOrder(req: any) {
+  async createOrder(req: any, catalogId: string, catalogItemId: number) {
     let result;
 
-    await this.cartRepository
-      .query('SELECT id FROM carts WHERE userId = ?', [
-        parseInt(req.user.userId),
+    if (!catalogItemId) {
+      throw new BadRequestException('Please, choose a variation firstly');
+    }
+
+    await this.serviceRepository
+      .query('SELECT id, title FROM services WHERE services.id = ?', [
+        parseInt(catalogId),
       ])
       .then((data) => {
         result = data[0];
@@ -46,40 +50,31 @@ export class OrderService {
       throw new NotFoundException('Data not found');
     }
 
-    const cartItem = await this.cartItemRepository.query(
-      'SELECT cartitems.id, services.id AS itemId, serviceinfos.id AS itemInfoId, serviceinfos.duration AS itemDuration, serviceinfos.cost AS itemCost FROM cartitems INNER JOIN services ON cartitems.serviceId = services.id INNER JOIN serviceinfos ON cartitems.serviceInfoId = serviceinfos.id AND services.id = serviceinfos.serviceId WHERE cartitems.cartId = ?',
-      [result.id],
+    const serviceItem = await this.serviceInfoRepository.query(
+      'SELECT cost, duration FROM serviceinfos WHERE id = ? AND serviceId = ?',
+      [catalogItemId, parseInt(catalogId)],
     );
-    if (cartItem.length < 1) {
-      throw new BadRequestException('Please, add catalog to cart firstly');
-    }
 
-    const sumCost = cartItem
-      .map((item) => item.itemCost)
-      .reduce((prevValue, currentValue) => prevValue + currentValue, 0);
-
-    const currentDate = new Date().toISOString();
+    const currentDate: any = new Date();
+    const doneDate: any = new Date(
+      Date.now() + 3600 * 1000 * 24 * parseInt(serviceItem[0].duration),
+    );
 
     const insertOrder = await this.orderRepository.query(
-      'INSERT INTO orders (date, cost, userId) VALUES (?, ?, ?)',
-      [currentDate, sumCost, parseInt(req.user.userId)],
+      'INSERT INTO orders (date, cost, userId, doneDate) VALUES (?, ?, ?, ?)',
+      [currentDate, serviceItem[0].cost, parseInt(req.user.userId), doneDate],
     );
 
-    cartItem.forEach(async (item) => {
-      await this.orderItemRepository.query(
-        'INSERT INTO orderitems (orderId, serviceId, serviceInfoId) VALUES (?, ?, ?)',
-        [insertOrder.insertId, item.itemId, item.itemInfoId],
-      );
-    });
-
-    await this.cartItemRepository.query(
-      'DELETE FROM cartitems WHERE cartId = ?',
-      [result.id],
+    await this.orderItemRepository.query(
+      'INSERT INTO orderitems (orderId, serviceId, serviceInfoId) VALUES (?, ?, ?)',
+      [insertOrder.insertId, parseInt(catalogId), catalogItemId],
     );
 
     const objResult = {
       message: 'Create new order successfully',
-      cost: sumCost,
+      cost: serviceItem[0].cost,
+      orderDate: currentDate,
+      estimateDoneDate: doneDate,
     };
 
     return objResult;
@@ -87,18 +82,32 @@ export class OrderService {
 
   async getOrders(req: any) {
     const orders = await this.orderRepository.query(
-      'SELECT id, date, cost, status, slipPayment FROM orders WHERE userId = ?',
+      'SELECT orders.id, orders.cost, orders.`status`, services.title, services.creator AS seller, serviceinfos.title AS variation, services.image FROM orders INNER JOIN orderitems ON orders.id = orderitems.orderId INNER JOIN services ON orderitems.serviceId = services.id INNER JOIN serviceinfos ON orderitems.serviceInfoId = serviceinfos.id AND services.id = serviceinfos.serviceId WHERE orders.userId = ?',
       [parseInt(req.user.userId)],
     );
 
-    const mappingOrders = orders.map((order) => {
+    const getSellerId = orders.map((order) => order.seller);
+
+    const sellers = await this.userRepository.query(
+      'SELECT USERID, FULLNAME FROM users WHERE USERID IN (?)',
+      [getSellerId],
+    );
+
+    const mergedOrders = orders.map((order) => ({
+      ...order,
+      ...sellers.find((seller) => seller.USERID === order.seller),
+    }));
+
+    const mappingOrders = mergedOrders.map((order) => {
       const obj = {
         id: order.id,
-        data: {
-          date: order.date,
+        order: {
+          title: order.title,
+          image: order.image,
           cost: order.cost,
           status: order.status,
-          slipPayment: order.slipPayment,
+          variation: order.variation,
+          seller: order.FULLNAME,
         },
       };
       return obj;

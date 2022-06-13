@@ -4,14 +4,13 @@ import { MulterExtendedModule } from 'nestjs-multer-extended';
 import { ConfigService } from '@nestjs/config';
 
 import { Users } from '../../entity/user.entity';
-import { Carts } from '../../entity/cart.entity';
 import { Orders } from '../../entity/order.entity';
 import { OrderItems } from '../../entity/order-item.entity';
-import { CartItems } from '../../entity/cart-item.entity';
 import { isAuth } from '../../middleware/is-auth';
 import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
 import { OrderReviews } from '../../entity/order-review.entity';
+import { Services } from '../../entity/services.entity';
 
 @Module({
   imports: [
@@ -19,8 +18,7 @@ import { OrderReviews } from '../../entity/order-review.entity';
     TypeOrmModule.forFeature([OrderItems]),
     TypeOrmModule.forFeature([OrderReviews]),
     TypeOrmModule.forFeature([Users]),
-    TypeOrmModule.forFeature([Carts]),
-    TypeOrmModule.forFeature([CartItems]),
+    TypeOrmModule.forFeature([Services]),
     MulterExtendedModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
