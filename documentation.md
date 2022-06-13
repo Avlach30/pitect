@@ -60,10 +60,6 @@ Base URL: Localhost (temporary)
   * [update existing product](#update-existing-product)  
   * [update existing service](#update-existing-service)
   * [delete catalog](#delete-existing-catalog)
-* Marketplace cart management  
-  * [add to cart](#add-item-to-cart)
-  * [get carts](#get-carts)
-  * [delete from cart](#delete-from-cart)
 * Marketplace order management (buyer)
   * [create order](#create-order)  
   * [get orders](#get-orders)  
@@ -2477,17 +2473,16 @@ Token is obtained from login response
       "error": "Not Found"
   }
   ```
-## Add item to cart  
-Add marketplace item/catalog to cart, before order  
+## Create order  
+Create new order, after watch catalog and select variation
 Token is obtained from login response  
 * ### Endpoint  
-  `/api/marketplace/catalogs/:catalogId/cart`
+  `/api/marketplace/catalogs/:catalogId/orders`
 * ### Method  
   POST
 * ### Headers  
   ```
   Authorization: `Bearer ${token}`
-  Content-type: application/json
   ```
 * ### Body  
   ```
@@ -2498,10 +2493,10 @@ Token is obtained from login response
 * ### Response success  
   ```
   {
-    "message": "Insert to cart successfully",
-    "data": {
-      "catalog": "Rancangan stadion",
-    }
+    "message": "Create new order successfully",
+    "cost": 150000000,
+    "orderDate": "2022-06-13T05:15:04.206Z",
+    "estimateDoneDate": "2022-06-22T05:15:04.206Z"
   }
   ```
 * ### Response fail (because request body not filled (required))
@@ -2509,145 +2504,6 @@ Token is obtained from login response
   {
     "statusCode": 400,
     "message": "Please, choose a variation firstly",
-    "error": "Bad Request"
-  }
-  ```
-* ### Response fail (because token not available or expired)
-  ```
-  {
-      "statusCode": 401,
-      "message": "Unauthorized"
-  }
-  ```
-* ### Response fail (because data not found)
-  ```
-  {
-      "statusCode": 404,
-      "message": "Data not found",
-      "error": "Not Found"
-  }
-  ```
-## Get carts  
-Get all item in carts  
-Token is obtained from login response  
-* ### Endpoint  
-  `/api/marketplace/carts`
-* ### Method  
-  GET
-* ### Headers  
-  ```
-  Authorization: `Bearer ${token}`
-  ```
-* ### Response success  
-  ```
-  {
-    "message": "Fetch carts successfully",
-    "data": [
-        {
-            "cartItemId": 1,
-            "catalog": "Desain rancangan jembatan Sumatra - Jawa",
-            "catalogInfo": {
-                "title": "advanced",
-                "content": "Penambahan fitur revisi desain 1 x",
-                "duration": 4,
-                "cost": 3500000
-            },
-            "date": {
-                "current": "2022-04-26T02:02:10.808Z",
-                "finishDate": "2022-04-30T02:02:10.808Z",
-                "status": "On Going"
-            }
-        },
-        {
-            "cartItemId": 2,
-            "catalog": "Desain kantor pos",
-            "catalogInfo": {
-                "title": "standard",
-                "content": "desain dengan fitur seperti biasa",
-                "duration": 2,
-                "cost": 2000000
-            },
-            "date": {
-                "current": "2022-04-26T02:02:10.809Z",
-                "finishDate": "2022-04-28T02:02:10.809Z",
-                "status": "On Going"
-            }
-        }
-    ],
-    "totalCost": 5500000
-  }
-  ```
-* ### Response fail (because token not available or expired)
-  ```
-  {
-      "statusCode": 401,
-      "message": "Unauthorized"
-  }
-  ```
-* ### Response fail (because data not found)
-  ```
-  {
-      "statusCode": 404,
-      "message": "Data not found",
-      "error": "Not Found"
-  }
-  ```
-## Delete from cart  
-Delete existing item in cart  
-Token is obtained from login response  
-* ### Endpoint  
-  `/api/marketplace/carts/:cartItemId`
-* ### Method  
-  DELETE
-* ### Headers  
-  ```
-  Authorization: `Bearer ${token}`
-  ```
-* ### Response success  
-  ```
-  {
-    "message": "Delete item from cart successfully",
-    "status": "Successful"
-  }
-  ```
-* ### Response fail (because token not available or expired)
-  ```
-  {
-      "statusCode": 401,
-      "message": "Unauthorized"
-  }
-  ```
-* ### Response fail (because data not found)
-  ```
-  {
-      "statusCode": 404,
-      "message": "Data not found",
-      "error": "Not Found"
-  }
-  ```
-## Create order  
-Create new order, after adding item to cart  
-Token is obtained from login response  
-* ### Endpoint  
-  `/api/marketplace/orders`
-* ### Method  
-  POST
-* ### Headers  
-  ```
-  Authorization: `Bearer ${token}`
-  ```
-* ### Response success  
-  ```
-  {
-    "message": "Create new order successfully",
-    "cost": 5500000
-  }
-  ```
-* ### Response failed (because cart item is empty)  
-  ```
-  {
-    "statusCode": 400,
-    "message": "Please, add catalog to cart firstly",
     "error": "Bad Request"
   }
   ```
@@ -2683,12 +2539,47 @@ Token is obtained from login response
     "message": "Get orders successfully",
     "data": [
         {
-            "id": 2,
-            "data": {
-                "date": "2022-04-25T21:26:03.000Z",
-                "cost": 5500000,
+            "id": 4,
+            "order": {
+                "title": "Desain rancangan jembatan Sumatra - Jawa",
+                "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/d4e93a5d-b379-463d-a822-92fa63cbe940.jpeg",
+                "cost": 3500000,
                 "status": "Belum bayar",
-                "slipPayment": "Some image"
+                "variation": "advanced",
+                "seller": "john doe"
+            }
+        },
+        {
+            "id": 5,
+            "order": {
+                "title": "Desain kantor pos",
+                "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/23a17ffc-cb2b-427e-9470-7f5201e331c8.jpeg",
+                "cost": 2000000,
+                "status": "Belum bayar",
+                "variation": "standard",
+                "seller": "Rocket mail"
+            }
+        },
+        {
+            "id": 6,
+            "order": {
+                "title": "Desain GWK full",
+                "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg",
+                "cost": 75000000,
+                "status": "Belum bayar",
+                "variation": "advanced",
+                "seller": "Rocket mail"
+            }
+        },
+        {
+            "id": 7,
+            "order": {
+                "title": "Desain GWK full",
+                "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg",
+                "cost": 150000000,
+                "status": "Belum bayar",
+                "variation": "professional",
+                "seller": "Rocket mail"
             }
         }
     ]
