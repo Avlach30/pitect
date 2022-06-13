@@ -8,13 +8,11 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { Carts } from '../../entity/cart.entity';
-import { CartItems } from '../../entity/cart-item.entity';
 import { Orders } from '../../entity/order.entity';
 import { OrderItems } from '../../entity/order-item.entity';
 import { OrderReviews } from 'src/entity/order-review.entity';
 import { Services } from '../../entity/services.entity';
-import { ServiceInfos } from '../../entity/services.info.entity';
+import { Users } from '../../entity/user.entity';
 
 @Injectable()
 export class OrderService {
@@ -24,13 +22,10 @@ export class OrderService {
     private orderItemRepository: Repository<Orders>,
     @InjectRepository(OrderReviews)
     private reviewRepository: Repository<OrderReviews>,
-    @InjectRepository(Carts)
-    private cartRepository: Repository<Carts>,
-    @InjectRepository(CartItems)
-    private cartItemRepository: Repository<CartItems>,
     @InjectRepository(Services) private serviceRepository: Repository<Services>,
     @InjectRepository(Services)
     private serviceInfoRepository: Repository<Services>,
+    @InjectRepository(Users) private userRepository: Repository<Users>,
   ) {}
 
   async createOrder(req: any, catalogId: string, catalogItemId: number) {
@@ -87,18 +82,32 @@ export class OrderService {
 
   async getOrders(req: any) {
     const orders = await this.orderRepository.query(
-      'SELECT id, date, cost, status, slipPayment FROM orders WHERE userId = ?',
+      'SELECT orders.id, orders.cost, orders.`status`, services.title, services.creator AS seller, serviceinfos.title AS variation, services.image FROM orders INNER JOIN orderitems ON orders.id = orderitems.orderId INNER JOIN services ON orderitems.serviceId = services.id INNER JOIN serviceinfos ON orderitems.serviceInfoId = serviceinfos.id AND services.id = serviceinfos.serviceId WHERE orders.userId = ?',
       [parseInt(req.user.userId)],
     );
 
-    const mappingOrders = orders.map((order) => {
+    const getSellerId = orders.map((order) => order.seller);
+
+    const sellers = await this.userRepository.query(
+      'SELECT USERID, FULLNAME FROM users WHERE USERID IN (?)',
+      [getSellerId],
+    );
+
+    const mergedOrders = orders.map((order) => ({
+      ...order,
+      ...sellers.find((seller) => seller.USERID === order.seller),
+    }));
+
+    const mappingOrders = mergedOrders.map((order) => {
       const obj = {
         id: order.id,
-        data: {
-          date: order.date,
+        order: {
+          title: order.title,
+          image: order.image,
           cost: order.cost,
           status: order.status,
-          slipPayment: order.slipPayment,
+          variation: order.variation,
+          seller: order.FULLNAME,
         },
       };
       return obj;
