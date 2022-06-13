@@ -12,6 +12,8 @@ import { isAuth } from '../../middleware/is-auth';
 import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
 import { OrderReviews } from '../../entity/order-review.entity';
+import { Services } from '../../entity/services.entity';
+import { ServiceInfos } from '../../entity/services.info.entity';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { OrderReviews } from '../../entity/order-review.entity';
     TypeOrmModule.forFeature([Users]),
     TypeOrmModule.forFeature([Carts]),
     TypeOrmModule.forFeature([CartItems]),
+    TypeOrmModule.forFeature([Services]),
+    TypeOrmModule.forFeature([ServiceInfos]),
     MulterExtendedModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({

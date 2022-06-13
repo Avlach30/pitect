@@ -21,10 +21,18 @@ export class OrderController {
   constructor(private orderService: OrderService) {}
 
   @UseGuards(AuthGuard('jwt'))
-  @Post('orders')
+  @Post('/catalogs/:catalogId/orders')
   @HttpCode(201)
-  async createOrder(@Request() req: any) {
-    const createOrder = await this.orderService.createOrder(req);
+  async createOrder(
+    @Request() req: any,
+    @Param('catalogId') catalogId: string,
+    @Body('catalogItemId') catalogItemId: number,
+  ) {
+    const createOrder = await this.orderService.createOrder(
+      req,
+      catalogId,
+      catalogItemId,
+    );
     return createOrder;
   }
 
