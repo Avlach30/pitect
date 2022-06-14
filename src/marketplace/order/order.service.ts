@@ -82,7 +82,7 @@ export class OrderService {
 
   async getOrders(req: any) {
     const orders = await this.orderRepository.query(
-      'SELECT orders.id, orders.cost, orders.`status`, services.title, services.creator AS seller, serviceinfos.title AS variation, services.image FROM orders INNER JOIN orderitems ON orders.id = orderitems.orderId INNER JOIN services ON orderitems.serviceId = services.id INNER JOIN serviceinfos ON orderitems.serviceInfoId = serviceinfos.id AND services.id = serviceinfos.serviceId WHERE orders.userId = ?',
+      'SELECT orders.id, orders.cost, orders.`status`, orders.date AS orderDate, orders.cancelDate AS cancelDate, orders.doneDate AS doneDate, services.title, services.creator AS seller, serviceinfos.title AS variation, services.image FROM orders INNER JOIN orderitems ON orders.id = orderitems.orderId INNER JOIN services ON orderitems.serviceId = services.id INNER JOIN serviceinfos ON orderitems.serviceInfoId = serviceinfos.id AND services.id = serviceinfos.serviceId WHERE orders.userId = ?',
       [parseInt(req.user.userId)],
     );
 
@@ -108,6 +108,11 @@ export class OrderService {
           status: order.status,
           variation: order.variation,
           seller: order.FULLNAME,
+        },
+        dates: {
+          order: order.orderDate,
+          done: order.doneDate,
+          cancel: order.cancelDate,
         },
       };
       return obj;
