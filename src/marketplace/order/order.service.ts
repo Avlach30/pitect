@@ -224,6 +224,11 @@ export class OrderService {
       throw new ForbiddenException('Forbidden to access');
     }
 
+    if (getOrder.status == 'Canceled')
+      throw new BadRequestException(
+        'Sorry, you cant verification the order which is rejected by seller',
+      );
+
     const imageUrl = file.Location;
 
     await this.orderRepository.query(
