@@ -2548,6 +2548,11 @@ Token is obtained from login response
                     "status": "Belum bayar",
                     "variation": "advanced",
                     "seller": "john doe"
+                },
+                "dates": {
+                    "order": "2022-06-13T03:45:58.000Z",
+                    "done": "2022-06-16T16:00:00.000Z",
+                    "cancel": null
                 }
             },
             {
@@ -2559,6 +2564,11 @@ Token is obtained from login response
                     "status": "Canceled",
                     "variation": "standard",
                     "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-13T04:31:58.000Z",
+                    "done": "2022-06-14T16:00:00.000Z",
+                    "cancel": "2022-06-13T16:00:00.000Z"
                 }
             },
             {
@@ -2570,6 +2580,11 @@ Token is obtained from login response
                     "status": "Selesai",
                     "variation": "standard",
                     "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-14T04:10:23.000Z",
+                    "done": "2022-06-13T16:00:00.000Z",
+                    "cancel": null
                 }
             },
             {
@@ -2581,6 +2596,11 @@ Token is obtained from login response
                     "status": "Pesanan aktif",
                     "variation": "advanced",
                     "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-13T05:11:32.000Z",
+                    "done": "2022-06-18T16:00:00.000Z",
+                    "cancel": null
                 }
             },
             {
@@ -2592,6 +2612,11 @@ Token is obtained from login response
                     "status": "Belum bayar",
                     "variation": "advanced",
                     "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-13T05:45:39.000Z",
+                    "done": "2022-06-18T16:00:00.000Z",
+                    "cancel": null
                 }
             },
             {
@@ -2603,6 +2628,11 @@ Token is obtained from login response
                     "status": "Perlu konfirmasi",
                     "variation": "professional",
                     "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-13T05:15:04.000Z",
+                    "done": "2022-06-21T16:00:00.000Z",
+                    "cancel": null
                 }
             }
         ],
@@ -2616,6 +2646,11 @@ Token is obtained from login response
                     "status": "Belum bayar",
                     "variation": "advanced",
                     "seller": "john doe"
+                },
+                "dates": {
+                    "order": "2022-06-13T03:45:58.000Z",
+                    "done": "2022-06-16T16:00:00.000Z",
+                    "cancel": null
                 }
             },
             {
@@ -2627,6 +2662,11 @@ Token is obtained from login response
                     "status": "Belum bayar",
                     "variation": "advanced",
                     "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-13T05:45:39.000Z",
+                    "done": "2022-06-18T16:00:00.000Z",
+                    "cancel": null
                 }
             }
         ],
@@ -2640,6 +2680,11 @@ Token is obtained from login response
                     "status": "Perlu konfirmasi",
                     "variation": "professional",
                     "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-13T05:15:04.000Z",
+                    "done": "2022-06-21T16:00:00.000Z",
+                    "cancel": null
                 }
             }
         ],
@@ -2653,6 +2698,11 @@ Token is obtained from login response
                     "status": "Pesanan aktif",
                     "variation": "advanced",
                     "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-13T05:11:32.000Z",
+                    "done": "2022-06-18T16:00:00.000Z",
+                    "cancel": null
                 }
             }
         ],
@@ -2666,6 +2716,11 @@ Token is obtained from login response
                     "status": "Selesai",
                     "variation": "standard",
                     "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-14T04:10:23.000Z",
+                    "done": "2022-06-13T16:00:00.000Z",
+                    "cancel": null
                 }
             }
         ],
@@ -2679,6 +2734,11 @@ Token is obtained from login response
                     "status": "Canceled",
                     "variation": "standard",
                     "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-13T04:31:58.000Z",
+                    "done": "2022-06-14T16:00:00.000Z",
+                    "cancel": "2022-06-13T16:00:00.000Z"
                 }
             }
         ]
