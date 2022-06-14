@@ -317,7 +317,7 @@ export class OrderService {
     return objResult;
   }
 
-  async approveOrder(orderId: string, req: any) {
+  async rejectOrder(orderId: string, req: any) {
     let order;
 
     await this.orderItemRepository
@@ -334,12 +334,14 @@ export class OrderService {
       throw new NotFoundException('Data not found');
     }
 
+    const currentDate = new Date().toISOString();
+
     await this.orderRepository.query(
-      'UPDATE orders SET isApprove = ? WHERE id = ?',
-      [1, parseInt(orderId)],
+      'UPDATE orders SET isApprove = ?, status = ?, cancelDate = ? WHERE id = ?',
+      [0, 'Canceled', currentDate, parseInt(orderId)],
     );
 
-    const objResult = { message: 'Order approved by seller' };
+    const objResult = { message: 'Order rejected by seller' };
 
     return objResult;
   }
