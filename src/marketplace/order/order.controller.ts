@@ -87,7 +87,7 @@ export class OrderController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Put('seller/orders/:orderId/approve')
+  @Put('seller/orders/:orderId/reject')
   @HttpCode(200)
   async rejectOrder(@Request() req: any, @Param('orderId') orderId: string) {
     const rejectOrder = await this.orderService.rejectOrder(orderId, req);
