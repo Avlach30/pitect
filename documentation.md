@@ -2680,6 +2680,14 @@ Token is obtained from login response
     "slip": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/slip-transfers/ed7e4379-06a6-4d93-8b54-b4ab1e4d6c9e.jpeg"
   }
   ```
+* ### Response fail (because order data already rejected by seller)  
+  ```
+  {
+    "statusCode": 400,
+    "message": "Sorry, you cant verification the order which is rejected by seller",
+    "error": "Bad Request"
+  }
+  ```
 * ### Response fail (because image not uploaded (required))
   ```
   {
