@@ -113,9 +113,36 @@ export class OrderService {
       return obj;
     });
 
+    const needVerificationOrders = mappingOrders.filter(
+      (order) => order.order.status == 'Belum bayar',
+    );
+
+    const pendingOrders = mappingOrders.filter(
+      (order) => order.order.status == 'Perlu konfirmasi',
+    );
+
+    const activeOrders = mappingOrders.filter(
+      (order) => order.order.status == 'Pesanan aktif',
+    );
+
+    const doneOrders = mappingOrders.filter(
+      (order) => order.order.status == 'Selesai',
+    );
+
+    const cancelOrders = mappingOrders.filter(
+      (order) => order.order.status == 'Canceled',
+    );
+
     const objResult = {
       message: 'Get orders successfully',
-      data: mappingOrders,
+      orders: {
+        all: mappingOrders,
+        needVerification: needVerificationOrders,
+        pending: pendingOrders,
+        active: activeOrders,
+        done: doneOrders,
+        canceled: cancelOrders,
+      },
     };
     return objResult;
   }
