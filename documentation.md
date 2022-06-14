@@ -2537,52 +2537,152 @@ Token is obtained from login response
   ```
   {
     "message": "Get orders successfully",
-    "data": [
-        {
-            "id": 4,
-            "order": {
-                "title": "Desain rancangan jembatan Sumatra - Jawa",
-                "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/d4e93a5d-b379-463d-a822-92fa63cbe940.jpeg",
-                "cost": 3500000,
-                "status": "Belum bayar",
-                "variation": "advanced",
-                "seller": "john doe"
+    "orders": {
+        "all": [
+            {
+                "id": 4,
+                "order": {
+                    "title": "Desain rancangan jembatan Sumatra - Jawa",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/d4e93a5d-b379-463d-a822-92fa63cbe940.jpeg",
+                    "cost": 3500000,
+                    "status": "Belum bayar",
+                    "variation": "advanced",
+                    "seller": "john doe"
+                }
+            },
+            {
+                "id": 5,
+                "order": {
+                    "title": "Desain kantor pos",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/23a17ffc-cb2b-427e-9470-7f5201e331c8.jpeg",
+                    "cost": 2000000,
+                    "status": "Canceled",
+                    "variation": "standard",
+                    "seller": "Rocket mail"
+                }
+            },
+            {
+                "id": 9,
+                "order": {
+                    "title": "Desain GWK full",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg",
+                    "cost": 45000000,
+                    "status": "Selesai",
+                    "variation": "standard",
+                    "seller": "Rocket mail"
+                }
+            },
+            {
+                "id": 6,
+                "order": {
+                    "title": "Desain GWK full",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg",
+                    "cost": 75000000,
+                    "status": "Pesanan aktif",
+                    "variation": "advanced",
+                    "seller": "Rocket mail"
+                }
+            },
+            {
+                "id": 8,
+                "order": {
+                    "title": "Desain GWK full",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg",
+                    "cost": 75000000,
+                    "status": "Belum bayar",
+                    "variation": "advanced",
+                    "seller": "Rocket mail"
+                }
+            },
+            {
+                "id": 7,
+                "order": {
+                    "title": "Desain GWK full",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg",
+                    "cost": 150000000,
+                    "status": "Perlu konfirmasi",
+                    "variation": "professional",
+                    "seller": "Rocket mail"
+                }
             }
-        },
-        {
-            "id": 5,
-            "order": {
-                "title": "Desain kantor pos",
-                "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/23a17ffc-cb2b-427e-9470-7f5201e331c8.jpeg",
-                "cost": 2000000,
-                "status": "Belum bayar",
-                "variation": "standard",
-                "seller": "Rocket mail"
+        ],
+        "needVerification": [
+            {
+                "id": 4,
+                "order": {
+                    "title": "Desain rancangan jembatan Sumatra - Jawa",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/d4e93a5d-b379-463d-a822-92fa63cbe940.jpeg",
+                    "cost": 3500000,
+                    "status": "Belum bayar",
+                    "variation": "advanced",
+                    "seller": "john doe"
+                }
+            },
+            {
+                "id": 8,
+                "order": {
+                    "title": "Desain GWK full",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg",
+                    "cost": 75000000,
+                    "status": "Belum bayar",
+                    "variation": "advanced",
+                    "seller": "Rocket mail"
+                }
             }
-        },
-        {
-            "id": 6,
-            "order": {
-                "title": "Desain GWK full",
-                "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg",
-                "cost": 75000000,
-                "status": "Belum bayar",
-                "variation": "advanced",
-                "seller": "Rocket mail"
+        ],
+        "pending": [
+            {
+                "id": 7,
+                "order": {
+                    "title": "Desain GWK full",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg",
+                    "cost": 150000000,
+                    "status": "Perlu konfirmasi",
+                    "variation": "professional",
+                    "seller": "Rocket mail"
+                }
             }
-        },
-        {
-            "id": 7,
-            "order": {
-                "title": "Desain GWK full",
-                "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg",
-                "cost": 150000000,
-                "status": "Belum bayar",
-                "variation": "professional",
-                "seller": "Rocket mail"
+        ],
+        "active": [
+            {
+                "id": 6,
+                "order": {
+                    "title": "Desain GWK full",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg",
+                    "cost": 75000000,
+                    "status": "Pesanan aktif",
+                    "variation": "advanced",
+                    "seller": "Rocket mail"
+                }
             }
-        }
-    ]
+        ],
+        "done": [
+            {
+                "id": 9,
+                "order": {
+                    "title": "Desain GWK full",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg",
+                    "cost": 45000000,
+                    "status": "Selesai",
+                    "variation": "standard",
+                    "seller": "Rocket mail"
+                }
+            }
+        ],
+        "canceled": [
+            {
+                "id": 5,
+                "order": {
+                    "title": "Desain kantor pos",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/23a17ffc-cb2b-427e-9470-7f5201e331c8.jpeg",
+                    "cost": 2000000,
+                    "status": "Canceled",
+                    "variation": "standard",
+                    "seller": "Rocket mail"
+                }
+            }
+        ]
+    }
   }
   ```
 * ### Response fail (because token not available or expired)
