@@ -113,9 +113,36 @@ export class OrderService {
       return obj;
     });
 
+    const needVerificationOrders = mappingOrders.filter(
+      (order) => order.order.status == 'Belum bayar',
+    );
+
+    const pendingOrders = mappingOrders.filter(
+      (order) => order.order.status == 'Perlu konfirmasi',
+    );
+
+    const activeOrders = mappingOrders.filter(
+      (order) => order.order.status == 'Pesanan aktif',
+    );
+
+    const doneOrders = mappingOrders.filter(
+      (order) => order.order.status == 'Selesai',
+    );
+
+    const cancelOrders = mappingOrders.filter(
+      (order) => order.order.status == 'Canceled',
+    );
+
     const objResult = {
       message: 'Get orders successfully',
-      data: mappingOrders,
+      orders: {
+        all: mappingOrders,
+        needVerification: needVerificationOrders,
+        pending: pendingOrders,
+        active: activeOrders,
+        done: doneOrders,
+        canceled: cancelOrders,
+      },
     };
     return objResult;
   }
@@ -196,6 +223,11 @@ export class OrderService {
     if (getOrder.userId !== parseInt(req.user.userId)) {
       throw new ForbiddenException('Forbidden to access');
     }
+
+    if (getOrder.status == 'Canceled')
+      throw new BadRequestException(
+        'Sorry, you cant verification the order which is rejected by seller',
+      );
 
     const imageUrl = file.Location;
 
@@ -290,7 +322,7 @@ export class OrderService {
     return objResult;
   }
 
-  async approveOrder(orderId: string, req: any) {
+  async rejectOrder(orderId: string, req: any) {
     let order;
 
     await this.orderItemRepository
@@ -307,12 +339,14 @@ export class OrderService {
       throw new NotFoundException('Data not found');
     }
 
+    const currentDate = new Date().toISOString();
+
     await this.orderRepository.query(
-      'UPDATE orders SET isApprove = ? WHERE id = ?',
-      [1, parseInt(orderId)],
+      'UPDATE orders SET isApprove = ?, status = ?, cancelDate = ? WHERE id = ?',
+      [0, 'Canceled', currentDate, parseInt(orderId)],
     );
 
-    const objResult = { message: 'Order approved by seller' };
+    const objResult = { message: 'Order rejected by seller' };
 
     return objResult;
   }

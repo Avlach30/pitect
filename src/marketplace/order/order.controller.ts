@@ -87,11 +87,11 @@ export class OrderController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Put('seller/orders/:orderId/approve')
+  @Put('seller/orders/:orderId/reject')
   @HttpCode(200)
-  async approveOrder(@Request() req: any, @Param('orderId') orderId: string) {
-    const approveOrder = await this.orderService.approveOrder(orderId, req);
-    return approveOrder;
+  async rejectOrder(@Request() req: any, @Param('orderId') orderId: string) {
+    const rejectOrder = await this.orderService.rejectOrder(orderId, req);
+    return rejectOrder;
   }
 
   @UseGuards(AuthGuard('jwt'))
