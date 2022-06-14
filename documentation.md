@@ -69,7 +69,7 @@ Base URL: Localhost (temporary)
 * Marketplace order management (seller)
   * [get orders (seller)](#get-orders-data-for-seller)
   * [get specified order](#get-specified-order)  
-  * [approve order](#approve-order-by-seller)  
+  * [reject order](#reject-order-by-seller)  
 * Marketplace reviews
   * [create new review](#create-new-reviews)
 * Inspirations
@@ -2929,11 +2929,11 @@ Token is obtained from login response
       "error": "Not Found"
   }
   ```
-## Approve order by seller  
-Approve order by seller  
+## Reject order by seller  
+Reject order by seller  
 Token is obtained from login response  
 * ### Endpoint  
-  `/api/marketplace/seller/orders/:orderId/approve`
+  `/api/marketplace/seller/orders/:orderId/reject`
 * ### Method  
   PUT
 * ### Headers  
@@ -2943,7 +2943,7 @@ Token is obtained from login response
 * ### Response success  
   ```
   {
-    "message": "Order approved by seller"
+    "message": "Order rejected by seller"
   }
   ```
 * ### Response fail (because token not available or expired)
