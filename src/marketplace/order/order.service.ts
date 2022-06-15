@@ -250,35 +250,74 @@ export class OrderService {
   }
 
   async getSellerOrders(req: any) {
-    //* Get order id from orderItems where item creator logged user
-    let orderId;
-
-    orderId = await this.orderItemRepository.query(
-      'SELECT orderitems.id, orderitems.orderId, orderitems.serviceId FROM orderitems INNER JOIN services ON orderitems.serviceId = services.id WHERE services.creator = ?',
+    const orders = await this.orderItemRepository.query(
+      'SELECT orders.id, orders.cost, orders.`status`, orders.date AS orderDate, orders.userId AS buyer, orders.cancelDate AS cancelDate, orders.doneDate AS doneDate, services.title, serviceinfos.title AS variation, services.image FROM orders INNER JOIN orderitems ON orders.id = orderitems.orderId INNER JOIN services ON orderitems.serviceId = services.id INNER JOIN serviceinfos ON orderitems.serviceInfoId = serviceinfos.id AND services.id = serviceinfos.serviceId WHERE services.creator = ?',
       [parseInt(req.user.userId)],
     );
 
-    if (orderId.length < 1) {
-      orderId = [{ orderId: 0 }];
-    }
+    const getBuyerId = orders.map((order) => order.buyer);
 
-    const arrOrderIds = orderId.map((order) => order.orderId);
-
-    // console.log(arrOrderIds);
-
-    const getSellerOrderData = await this.orderRepository.query(
-      'SELECT orders.id, orders.date, orders.cost, orders.status, orders.cancelDate, orders.slipPayment, orders.isApprove, users.FULLNAME as buyer FROM orders INNER JOIN users ON orders.userId = users.USERID WHERE orders.id IN (?)',
-      [arrOrderIds],
+    const buyers = await this.userRepository.query(
+      'SELECT USERID, FULLNAME FROM users WHERE USERID IN (?)',
+      [getBuyerId],
     );
 
-    // console.log(getSellerOrderData);
+    const mergedOrders = orders.map((order) => ({
+      ...order,
+      ...buyers.find((buyer) => buyer.USERID === order.buyer),
+    }));
+
+    const mappingOrders = mergedOrders.map((order) => {
+      const obj = {
+        id: order.id,
+        order: {
+          title: order.title,
+          image: order.image,
+          cost: order.cost,
+          status: order.status,
+          variation: order.variation,
+          buyer: order.FULLNAME,
+        },
+        dates: {
+          order: order.orderDate,
+          done: order.doneDate,
+          cancel: order.cancelDate,
+        },
+      };
+      return obj;
+    });
+
+    const needVerificationOrders = mappingOrders.filter(
+      (order) => order.order.status == 'Belum bayar',
+    );
+
+    const pendingOrders = mappingOrders.filter(
+      (order) => order.order.status == 'Perlu konfirmasi',
+    );
+
+    const activeOrders = mappingOrders.filter(
+      (order) => order.order.status == 'Pesanan aktif',
+    );
+
+    const doneOrders = mappingOrders.filter(
+      (order) => order.order.status == 'Selesai',
+    );
+
+    const cancelOrders = mappingOrders.filter(
+      (order) => order.order.status == 'Canceled',
+    );
 
     const objResult = {
-      message: 'Get seller order successfully',
-      data: getSellerOrderData,
-      total: getSellerOrderData.length,
+      message: 'Get orders for seller successfully',
+      orders: {
+        all: mappingOrders,
+        needVerification: needVerificationOrders,
+        pending: pendingOrders,
+        active: activeOrders,
+        done: doneOrders,
+        canceled: cancelOrders,
+      },
     };
-
     return objResult;
   }
 
