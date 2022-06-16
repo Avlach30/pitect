@@ -46,14 +46,14 @@ export class OrderService {
 
     // console.log(result);
 
-    if (result == undefined) {
-      throw new NotFoundException('Data not found');
-    }
-
     const serviceItem = await this.serviceInfoRepository.query(
       'SELECT cost, duration FROM serviceinfos WHERE id = ? AND serviceId = ?',
       [catalogItemId, parseInt(catalogId)],
     );
+
+    if (result == undefined || serviceItem.length < 1) {
+      throw new NotFoundException('Data not found');
+    }
 
     const currentDate: any = new Date();
     const doneDate: any = new Date(
@@ -82,7 +82,7 @@ export class OrderService {
 
   async getOrders(req: any) {
     const orders = await this.orderRepository.query(
-      'SELECT orders.id, orders.cost, orders.`status`, orders.date AS orderDate, orders.cancelDate AS cancelDate, orders.doneDate AS doneDate, services.title, services.creator AS seller, serviceinfos.title AS variation, services.image FROM orders INNER JOIN orderitems ON orders.id = orderitems.orderId INNER JOIN services ON orderitems.serviceId = services.id INNER JOIN serviceinfos ON orderitems.serviceInfoId = serviceinfos.id AND services.id = serviceinfos.serviceId WHERE orders.userId = ?',
+      'SELECT orders.id, orders.cost, orders.`status`, orders.date AS orderDate, orders.cancelDate AS cancelDate, orders.doneDate AS doneDate, orders.serviceResult AS result, services.title, services.creator AS seller, serviceinfos.title AS variation, services.image FROM orders INNER JOIN orderitems ON orders.id = orderitems.orderId INNER JOIN services ON orderitems.serviceId = services.id INNER JOIN serviceinfos ON orderitems.serviceInfoId = serviceinfos.id AND services.id = serviceinfos.serviceId WHERE orders.userId = ?',
       [parseInt(req.user.userId)],
     );
 
@@ -107,6 +107,7 @@ export class OrderService {
           cost: order.cost,
           status: order.status,
           variation: order.variation,
+          result: order.result,
           seller: order.FULLNAME,
         },
         dates: {
@@ -392,6 +393,60 @@ export class OrderService {
 
     const objResult = { message: 'Order rejected by seller' };
 
+    return objResult;
+  }
+
+  async uploadResult(req: any, file: any, orderId: string) {
+    let getOrder;
+    let getCreator;
+
+    if (!file) {
+      throw new BadRequestException(
+        'Please, you must upload a file result of your services',
+      );
+    }
+
+    //* Get order id
+    await this.orderRepository
+      .query('SELECT id, status FROM orders WHERE id = ?', [parseInt(orderId)])
+      .then((data) => {
+        return (getOrder = data[0]);
+      });
+
+    if (getOrder === undefined) {
+      throw new NotFoundException('Data not found');
+    }
+
+    if (getOrder.status != 'Pesanan aktif') {
+      throw new BadRequestException(
+        'Please, upload an order result which is already activated',
+      );
+    }
+
+    await this.orderItemRepository
+      .query(
+        'SELECT orderitems.id, orderitems.orderId, services.creator AS seller FROM orderitems INNER JOIN services ON orderitems.serviceId = services.id WHERE orderitems.orderId = ?',
+        [parseInt(getOrder.id)],
+      )
+      .then((data) => (getCreator = data[0]));
+
+    if (getCreator.seller != parseInt(req.user.userId)) {
+      throw new ForbiddenException('Forbidden to access');
+    }
+
+    const serviceResult = file.Location;
+
+    const currentDate = new Date().toISOString();
+
+    await this.orderRepository.query(
+      'UPDATE orders SET status = "Selesai", doneDate = ?, serviceResult = ? WHERE id = ?',
+      [currentDate, serviceResult, parseInt(getOrder.id)],
+    );
+
+    const objResult = {
+      message: 'Uploading order result by seller successfully',
+      result: serviceResult,
+    };
     return objResult;
   }
 
