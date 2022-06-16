@@ -46,14 +46,14 @@ export class OrderService {
 
     // console.log(result);
 
-    if (result == undefined) {
-      throw new NotFoundException('Data not found');
-    }
-
     const serviceItem = await this.serviceInfoRepository.query(
       'SELECT cost, duration FROM serviceinfos WHERE id = ? AND serviceId = ?',
       [catalogItemId, parseInt(catalogId)],
     );
+
+    if (result == undefined || serviceItem.length < 1) {
+      throw new NotFoundException('Data not found');
+    }
 
     const currentDate: any = new Date();
     const doneDate: any = new Date(
