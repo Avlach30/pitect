@@ -69,6 +69,7 @@ Base URL: Localhost (temporary)
   * [get orders (seller)](#get-orders-data-for-seller)
   * [get specified order](#get-specified-order)  
   * [approve order](#approve-order-by-seller)  
+  * [upload service result (finishing)](#upload-service-result-by-seller-finishing)
 * Marketplace reviews
   * [create new review](#create-new-reviews)
 
@@ -3443,6 +3444,85 @@ Token is obtained from login response
       "statusCode": 404,
       "message": "Data not found",
       "error": "Not Found"
+  }
+  ```
+## Upload service result by seller (finishing)  
+Upload a service result by seller for finishing task of order management  
+Token is obtained from login response  
+* ### Endpoint  
+  `/api/marketplace/seller/orders/:orderId/upload-result`
+* ### Method  
+  PUT
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  Content-type: multipart/form-data
+  ```
+* ### Body  
+  Because this endpoint contains file upload, make sure you added an attribute `enctype` with value `multipart/form-data` in your form. Then make sure you append each of body field in `formData()`.
+  ```
+  "result": File
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Uploading order result by seller successfully",
+    "result": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/slip-transfers/448e4a7e-b883-48cf-bc95-c670a878b712.jpeg"
+  }
+  ```
+* ### Response fail (because file not uploaded (required))
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please, you must upload a file result of your services",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because order status is inactive)
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please, upload an order result which is already activated",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because uploaded file not an image)
+  ```
+  {
+    "statusCode": 400,
+    "message": "Invalid Image File Type",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because not owned data)
+  ```
+  {
+      "statusCode": 403,
+      "message": "Forbidden to access",
+      "error": "Forbidden"
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```
+* ### Response fail (because uploaded image size is larger than limit)
+  ```
+  {
+    "statusCode": 413,
+    "message": "File too large",
+    "error": "Payload Too Large"
   }
   ```
 ## Create new reviews  
