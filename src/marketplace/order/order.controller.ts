@@ -95,6 +95,28 @@ export class OrderController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @Put('seller/orders/:orderId/upload-result')
+  @HttpCode(201)
+  @UseInterceptors(
+    AmazonS3FileInterceptor('result', {
+      limits: { fileSize: 3 * 1024 * 1024 },
+      randomFilename: true,
+    }),
+  )
+  async uploadResult(
+    @Request() req: any,
+    @UploadedFile() file: any,
+    @Param('orderId') orderId: string,
+  ) {
+    const uploadResult = await this.orderService.uploadResult(
+      req,
+      file,
+      orderId,
+    );
+    return uploadResult;
+  }
+
+  @UseGuards(AuthGuard('jwt'))
   @Post('orders/:orderId/items/:itemId/review')
   @HttpCode(201)
   async createReview(
