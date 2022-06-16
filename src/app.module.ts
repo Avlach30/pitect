@@ -13,6 +13,7 @@ import { AdminModule } from './admin/admin.module';
 import { MarketplaceModule } from './marketplace/marketplace.module';
 import { CartModule } from './marketplace/cart/cart.module';
 import { OrderModule } from './marketplace/order/order.module';
+import { UploadResultModule } from './marketplace/order/upload-result/upload-result.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { OrderModule } from './marketplace/order/order.module';
     MarketplaceModule,
     CartModule,
     OrderModule,
+    UploadResultModule,
   ],
   controllers: [],
   providers: [],
