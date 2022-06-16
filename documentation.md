@@ -2419,7 +2419,7 @@ Token is obtained from login response
   }
   ```
 ## Get orders  
-Get list of orders from logged user  
+Get list of orders with buyer type from logged user  
 Token is obtained from login response  
 * ### Endpoint  
   `/api/marketplace/orders`
@@ -2433,17 +2433,394 @@ Token is obtained from login response
   ```
   {
     "message": "Get orders successfully",
-    "data": [
-        {
-            "id": 2,
-            "data": {
-                "date": "2022-04-25T21:26:03.000Z",
-                "cost": 5500000,
-                "status": "Belum bayar",
-                "slipPayment": "Some image"
+    "orders": {
+        "all": [
+            {
+                "id": 4,
+                "order": {
+                    "title": "Desain rancangan jembatan Sumatra - Jawa",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/d4e93a5d-b379-463d-a822-92fa63cbe940.jpeg",
+                    "cost": 3500000,
+                    "status": "Belum bayar",
+                    "variation": "advanced",
+                    "result": null,
+                    "seller": "john doe"
+                },
+                "dates": {
+                    "order": "2022-06-13T03:45:58.000Z",
+                    "done": "2022-06-16T16:00:00.000Z",
+                    "cancel": null
+                }
+            },
+            {
+                "id": 5,
+                "order": {
+                    "title": "Desain kantor pos",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/23a17ffc-cb2b-427e-9470-7f5201e331c8.jpeg",
+                    "cost": 2000000,
+                    "status": "Canceled",
+                    "variation": "standard",
+                    "result": null,
+                    "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-13T04:31:58.000Z",
+                    "done": "2022-06-14T16:00:00.000Z",
+                    "cancel": "2022-06-13T16:00:00.000Z"
+                }
+            },
+            {
+                "id": 11,
+                "order": {
+                    "title": "Desain kantor pos",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/23a17ffc-cb2b-427e-9470-7f5201e331c8.jpeg",
+                    "cost": 2000000,
+                    "status": "Selesai",
+                    "variation": "standard",
+                    "result": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/slip-transfers/448e4a7e-b883-48cf-bc95-c670a878b712.jpeg",
+                    "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-16T06:52:50.000Z",
+                    "done": "2022-06-15T16:00:00.000Z",
+                    "cancel": null
+                }
+            },
+            {
+                "id": 14,
+                "order": {
+                    "title": "Desain kantor pos",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/23a17ffc-cb2b-427e-9470-7f5201e331c8.jpeg",
+                    "cost": 2000000,
+                    "status": "Belum bayar",
+                    "variation": "standard",
+                    "result": null,
+                    "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-16T07:16:43.000Z",
+                    "done": "2022-06-17T16:00:00.000Z",
+                    "cancel": null
+                }
+            },
+            {
+                "id": 12,
+                "order": {
+                    "title": "Desain kantor pos",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/23a17ffc-cb2b-427e-9470-7f5201e331c8.jpeg",
+                    "cost": 3500000,
+                    "status": "Pesanan aktif",
+                    "variation": "advanced",
+                    "result": null,
+                    "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-16T06:53:11.000Z",
+                    "done": "2022-06-19T16:00:00.000Z",
+                    "cancel": null
+                }
+            },
+            {
+                "id": 13,
+                "order": {
+                    "title": "Desain kantor pos",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/23a17ffc-cb2b-427e-9470-7f5201e331c8.jpeg",
+                    "cost": 5000000,
+                    "status": "Pesanan aktif",
+                    "variation": "professional",
+                    "result": null,
+                    "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-16T06:53:14.000Z",
+                    "done": "2022-06-22T16:00:00.000Z",
+                    "cancel": null
+                }
+            },
+            {
+                "id": 9,
+                "order": {
+                    "title": "Desain GWK full",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg",
+                    "cost": 45000000,
+                    "status": "Selesai",
+                    "variation": "standard",
+                    "result": null,
+                    "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-14T04:10:23.000Z",
+                    "done": "2022-06-13T16:00:00.000Z",
+                    "cancel": null
+                }
+            },
+            {
+                "id": 10,
+                "order": {
+                    "title": "Desain GWK full",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg",
+                    "cost": 45000000,
+                    "status": "Canceled",
+                    "variation": "standard",
+                    "result": null,
+                    "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-14T08:23:34.000Z",
+                    "done": "2022-06-16T16:00:00.000Z",
+                    "cancel": "2022-06-14T16:00:00.000Z"
+                }
+            },
+            {
+                "id": 6,
+                "order": {
+                    "title": "Desain GWK full",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg",
+                    "cost": 75000000,
+                    "status": "Pesanan aktif",
+                    "variation": "advanced",
+                    "result": null,
+                    "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-13T05:11:32.000Z",
+                    "done": "2022-06-18T16:00:00.000Z",
+                    "cancel": null
+                }
+            },
+            {
+                "id": 8,
+                "order": {
+                    "title": "Desain GWK full",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg",
+                    "cost": 75000000,
+                    "status": "Belum bayar",
+                    "variation": "advanced",
+                    "result": null,
+                    "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-13T05:45:39.000Z",
+                    "done": "2022-06-18T16:00:00.000Z",
+                    "cancel": null
+                }
+            },
+            {
+                "id": 7,
+                "order": {
+                    "title": "Desain GWK full",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg",
+                    "cost": 150000000,
+                    "status": "Perlu konfirmasi",
+                    "variation": "professional",
+                    "result": null,
+                    "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-13T05:15:04.000Z",
+                    "done": "2022-06-21T16:00:00.000Z",
+                    "cancel": null
+                }
             }
-        }
-    ]
+        ],
+        "needVerification": [
+            {
+                "id": 4,
+                "order": {
+                    "title": "Desain rancangan jembatan Sumatra - Jawa",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/d4e93a5d-b379-463d-a822-92fa63cbe940.jpeg",
+                    "cost": 3500000,
+                    "status": "Belum bayar",
+                    "variation": "advanced",
+                    "result": null,
+                    "seller": "john doe"
+                },
+                "dates": {
+                    "order": "2022-06-13T03:45:58.000Z",
+                    "done": "2022-06-16T16:00:00.000Z",
+                    "cancel": null
+                }
+            },
+            {
+                "id": 14,
+                "order": {
+                    "title": "Desain kantor pos",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/23a17ffc-cb2b-427e-9470-7f5201e331c8.jpeg",
+                    "cost": 2000000,
+                    "status": "Belum bayar",
+                    "variation": "standard",
+                    "result": null,
+                    "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-16T07:16:43.000Z",
+                    "done": "2022-06-17T16:00:00.000Z",
+                    "cancel": null
+                }
+            },
+            {
+                "id": 8,
+                "order": {
+                    "title": "Desain GWK full",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg",
+                    "cost": 75000000,
+                    "status": "Belum bayar",
+                    "variation": "advanced",
+                    "result": null,
+                    "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-13T05:45:39.000Z",
+                    "done": "2022-06-18T16:00:00.000Z",
+                    "cancel": null
+                }
+            }
+        ],
+        "pending": [
+            {
+                "id": 7,
+                "order": {
+                    "title": "Desain GWK full",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg",
+                    "cost": 150000000,
+                    "status": "Perlu konfirmasi",
+                    "variation": "professional",
+                    "result": null,
+                    "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-13T05:15:04.000Z",
+                    "done": "2022-06-21T16:00:00.000Z",
+                    "cancel": null
+                }
+            }
+        ],
+        "active": [
+            {
+                "id": 12,
+                "order": {
+                    "title": "Desain kantor pos",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/23a17ffc-cb2b-427e-9470-7f5201e331c8.jpeg",
+                    "cost": 3500000,
+                    "status": "Pesanan aktif",
+                    "variation": "advanced",
+                    "result": null,
+                    "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-16T06:53:11.000Z",
+                    "done": "2022-06-19T16:00:00.000Z",
+                    "cancel": null
+                }
+            },
+            {
+                "id": 13,
+                "order": {
+                    "title": "Desain kantor pos",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/23a17ffc-cb2b-427e-9470-7f5201e331c8.jpeg",
+                    "cost": 5000000,
+                    "status": "Pesanan aktif",
+                    "variation": "professional",
+                    "result": null,
+                    "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-16T06:53:14.000Z",
+                    "done": "2022-06-22T16:00:00.000Z",
+                    "cancel": null
+                }
+            },
+            {
+                "id": 6,
+                "order": {
+                    "title": "Desain GWK full",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg",
+                    "cost": 75000000,
+                    "status": "Pesanan aktif",
+                    "variation": "advanced",
+                    "result": null,
+                    "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-13T05:11:32.000Z",
+                    "done": "2022-06-18T16:00:00.000Z",
+                    "cancel": null
+                }
+            }
+        ],
+        "done": [
+            {
+                "id": 11,
+                "order": {
+                    "title": "Desain kantor pos",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/23a17ffc-cb2b-427e-9470-7f5201e331c8.jpeg",
+                    "cost": 2000000,
+                    "status": "Selesai",
+                    "variation": "standard",
+                    "result": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/slip-transfers/448e4a7e-b883-48cf-bc95-c670a878b712.jpeg",
+                    "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-16T06:52:50.000Z",
+                    "done": "2022-06-15T16:00:00.000Z",
+                    "cancel": null
+                }
+            },
+            {
+                "id": 9,
+                "order": {
+                    "title": "Desain GWK full",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg",
+                    "cost": 45000000,
+                    "status": "Selesai",
+                    "variation": "standard",
+                    "result": null,
+                    "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-14T04:10:23.000Z",
+                    "done": "2022-06-13T16:00:00.000Z",
+                    "cancel": null
+                }
+            }
+        ],
+        "canceled": [
+            {
+                "id": 5,
+                "order": {
+                    "title": "Desain kantor pos",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/23a17ffc-cb2b-427e-9470-7f5201e331c8.jpeg",
+                    "cost": 2000000,
+                    "status": "Canceled",
+                    "variation": "standard",
+                    "result": null,
+                    "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-13T04:31:58.000Z",
+                    "done": "2022-06-14T16:00:00.000Z",
+                    "cancel": "2022-06-13T16:00:00.000Z"
+                }
+            },
+            {
+                "id": 10,
+                "order": {
+                    "title": "Desain GWK full",
+                    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/marketplace/2d4a6273-c889-44d5-8788-af9782499f0f.jpeg",
+                    "cost": 45000000,
+                    "status": "Canceled",
+                    "variation": "standard",
+                    "result": null,
+                    "seller": "Rocket mail"
+                },
+                "dates": {
+                    "order": "2022-06-14T08:23:34.000Z",
+                    "done": "2022-06-16T16:00:00.000Z",
+                    "cancel": "2022-06-14T16:00:00.000Z"
+                }
+            }
+        ]
+    }
   }
   ```
 * ### Response fail (because token not available or expired)
