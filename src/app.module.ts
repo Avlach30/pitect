@@ -14,6 +14,7 @@ import { MarketplaceModule } from './marketplace/marketplace.module';
 import { CartModule } from './marketplace/cart/cart.module';
 import { OrderModule } from './marketplace/order/order.module';
 import { InspirationModule } from './inspiration/inspiration.module';
+import { UploadResultModule } from './marketplace/order/upload-result/upload-result.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { InspirationModule } from './inspiration/inspiration.module';
     CartModule,
     OrderModule,
     InspirationModule,
+    UploadResultModule,
   ],
   controllers: [],
   providers: [],
