@@ -82,7 +82,7 @@ export class OrderService {
 
   async getOrders(req: any) {
     const orders = await this.orderRepository.query(
-      'SELECT orders.id, orders.cost, orders.`status`, orders.date AS orderDate, orders.cancelDate AS cancelDate, orders.doneDate AS doneDate, services.title, services.creator AS seller, serviceinfos.title AS variation, services.image FROM orders INNER JOIN orderitems ON orders.id = orderitems.orderId INNER JOIN services ON orderitems.serviceId = services.id INNER JOIN serviceinfos ON orderitems.serviceInfoId = serviceinfos.id AND services.id = serviceinfos.serviceId WHERE orders.userId = ?',
+      'SELECT orders.id, orders.cost, orders.`status`, orders.date AS orderDate, orders.cancelDate AS cancelDate, orders.doneDate AS doneDate, orders.serviceResult AS result, services.title, services.creator AS seller, serviceinfos.title AS variation, services.image FROM orders INNER JOIN orderitems ON orders.id = orderitems.orderId INNER JOIN services ON orderitems.serviceId = services.id INNER JOIN serviceinfos ON orderitems.serviceInfoId = serviceinfos.id AND services.id = serviceinfos.serviceId WHERE orders.userId = ?',
       [parseInt(req.user.userId)],
     );
 
@@ -107,6 +107,7 @@ export class OrderService {
           cost: order.cost,
           status: order.status,
           variation: order.variation,
+          result: order.result,
           seller: order.FULLNAME,
         },
         dates: {
