@@ -53,4 +53,23 @@ export class WithdrawalService {
 
     return objResult;
   }
+
+  async getBanks(req: any) {
+    const userBanks = await this.bankRepository.query(
+      'SELECT id, name, numberAccount FROM banks WHERE userId = ?',
+      [parseInt(req.user.userId)],
+    );
+
+    userBanks.map((bank) => {
+      bank.numberAccount = parseInt(bank.numberAccount);
+      return bank;
+    });
+
+    const objResult = {
+      message: 'Get banks data for withdrawal successfully',
+      banks: userBanks,
+    };
+
+    return objResult;
+  }
 }
