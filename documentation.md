@@ -71,6 +71,7 @@ Base URL: Localhost (temporary)
   * [get specified order](#get-specified-order)  
   * [reject order](#reject-order-by-seller)  
   * [upload service result (finishing)](#upload-service-result-by-seller-finishing)
+  * [get list banks](#get-list-banks)
 * Marketplace reviews
   * [create new review](#create-new-reviews)
 * Inspirations
@@ -3636,6 +3637,37 @@ Token is obtained from login response
     "statusCode": 413,
     "message": "File too large",
     "error": "Payload Too Large"
+  }
+  ```
+## Get list banks  
+Get list of bank which is already added by seller user, for withdrawal (data source for drop down of select banks)  
+Token is obtained from login response 
+* ### Endpoint  
+  `/api/marketplace/withdrawal/banks`
+* ### Method  
+  GET
+* ### Headers 
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Get banks data for withdrawal successfully",
+    "banks": [
+        {
+            "id": 1,
+            "name": "Bank Mandiri",
+            "numberAccount": 7854652901
+        }
+    ]
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
   }
   ```
 ## Create new reviews  
