@@ -19,4 +19,38 @@ export class WithdrawalService {
     private withdrawalRepository: Repository<Withdrawals>,
     @InjectRepository(Banks) private bankRepository: Repository<Banks>,
   ) {}
+
+  async getWithdrawals(req: any) {
+    const finishedOrderCost = await this.orderRepository.query(
+      'SELECT orders.id, orders.cost, orders.`status` FROM orders INNER JOIN orderitems ON orders.id = orderitems.orderId INNER JOIN services ON orderitems.serviceId = services.id WHERE orders.status = "Selesai" AND services.creator = ?',
+      [parseInt(req.user.userId)],
+    );
+
+    const arrCostFinishedOrder = finishedOrderCost.map((order) => order.cost);
+
+    const totalFinishedOrderBalance = arrCostFinishedOrder.reduce(
+      (prevValue, currentValue) => prevValue + currentValue,
+      0,
+    );
+
+    const withdrawals = await this.withdrawalRepository.query(
+      'SELECT id, amount, status, slipTransfer FROM withdrawals WHERE userId = ?',
+      [parseInt(req.user.userId)],
+    );
+
+    const successWithdrawalAmount = withdrawals
+      .filter((withdrawal) => withdrawal.status == 'Selesai')
+      .map((item) => item.amount)
+      .reduce((prevValue, currentValue) => prevValue + currentValue, 0);
+
+    const totalBalance = totalFinishedOrderBalance - successWithdrawalAmount;
+
+    const objResult = {
+      message: 'Get withdrawals data successfully',
+      totalBalance: totalBalance,
+      withdrawals: withdrawals,
+    };
+
+    return objResult;
+  }
 }
