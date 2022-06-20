@@ -72,6 +72,7 @@ Base URL: Localhost (temporary)
   * [reject order](#reject-order-by-seller)  
   * [upload service result (finishing)](#upload-service-result-by-seller-finishing)
   * [get list banks](#get-list-banks)
+  * [get withdrawals](#get-list-of-withdrawal)
 * Marketplace reviews
   * [create new review](#create-new-reviews)
 * Inspirations
@@ -3659,6 +3660,45 @@ Token is obtained from login response
             "id": 1,
             "name": "Bank Mandiri",
             "numberAccount": 7854652901
+        }
+    ]
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+## Get list of withdrawal  
+Get list of withdraal history from logged seller user, include total balance    
+Token is obtained from login response 
+* ### Endpoint  
+  `/api/marketplace/withdrawals`
+* ### Method  
+  GET
+* ### Headers 
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Get withdrawals data successfully",
+    "totalBalance": 130500000,
+    "withdrawals": [
+        {
+            "id": 3,
+            "amount": 5000000,
+            "status": "Pending",
+            "slipTransfer": null
+        },
+        {
+            "id": 4,
+            "amount": 5000000,
+            "status": "Selesai",
+            "slipTransfer": null
         }
     ]
   }
