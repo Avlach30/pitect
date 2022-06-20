@@ -25,4 +25,12 @@ export class WithdrawalController {
     const getWithdrawals = await this.withdrawalService.getWithdrawals(req);
     return getWithdrawals;
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('withdrawal/banks')
+  @HttpCode(200)
+  async getBanks(@Request() req: any) {
+    const getBanks = await this.withdrawalService.getBanks(req);
+    return getBanks;
+  }
 }
