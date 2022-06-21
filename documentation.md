@@ -74,6 +74,7 @@ Base URL: Localhost (temporary)
   * [get list banks](#get-list-banks)
   * [add new bank](#add-new-bank-data)
   * [get withdrawals](#get-list-of-withdrawal)
+  * [submission for new withdrawal request](#new-withdrawal-request)
 * Marketplace reviews
   * [create new review](#create-new-reviews)
 * Inspirations
@@ -3746,6 +3747,55 @@ Token is obtained from login response
             "slipTransfer": null
         }
     ]
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+## New withdrawal request  
+Create new withdrawal request for seller    
+Token is obtained from login response 
+* ### Endpoint  
+  `/api/marketplace/withdrawals`
+* ### Method  
+  POST
+* ### Headers 
+  ```
+  Authorization: `Bearer ${token}`
+  Content-type: application/json
+  ```
+* ### Request body  
+  ```
+  {
+    "amount": Number,
+    "bankId": String
+  }
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Request withdrawal successfully",
+    "amount": 7500000
+  }
+  ```
+* ### Response fail (because one of request body not filled (required))
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please input all fields",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because withdrawal request amount is larger than current total balance)
+  ```
+  {
+    "statusCode": 400,
+    "message": "Sorry, you can't request withdrawal with amount is more than your total balance",
+    "error": "Bad Request"
   }
   ```
 * ### Response fail (because token not available or expired)
