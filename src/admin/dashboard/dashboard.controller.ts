@@ -1,12 +1,17 @@
 import {
   Controller,
+  Request,
   Get,
   Post,
+  Put,
   HttpCode,
   Param,
   UseGuards,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { AmazonS3FileInterceptor } from 'nestjs-multer-extended';
 
 import { DashboardService } from './dashboard.service';
 
@@ -71,5 +76,28 @@ export class DashboardController {
     const getInspirationDashboards =
       await this.dashboardService.getInspirationDashboards();
     return getInspirationDashboards;
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Put('withdrawal/:withdrawalId/verification')
+  @HttpCode(200)
+  @UseInterceptors(
+    AmazonS3FileInterceptor('image', {
+      limits: { fileSize: 1 * 1024 * 1024 },
+      randomFilename: true,
+    }),
+  )
+  async verificationWithdrawalRequest(
+    @Request() req: any,
+    @Param('withdrawalId') withdrawalId: string,
+    @UploadedFile() file: any,
+  ) {
+    const verificationWithdrawalRequest =
+      await this.dashboardService.verificationWithdrawalRequest(
+        req,
+        withdrawalId,
+        file,
+      );
+    return verificationWithdrawalRequest;
   }
 }

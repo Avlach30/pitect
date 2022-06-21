@@ -15,6 +15,7 @@ import { CartModule } from './marketplace/cart/cart.module';
 import { OrderModule } from './marketplace/order/order.module';
 import { InspirationModule } from './inspiration/inspiration.module';
 import { UploadResultModule } from './marketplace/order/upload-result/upload-result.module';
+import { WithdrawalModule } from './marketplace/withdrawal/withdrawal.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { UploadResultModule } from './marketplace/order/upload-result/upload-res
     OrderModule,
     InspirationModule,
     UploadResultModule,
+    WithdrawalModule,
   ],
   controllers: [],
   providers: [],

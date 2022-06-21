@@ -41,6 +41,7 @@ Base URL: Localhost (temporary)
   * [get all orders](#get-order-dashboards)
   * [get all inspirations](#get-all-inspirations-admin)
   * [confirm order](#verification-order-by-admin)
+  * [verification withdrawal request](#verification-withdrawal-request)
 * Marketplace
   * [get all catalogs](#get-all-marketplace-catalogs)
   * [search catalogs (by title)](#search-marketplace-catalog)
@@ -71,6 +72,10 @@ Base URL: Localhost (temporary)
   * [get specified order](#get-specified-order)  
   * [reject order](#reject-order-by-seller)  
   * [upload service result (finishing)](#upload-service-result-by-seller-finishing)
+  * [get list banks](#get-list-banks)
+  * [add new bank](#add-new-bank-data)
+  * [get withdrawals](#get-list-of-withdrawal)
+  * [submission for new withdrawal request](#new-withdrawal-request)
 * Marketplace reviews
   * [create new review](#create-new-reviews)
 * Inspirations
@@ -3177,6 +3182,77 @@ Token is obtained from login response
       "error": "Not Found"
   }
   ```
+## Verification withdrawal request  
+Verification withdrawal request from seller by admin, with upload image of slip transfer to seller  
+Token is obtained from login response 
+* ### Endpoint  
+  `/api/admin/dashboard/withdrawal/:withdrawalId/verification`
+* ### Method  
+  PUT
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`,
+  Content-type: multipart/form-data
+  ```
+* ### Body  
+  Because this endpoint contains file upload, make sure you added an attribute `enctype` with value `multipart/form-data` in your form. Then make sure you append each of body field in `formData()`.
+  ```
+  "image": File
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Verification withdrawal request by seller successfully",
+    "slip": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/withdrawal-slip/4ff5568f-643e-4647-99c7-4b7fd4baf377.png"
+  }
+  ```
+* ### Response fail (because file not uploaded (required))  
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please, upload an image",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because verification withdrawal request which one already done)  
+  ```
+  {
+    "statusCode": 400,
+    "message": "Sorry, you cant verification withdrawal request which one already done",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because uploaded file not an image)
+  ```
+  {
+    "statusCode": 400,
+    "message": "Invalid Image File Type",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because data not found)  
+  ```
+  {
+    "statusCode": 404,
+    "message": "Data not found",
+    "error": "Not Found"
+  }
+  ```
+* ### Response fail (because uploaded image size is larger than limit)
+  ```
+  {
+    "statusCode": 413,
+    "message": "File too large",
+    "error": "Payload Too Large"
+  }
+  ```
 ## Get orders data (for seller)  
 Get all orders data to seller with logged user type seller  
 Token is obtained from login response  
@@ -3636,6 +3712,169 @@ Token is obtained from login response
     "statusCode": 413,
     "message": "File too large",
     "error": "Payload Too Large"
+  }
+  ```
+## Get list banks  
+Get list of bank which is already added by seller user, for withdrawal (data source for drop down of select banks)  
+Token is obtained from login response 
+* ### Endpoint  
+  `/api/marketplace/withdrawal/banks`
+* ### Method  
+  GET
+* ### Headers 
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Get banks data for withdrawal successfully",
+    "banks": [
+        {
+            "id": 1,
+            "name": "Bank Mandiri",
+            "numberAccount": 7854652901
+        }
+    ]
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+## Add new bank data  
+Add new bank data, for withdrawal (data source for drop down of select banks)  
+Token is obtained from login response 
+* ### Endpoint  
+  `/api/marketplace/withdrawal/banks`
+* ### Method  
+  POST
+* ### Headers 
+  ```
+  Authorization: `Bearer ${token}`
+  Content-type: application/json
+  ```
+* ### Request Body  
+  ```
+  {
+    "name": String,
+    "numberAccount": Number
+  }
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Add new bank account for withdrawal successfully",
+    "bank": {
+        "name": "Bank BNI",
+        "numberAccount": 245698765498012
+    }
+  }
+  ```
+* ### Response fail (because one of request body not filled (required))
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please input all fields",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+## Get list of withdrawal  
+Get list of withdraal history from logged seller user, include total balance    
+Token is obtained from login response 
+* ### Endpoint  
+  `/api/marketplace/withdrawals`
+* ### Method  
+  GET
+* ### Headers 
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Get withdrawals data successfully",
+    "totalBalance": 130500000,
+    "withdrawals": [
+        {
+            "id": 3,
+            "amount": 5000000,
+            "status": "Pending",
+            "slipTransfer": null
+        },
+        {
+            "id": 4,
+            "amount": 5000000,
+            "status": "Selesai",
+            "slipTransfer": null
+        }
+    ]
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+## New withdrawal request  
+Create new withdrawal request for seller    
+Token is obtained from login response 
+* ### Endpoint  
+  `/api/marketplace/withdrawals`
+* ### Method  
+  POST
+* ### Headers 
+  ```
+  Authorization: `Bearer ${token}`
+  Content-type: application/json
+  ```
+* ### Request body  
+  ```
+  {
+    "amount": Number,
+    "bankId": String
+  }
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Request withdrawal successfully",
+    "amount": 7500000
+  }
+  ```
+* ### Response fail (because one of request body not filled (required))
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please input all fields",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because withdrawal request amount is larger than current total balance)
+  ```
+  {
+    "statusCode": 400,
+    "message": "Sorry, you can't request withdrawal with amount is more than your total balance",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
   }
   ```
 ## Create new reviews  

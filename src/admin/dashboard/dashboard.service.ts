@@ -11,6 +11,7 @@ import { Projects } from '../../entity/project.entity';
 import { Orders } from '../../entity/order.entity';
 import { Services } from '../../entity/services.entity';
 import { Inspirations } from '../../entity/inspiration.entity';
+import { Withdrawals } from '../../entity/withdrawal.entity';
 
 @Injectable()
 export class DashboardService {
@@ -21,6 +22,8 @@ export class DashboardService {
     @InjectRepository(Services) private serviceRepository: Repository<Services>,
     @InjectRepository(Inspirations)
     private inspirationRepository: Repository<Inspirations>,
+    @InjectRepository(Withdrawals)
+    private withdrawalRepository: Repository<Withdrawals>,
   ) {}
 
   async getDashboards() {
@@ -191,6 +194,42 @@ export class DashboardService {
       message: 'Get all inspirations successfully',
       inspirations: getInspirations,
       total: getInspirations.length,
+    };
+
+    return objResult;
+  }
+
+  async verificationWithdrawalRequest(req: any, id: string, file: any) {
+    if (!file) {
+      throw new BadRequestException('Please, upload an image');
+    }
+
+    let withdrawal;
+
+    await this.withdrawalRepository
+      .query('SELECT id, status FROM withdrawals WHERE id = ?', [parseInt(id)])
+      .then((data) => (withdrawal = data[0]));
+
+    if (withdrawal == undefined) {
+      throw new NotFoundException('Data not found');
+    }
+
+    if (withdrawal.status == 'Selesai') {
+      throw new BadRequestException(
+        'Sorry, you cant verification withdrawal request which one already done',
+      );
+    }
+
+    const imageUrl = file.Location;
+
+    await this.withdrawalRepository.query(
+      'UPDATE withdrawals SET status = "Selesai", slipTransfer = ? WHERE id = ?',
+      [imageUrl, id],
+    );
+
+    const objResult = {
+      message: 'Verification withdrawal request by seller successfully',
+      slip: imageUrl,
     };
 
     return objResult;
