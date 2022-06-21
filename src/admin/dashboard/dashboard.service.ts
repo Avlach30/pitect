@@ -204,6 +204,22 @@ export class DashboardService {
       throw new BadRequestException('Please, upload an image');
     }
 
+    let withdrawal;
+
+    await this.withdrawalRepository
+      .query('SELECT id, status FROM withdrawals WHERE id = ?', [parseInt(id)])
+      .then((data) => (withdrawal = data[0]));
+
+    if (withdrawal == undefined) {
+      throw new NotFoundException('Data not found');
+    }
+
+    if (withdrawal.status == 'Selesai') {
+      throw new BadRequestException(
+        'Sorry, you cant verification withdrawal request which one already done',
+      );
+    }
+
     const imageUrl = file.Location;
 
     await this.withdrawalRepository.query(
