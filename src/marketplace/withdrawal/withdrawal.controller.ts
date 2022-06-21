@@ -33,4 +33,20 @@ export class WithdrawalController {
     const getBanks = await this.withdrawalService.getBanks(req);
     return getBanks;
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('withdrawal/banks')
+  @HttpCode(201)
+  async addBank(
+    @Request() req: any,
+    @Body('name') name: string,
+    @Body('numberAccount') numberAccount: number,
+  ) {
+    const addBank = await this.withdrawalService.addBank(
+      req,
+      name,
+      numberAccount,
+    );
+    return addBank;
+  }
 }

@@ -72,4 +72,24 @@ export class WithdrawalService {
 
     return objResult;
   }
+
+  async addBank(req: any, name: string, numberAccount: number) {
+    if (!name || !numberAccount)
+      throw new BadRequestException('Please input all fields');
+
+    await this.bankRepository.query(
+      'INSERT INTO banks (name, numberAccount, userId) VALUES (?, ?, ?)',
+      [name, numberAccount, parseInt(req.user.userId)],
+    );
+
+    const objResult = {
+      message: 'Add new bank account for withdrawal successfully',
+      bank: {
+        name,
+        numberAccount,
+      },
+    };
+
+    return objResult;
+  }
 }
