@@ -72,6 +72,7 @@ Base URL: Localhost (temporary)
   * [reject order](#reject-order-by-seller)  
   * [upload service result (finishing)](#upload-service-result-by-seller-finishing)
   * [get list banks](#get-list-banks)
+  * [add new bank](#add-new-bank-data)
   * [get withdrawals](#get-list-of-withdrawal)
 * Marketplace reviews
   * [create new review](#create-new-reviews)
@@ -3662,6 +3663,50 @@ Token is obtained from login response
             "numberAccount": 7854652901
         }
     ]
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+## Add new bank data  
+Add new bank data, for withdrawal (data source for drop down of select banks)  
+Token is obtained from login response 
+* ### Endpoint  
+  `/api/marketplace/withdrawal/banks`
+* ### Method  
+  POST
+* ### Headers 
+  ```
+  Authorization: `Bearer ${token}`
+  Content-type: application/json
+  ```
+* ### Request Body  
+  ```
+  {
+    "name": String,
+    "numberAccount": Number
+  }
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Add new bank account for withdrawal successfully",
+    "bank": {
+        "name": "Bank BNI",
+        "numberAccount": 245698765498012
+    }
+  }
+  ```
+* ### Response fail (because one of request body not filled (required))
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please input all fields",
+    "error": "Bad Request"
   }
   ```
 * ### Response fail (because token not available or expired)
