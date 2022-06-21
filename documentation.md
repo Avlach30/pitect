@@ -41,6 +41,7 @@ Base URL: Localhost (temporary)
   * [get all orders](#get-order-dashboards)
   * [get all inspirations](#get-all-inspirations-admin)
   * [confirm order](#verification-order-by-admin)
+  * [verification withdrawal request](#verification-withdrawal-request)
 * Marketplace
   * [get all catalogs](#get-all-marketplace-catalogs)
   * [search catalogs (by title)](#search-marketplace-catalog)
@@ -3179,6 +3180,77 @@ Token is obtained from login response
       "statusCode": 404,
       "message": "Data not found",
       "error": "Not Found"
+  }
+  ```
+## Verification withdrawal request  
+Verification withdrawal request from seller by admin, with upload image of slip transfer to seller  
+Token is obtained from login response 
+* ### Endpoint  
+  `/api/admin/dashboard/withdrawal/:withdrawalId/verification`
+* ### Method  
+  PUT
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`,
+  Content-type: multipart/form-data
+  ```
+* ### Body  
+  Because this endpoint contains file upload, make sure you added an attribute `enctype` with value `multipart/form-data` in your form. Then make sure you append each of body field in `formData()`.
+  ```
+  "image": File
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Verification withdrawal request by seller successfully",
+    "slip": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/withdrawal-slip/4ff5568f-643e-4647-99c7-4b7fd4baf377.png"
+  }
+  ```
+* ### Response fail (because file not uploaded (required))  
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please, upload an image",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because verification withdrawal request which one already done)  
+  ```
+  {
+    "statusCode": 400,
+    "message": "Sorry, you cant verification withdrawal request which one already done",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because uploaded file not an image)
+  ```
+  {
+    "statusCode": 400,
+    "message": "Invalid Image File Type",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because data not found)  
+  ```
+  {
+    "statusCode": 404,
+    "message": "Data not found",
+    "error": "Not Found"
+  }
+  ```
+* ### Response fail (because uploaded image size is larger than limit)
+  ```
+  {
+    "statusCode": 413,
+    "message": "File too large",
+    "error": "Payload Too Large"
   }
   ```
 ## Get orders data (for seller)  
