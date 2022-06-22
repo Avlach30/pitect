@@ -34,7 +34,7 @@ export class WithdrawalService {
     );
 
     const withdrawals = await this.withdrawalRepository.query(
-      'SELECT id, amount, status, slipTransfer FROM withdrawals WHERE userId = ?',
+      'SELECT withdrawals.id, withdrawals.amount, withdrawals.status, withdrawals.slipTransfer, banks.name AS bank, banks.numberAccount FROM withdrawals INNER JOIN banks ON withdrawals.bankId = banks.id WHERE withdrawals.userId = ?',
       [parseInt(req.user.userId)],
     );
 

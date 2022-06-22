@@ -3206,14 +3206,6 @@ Token is obtained from login response
     "slip": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/withdrawal-slip/4ff5568f-643e-4647-99c7-4b7fd4baf377.png"
   }
   ```
-* ### Response fail (because file not uploaded (required))  
-  ```
-  {
-    "statusCode": 400,
-    "message": "Please, upload an image",
-    "error": "Bad Request"
-  }
-  ```
 * ### Response fail (because verification withdrawal request which one already done)  
   ```
   {
@@ -3791,7 +3783,7 @@ Token is obtained from login response
   ```
 ## Get list of withdrawal  
 Get list of withdraal history from logged seller user, include total balance    
-Token is obtained from login response 
+Token is obtained from login response   
 * ### Endpoint  
   `/api/marketplace/withdrawals`
 * ### Method  
@@ -3804,19 +3796,39 @@ Token is obtained from login response
   ```
   {
     "message": "Get withdrawals data successfully",
-    "totalBalance": 130500000,
+    "totalBalance": 115500000,
     "withdrawals": [
         {
             "id": 3,
             "amount": 5000000,
             "status": "Pending",
-            "slipTransfer": null
+            "slipTransfer": null,
+            "bank": "Bank Mandiri",
+            "numberAccount": "7854652901"
         },
         {
             "id": 4,
             "amount": 5000000,
             "status": "Selesai",
-            "slipTransfer": null
+            "slipTransfer": null,
+            "bank": "Bank Mandiri",
+            "numberAccount": "7854652901"
+        },
+        {
+            "id": 5,
+            "amount": 7500000,
+            "status": "Selesai",
+            "slipTransfer": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/withdrawal-slip/4ff5568f-643e-4647-99c7-4b7fd4baf377.png",
+            "bank": "Bank BNI",
+            "numberAccount": "245698765498012"
+        },
+        {
+            "id": 6,
+            "amount": 7500000,
+            "status": "Selesai",
+            "slipTransfer": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/withdrawal-slip/e9c64554-393b-4fe3-832d-ee64121b1355.png",
+            "bank": "Bank BNI",
+            "numberAccount": "245698765498012"
         }
     ]
   }
