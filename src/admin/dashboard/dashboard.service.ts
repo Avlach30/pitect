@@ -201,6 +201,7 @@ export class DashboardService {
 
   async verificationWithdrawalRequest(req: any, id: string, file: any) {
     let withdrawal;
+    let imageUrl;
 
     await this.withdrawalRepository
       .query('SELECT id, status FROM withdrawals WHERE id = ?', [parseInt(id)])
@@ -216,7 +217,8 @@ export class DashboardService {
       );
     }
 
-    const imageUrl = file.Location;
+    //* If upload slip transfer file from admin
+    file ? (imageUrl = file.Location) : (imageUrl = null);
 
     await this.withdrawalRepository.query(
       'UPDATE withdrawals SET status = "Selesai", slipTransfer = ? WHERE id = ?',
