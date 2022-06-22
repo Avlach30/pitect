@@ -3206,14 +3206,6 @@ Token is obtained from login response
     "slip": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/withdrawal-slip/4ff5568f-643e-4647-99c7-4b7fd4baf377.png"
   }
   ```
-* ### Response fail (because file not uploaded (required))  
-  ```
-  {
-    "statusCode": 400,
-    "message": "Please, upload an image",
-    "error": "Bad Request"
-  }
-  ```
 * ### Response fail (because verification withdrawal request which one already done)  
   ```
   {
