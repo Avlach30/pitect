@@ -35,6 +35,7 @@ Base URL: Localhost (temporary)
   * [get project report](#get-specified-project-report)
 * Project gallery management  
   * [add new documentation](#create-new-documentation-for-project-management)
+  * [get all documentations](#get-project-galleries)
 * Admin dashboard
   * [get total for each data](#get-total-for-each-data)
   * [get all users](#get-all-users)
@@ -1300,6 +1301,7 @@ Token is obtained from login response
 Add new gallery for documentation of project management   
 Token is obtaind from login response  
 * ### Endpoint  
+  `/api/projects/:projectId/galleries`
 * ### Method  
   POST
 * ### Headers 
@@ -1366,6 +1368,26 @@ Token is obtaind from login response
     "statusCode": 413,
     "message": "File too large",
     "error": "Payload Too Large"
+  }
+  ```
+## Get project galleries 
+Get all gallery for documentation from single project 
+* ### Endpoint  
+  `/api/projects/:projectId/galleries`
+* ### Method  
+  GET
+* ### Response success  
+  ```
+  {
+    "message": "Get galleries for documentation of project management successfully",
+    "galleries": [
+        {
+            "imageUrl": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/project-gallery/7ebe194d-7eb7-497d-8e20-29694cbd8ae1.jpeg"
+        },
+        {
+            "imageUrl": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/project-gallery/5352bf46-01ab-4cec-bb45-66ae75d2554f.jpeg"
+        }
+    ]
   }
   ```
 ## Get total for each data
