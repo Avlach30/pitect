@@ -33,6 +33,8 @@ Base URL: Localhost (temporary)
   * [finish task](#finish-task)
 * Project report
   * [get project report](#get-specified-project-report)
+* Project gallery management  
+  * [add new documentation](#create-new-documentation-for-project-management)
 * Admin dashboard
   * [get total for each data](#get-total-for-each-data)
   * [get all users](#get-all-users)
@@ -1292,6 +1294,78 @@ Token is obtained from login response
       "statusCode": 404,
       "message": "Data not found",
       "error": "Not Found"
+  }
+  ```
+## Create new documentation for project management  
+Add new gallery for documentation of project management   
+Token is obtaind from login response  
+* ### Endpoint  
+* ### Method  
+  POST
+* ### Headers 
+  ```
+  Authorization: `Bearer ${token}`
+  Content-type: multipart/form-data
+  ```
+* ### Body  
+  Because this endpoint contains file upload, make sure you added an attribute `enctype` with value `multipart/form-data` in your form. Then make sure you append each of body field in `formData()`.
+  ```
+    "image": File,
+	"description": String,
+	"date": String (YYYY-MM-DD)
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Create new documentation for construction project successfully",
+    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/project-gallery/5352bf46-01ab-4cec-bb45-66ae75d2554f.jpeg"
+  }
+  ```
+* ### Response failed (because request body not available (required))  
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please, input all fields include upload an image file",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because uploaded file not an image)
+  ```
+  {
+    "statusCode": 400,
+    "message": "Invalid Image File Type",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because project collaborator isn't logged user)  
+  ```
+  {
+      "statusCode": 403,
+      "message": "Forbidden to access",
+      "error": "Forbidden"
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```
+* ### Response fail (because uploaded image size is larger than limit)
+  ```
+  {
+    "statusCode": 413,
+    "message": "File too large",
+    "error": "Payload Too Large"
   }
   ```
 ## Get total for each data
