@@ -200,10 +200,6 @@ export class DashboardService {
   }
 
   async verificationWithdrawalRequest(req: any, id: string, file: any) {
-    if (!file) {
-      throw new BadRequestException('Please, upload an image');
-    }
-
     let withdrawal;
 
     await this.withdrawalRepository
