@@ -183,9 +183,9 @@ export class ProjectService {
         }
 
         if (value.imageUrl === undefined) {
-          value.imageUrl = value.imageUrl[0];
-        } else {
           value.imageUrl = null;
+        } else {
+          value.imageUrl = value.imageUrl;
         }
 
         return value;
@@ -272,9 +272,9 @@ export class ProjectService {
         }
 
         if (value.imageUrl === undefined) {
-          value.imageUrl = value.imageUrl[0];
-        } else {
           value.imageUrl = null;
+        } else {
+          value.imageUrl = value.imageUrl;
         }
 
         return value;
