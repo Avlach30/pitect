@@ -8,6 +8,7 @@ import { ProjectService } from './project.service';
 import { ProjectMembers } from '../entity/project-member.entity';
 import { ProjectBudgets } from '../entity/project-budget.entity';
 import { ProjectTasks } from '../entity/project-task.entity';
+import { ProjectGalleries } from '../entity/project-gallery.entity';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ProjectTasks } from '../entity/project-task.entity';
     TypeOrmModule.forFeature([ProjectBudgets]),
     TypeOrmModule.forFeature([ProjectMembers]),
     TypeOrmModule.forFeature([ProjectTasks]),
+    TypeOrmModule.forFeature([ProjectGalleries]),
   ],
   controllers: [ProjectController],
   providers: [isAuth, ProjectService],
