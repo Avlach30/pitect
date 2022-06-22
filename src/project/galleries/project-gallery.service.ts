@@ -78,4 +78,29 @@ export class ProjectGalleryService {
 
     return objResult;
   }
+
+  async getProjectGalleries(projectId: string) {
+    let project;
+
+    await this.projectRepository
+      .query('SELECT id FROM projects WHERE id = ?', [parseInt(projectId)])
+      .then((data) => (project = data[0]));
+
+    if (project == undefined) {
+      throw new NotFoundException('Data not found');
+    }
+
+    const galleries = await this.projectGalleryRepository.query(
+      'SELECT imageUrl FROM projectgalleries WHERE projectId = ?',
+      [project.id],
+    );
+
+    const objResult = {
+      message:
+        'Get galleries for documentation of project management successfully',
+      galleries,
+    };
+
+    return objResult;
+  }
 }

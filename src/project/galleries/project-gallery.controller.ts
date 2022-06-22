@@ -20,6 +20,14 @@ import { ProjectGalleryService } from './project-gallery.service';
 export class ProjectGalleryController {
   constructor(private projectGalleryService: ProjectGalleryService) {}
 
+  @Get()
+  @HttpCode(200)
+  async getProjectGalleries(@Param('projectId') projectId: string) {
+    const getProjectGalleries =
+      await this.projectGalleryService.getProjectGalleries(projectId);
+    return getProjectGalleries;
+  }
+
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @HttpCode(201)
