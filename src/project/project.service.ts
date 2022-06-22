@@ -13,6 +13,7 @@ import { ProjectMembers } from '../entity/project-member.entity';
 import { Projects } from '../entity/project.entity';
 import { ProjectBudgets } from '../entity/project-budget.entity';
 import { ProjectTasks } from '../entity/project-task.entity';
+import { ProjectGalleries } from '../entity/project-gallery.entity';
 
 @Injectable()
 export class ProjectService {
@@ -24,6 +25,8 @@ export class ProjectService {
     private projectBudgetRepository: Repository<ProjectBudgets>,
     @InjectRepository(ProjectTasks)
     private projectTaskRepository: Repository<ProjectTasks>,
+    @InjectRepository(ProjectGalleries)
+    private projectGalleryRepository: Repository<ProjectGalleries>,
   ) {}
 
   async createProject(
@@ -133,6 +136,7 @@ export class ProjectService {
 
     //* If projects owned available
     let fetchSpendings;
+    let fetchGalleries;
     let sumOwnedProjectSpendings = 0;
     let sumOwnedProjectContracts = 0;
     if (fetchProjectOwnedResult.length > 0) {
@@ -160,9 +164,15 @@ export class ProjectService {
 
       // console.log(formattedArrSpendings);
 
+      fetchGalleries = await this.projectGalleryRepository.query(
+        'SELECT projectId AS id, imageUrl FROM projectgalleries WHERE projectId IN (?)',
+        [arrOwnedProjectsId],
+      );
+
       mappingOwnedProjects = fetchProjectOwnedResult.map((value) => ({
         ...value,
         ...fetchSpendings.find((id) => id.id === value.id),
+        ...fetchGalleries.find((gallery) => gallery.id === value.id),
       }));
 
       mappingOwnedProjects.map((value) => {
@@ -170,6 +180,12 @@ export class ProjectService {
 
         if (value.cost === undefined) {
           value.cost = 0;
+        }
+
+        if (value.imageUrl === undefined) {
+          value.imageUrl = null;
+        } else {
+          value.imageUrl = value.imageUrl;
         }
 
         return value;
@@ -197,6 +213,7 @@ export class ProjectService {
 
     let mappingCollabProjects;
     let fetchProjectCollabSpendings;
+    let fetchProjectCollabGalleries;
     let sumCollabProjectSpending = 0;
     let sumCollabProjectContract = 0;
 
@@ -234,9 +251,17 @@ export class ProjectService {
 
       // console.log(formattedArrSpendings);
 
+      fetchProjectCollabGalleries = await this.projectGalleryRepository.query(
+        'SELECT projectId AS id, imageUrl FROM projectgalleries WHERE projectId IN (?)',
+        [arrProjectCollabId],
+      );
+
       mappingCollabProjects = fetchCollabProjects.map((value) => ({
         ...value,
         ...fetchProjectCollabSpendings.find((id) => id.id === value.id),
+        ...fetchProjectCollabGalleries.find(
+          (gallery) => gallery.id === value.id,
+        ),
       }));
 
       mappingCollabProjects.map((value) => {
@@ -244,6 +269,12 @@ export class ProjectService {
 
         if (value.cost === undefined) {
           value.cost = 0;
+        }
+
+        if (value.imageUrl === undefined) {
+          value.imageUrl = null;
+        } else {
+          value.imageUrl = value.imageUrl;
         }
 
         return value;

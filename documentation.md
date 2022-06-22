@@ -33,6 +33,9 @@ Base URL: Localhost (temporary)
   * [finish task](#finish-task)
 * Project report
   * [get project report](#get-specified-project-report)
+* Project gallery management  
+  * [add new documentation](#create-new-documentation-for-project-management)
+  * [get all documentations](#get-project-galleries)
 * Admin dashboard
   * [get total for each data](#get-total-for-each-data)
   * [get all users](#get-all-users)
@@ -238,33 +241,14 @@ Token is obtained from login response
     "data": {
         "projectsOwned": [
             {
-                "id": 29,
-                "name": "Pembangunan Jembatan",
-                "admin": "rocketmail",
-                "totalContract": 15000000,
-                "duration": 52,
-                "address": "Sulawesi Selatan",
-                "cost": 3500000
-            },
-            {
-                "id": 30,
-                "name": "Pembangunan Wc",
-                "admin": "rocketmail",
-                "totalContract": 22000000,
-                "duration": 52,
-                "address": "Sulawesi Selatan",
-                "cost": 1000000
-            }
-        ],
-        "projectsCollab": [
-            {
                 "id": 32,
                 "name": "Pengembangan proyek homestay",
                 "admin": "john doe",
                 "totalContract": 500000000,
                 "duration": 181,
                 "address": "Maluku",
-                "cost": 0
+                "cost": 0,
+                "imageUrl": null
             },
             {
                 "id": 33,
@@ -273,7 +257,8 @@ Token is obtained from login response
                 "totalContract": 500000000,
                 "duration": 181,
                 "address": "Sulawesi Selatan",
-                "cost": 3150000
+                "cost": 3150000,
+                "imageUrl": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/project-gallery/fc33c8d3-dd96-42aa-ad15-0c23ca3fcebd.jpeg"
             },
             {
                 "id": 35,
@@ -282,17 +267,60 @@ Token is obtained from login response
                 "totalContract": 500000000,
                 "duration": 181,
                 "address": "Maluku",
+                "imageUrl": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/project-gallery/872d09fc-b568-4fed-a0d8-48272add655d.jpeg",
+                "cost": 0
+            },
+            {
+                "id": 36,
+                "name": "Pengembangan proyek kolam renang",
+                "admin": "john doe",
+                "totalContract": 20000000,
+                "duration": 122,
+                "address": "Yogyakarta",
+                "cost": 0,
+                "imageUrl": null
+            }
+        ],
+        "projectsCollab": [
+            {
+                "id": 29,
+                "name": "Pembangunan Jembatan",
+                "admin": "Rocket mail",
+                "totalContract": 15000000,
+                "duration": 52,
+                "address": "Sulawesi Selatan",
+                "cost": 3500000,
+                "imageUrl": null
+            },
+            {
+                "id": 30,
+                "name": "Pembangunan Wc",
+                "admin": "Rocket mail",
+                "totalContract": 22000000,
+                "duration": 52,
+                "address": "Sulawesi Selatan",
+                "cost": 1000000,
+                "imageUrl": null
+            },
+            {
+                "id": 37,
+                "name": "Pengembangan proyek kolam renang",
+                "admin": "john morisson",
+                "totalContract": 20000000,
+                "duration": 122,
+                "address": "Yogyakarta",
+                "imageUrl": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/project-gallery/7ebe194d-7eb7-497d-8e20-29694cbd8ae1.jpeg",
                 "cost": 0
             }
         ],
         "budgets": {
-            "sumContracts": 1537000000,
+            "sumContracts": 1577000000,
             "sumSpendings": 7650000,
-            "remainingBudget": 1529350000
+            "remainingBudget": 1569350000
         },
         "percentageBudgets": {
-            "spending": 0.4977228366948601,
-            "remainBudget": 99.50227716330514
+            "spending": 0.4850982878883957,
+            "remainBudget": 99.51490171211161
         }
     }
   }
@@ -1292,6 +1320,99 @@ Token is obtained from login response
       "statusCode": 404,
       "message": "Data not found",
       "error": "Not Found"
+  }
+  ```
+## Create new documentation for project management  
+Add new gallery for documentation of project management   
+Token is obtaind from login response  
+* ### Endpoint  
+  `/api/projects/:projectId/galleries`
+* ### Method  
+  POST
+* ### Headers 
+  ```
+  Authorization: `Bearer ${token}`
+  Content-type: multipart/form-data
+  ```
+* ### Body  
+  Because this endpoint contains file upload, make sure you added an attribute `enctype` with value `multipart/form-data` in your form. Then make sure you append each of body field in `formData()`.
+  ```
+    "image": File,
+	"description": String,
+	"date": String (YYYY-MM-DD)
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Create new documentation for construction project successfully",
+    "image": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/project-gallery/5352bf46-01ab-4cec-bb45-66ae75d2554f.jpeg"
+  }
+  ```
+* ### Response failed (because request body not available (required))  
+  ```
+  {
+    "statusCode": 400,
+    "message": "Please, input all fields include upload an image file",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because uploaded file not an image)
+  ```
+  {
+    "statusCode": 400,
+    "message": "Invalid Image File Type",
+    "error": "Bad Request"
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
+  }
+  ```
+* ### Response fail (because project collaborator isn't logged user)  
+  ```
+  {
+      "statusCode": 403,
+      "message": "Forbidden to access",
+      "error": "Forbidden"
+  }
+  ```
+* ### Response fail (because data not found)
+  ```
+  {
+      "statusCode": 404,
+      "message": "Data not found",
+      "error": "Not Found"
+  }
+  ```
+* ### Response fail (because uploaded image size is larger than limit)
+  ```
+  {
+    "statusCode": 413,
+    "message": "File too large",
+    "error": "Payload Too Large"
+  }
+  ```
+## Get project galleries 
+Get all gallery for documentation from single project 
+* ### Endpoint  
+  `/api/projects/:projectId/galleries`
+* ### Method  
+  GET
+* ### Response success  
+  ```
+  {
+    "message": "Get galleries for documentation of project management successfully",
+    "galleries": [
+        {
+            "imageUrl": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/project-gallery/7ebe194d-7eb7-497d-8e20-29694cbd8ae1.jpeg"
+        },
+        {
+            "imageUrl": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/project-gallery/5352bf46-01ab-4cec-bb45-66ae75d2554f.jpeg"
+        }
+    ]
   }
   ```
 ## Get total for each data
