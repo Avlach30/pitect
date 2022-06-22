@@ -16,6 +16,7 @@ import { OrderModule } from './marketplace/order/order.module';
 import { InspirationModule } from './inspiration/inspiration.module';
 import { UploadResultModule } from './marketplace/order/upload-result/upload-result.module';
 import { WithdrawalModule } from './marketplace/withdrawal/withdrawal.module';
+import { ProjectGalleryModule } from './project/galleries/project-gallery.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { WithdrawalModule } from './marketplace/withdrawal/withdrawal.module';
     InspirationModule,
     UploadResultModule,
     WithdrawalModule,
+    ProjectGalleryModule,
   ],
   controllers: [],
   providers: [],
