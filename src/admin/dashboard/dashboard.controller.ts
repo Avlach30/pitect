@@ -79,6 +79,15 @@ export class DashboardController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @Get('withdrawals')
+  @HttpCode(200)
+  async getWithdrawalDashboards() {
+    const getWithdrawalDashboards =
+      await this.dashboardService.getWithdrawalDashboards();
+    return getWithdrawalDashboards;
+  }
+
+  @UseGuards(AuthGuard('jwt'))
   @Put('withdrawal/:withdrawalId/verification')
   @HttpCode(200)
   @UseInterceptors(

@@ -199,6 +199,20 @@ export class DashboardService {
     return objResult;
   }
 
+  async getWithdrawalDashboards() {
+    const withdrawals = await this.withdrawalRepository.query(
+      'SELECT withdrawals.id, users.FULLNAME AS seller, withdrawals.amount, withdrawals.`status`, withdrawals.slipTransfer, banks.`name` AS bank, banks.numberAccount FROM withdrawals INNER JOIN banks ON withdrawals.bankId = banks.id INNER JOIN users ON banks.userId = users.USERID AND withdrawals.userId = users.USERID',
+    );
+
+    const objResult = {
+      message: 'Get all withdrawals data successfully',
+      withdrawals,
+      total: withdrawals.length,
+    };
+
+    return objResult;
+  }
+
   async verificationWithdrawalRequest(req: any, id: string, file: any) {
     let withdrawal;
     let imageUrl;
