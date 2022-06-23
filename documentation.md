@@ -43,6 +43,7 @@ Base URL: Localhost (temporary)
   * [get all catalogs](#get-all-catalogs-admin)
   * [get all orders](#get-order-dashboards)
   * [get all inspirations](#get-all-inspirations-admin)
+  * [get all withdrawals](#get-all-withdrawals-admin)
   * [confirm order](#verification-order-by-admin)
   * [verification withdrawal request](#verification-withdrawal-request)
 * Marketplace
@@ -3301,6 +3302,78 @@ Token is obtained from login response
       "statusCode": 404,
       "message": "Data not found",
       "error": "Not Found"
+  }
+  ```
+## Get all withdrawals (admin)  
+Get all withdrawals data from reuested by seller for admin dashboard, include total data  
+Token is obtained from login response 
+* ### Endpoint  
+  `/api/admin/dashboard/withdrawals`
+* ### Method  
+  GET
+* ### Headers  
+  ```
+  Authorization: `Bearer ${token}`
+  ```
+* ### Response success  
+  ```
+  {
+    "message": "Get all withdrawals data successfully",
+    "withdrawals": [
+        {
+            "id": 3,
+            "seller": "Rocket mail",
+            "amount": 5000000,
+            "status": "Selesai",
+            "slipTransfer": null,
+            "bank": "Bank Mandiri",
+            "numberAccount": "7854652901"
+        },
+        {
+            "id": 4,
+            "seller": "Rocket mail",
+            "amount": 5000000,
+            "status": "Selesai",
+            "slipTransfer": null,
+            "bank": "Bank Mandiri",
+            "numberAccount": "7854652901"
+        },
+        {
+            "id": 5,
+            "seller": "Rocket mail",
+            "amount": 7500000,
+            "status": "Selesai",
+            "slipTransfer": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/withdrawal-slip/4ff5568f-643e-4647-99c7-4b7fd4baf377.png",
+            "bank": "Bank BNI",
+            "numberAccount": "245698765498012"
+        },
+        {
+            "id": 6,
+            "seller": "Rocket mail",
+            "amount": 7500000,
+            "status": "Selesai",
+            "slipTransfer": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/withdrawal-slip/e9c64554-393b-4fe3-832d-ee64121b1355.png",
+            "bank": "Bank BNI",
+            "numberAccount": "245698765498012"
+        },
+        {
+            "id": 7,
+            "seller": "Rocket mail",
+            "amount": 8000000,
+            "status": "Selesai",
+            "slipTransfer": "https://pitect-services.s3.ap-southeast-1.amazonaws.com/withdrawal-slip/10580f3c-2d4d-4e97-a870-4ebf6d50986d.png",
+            "bank": "Bank BNI",
+            "numberAccount": "245698765498012"
+        }
+    ],
+    "total": 5
+  }
+  ```
+* ### Response fail (because token not available or expired)
+  ```
+  {
+    "statusCode": 401,
+    "message": "Unauthorized"
   }
   ```
 ## Verification withdrawal request  
