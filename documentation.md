@@ -2622,9 +2622,10 @@ Token is obtained from login response
   ```
   {
     "message": "Create new order successfully",
-    "cost": 150000000,
-    "orderDate": "2022-06-13T05:15:04.206Z",
-    "estimateDoneDate": "2022-06-22T05:15:04.206Z"
+    "id": 17,
+    "cost": 75000000,
+    "orderDate": "2022-06-27T04:32:38.031Z",
+    "estimateDoneDate": "2022-07-03T04:32:38.031Z"
   }
   ```
 * ### Response fail (because request body not filled (required))
