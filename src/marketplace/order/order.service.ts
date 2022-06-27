@@ -72,6 +72,7 @@ export class OrderService {
 
     const objResult = {
       message: 'Create new order successfully',
+      id: insertOrder.insertId,
       cost: serviceItem[0].cost,
       orderDate: currentDate,
       estimateDoneDate: doneDate,
