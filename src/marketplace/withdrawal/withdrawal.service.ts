@@ -34,8 +34,15 @@ export class WithdrawalService {
     );
 
     const withdrawals = await this.withdrawalRepository.query(
-      'SELECT withdrawals.id, withdrawals.amount, withdrawals.status, withdrawals.slipTransfer, banks.name AS bank, banks.numberAccount FROM withdrawals INNER JOIN banks ON withdrawals.bankId = banks.id WHERE withdrawals.userId = ?',
+      'SELECT withdrawals.id, withdrawals.amount, withdrawals.date, withdrawals.status, withdrawals.slipTransfer, banks.name AS bank, banks.numberAccount FROM withdrawals INNER JOIN banks ON withdrawals.bankId = banks.id WHERE withdrawals.userId = ?',
       [parseInt(req.user.userId)],
+    );
+
+    const finishWithdrawals = withdrawals.filter(
+      (withdrawal) => withdrawal.status == 'Selesai',
+    );
+    const pendingWithdrawals = withdrawals.filter(
+      (withdrawal) => withdrawal.status == 'Pending',
     );
 
     const successWithdrawalAmount = withdrawals
@@ -48,7 +55,8 @@ export class WithdrawalService {
     const objResult = {
       message: 'Get withdrawals data successfully',
       totalBalance: totalBalance,
-      withdrawals: withdrawals,
+      finishWithdrawals,
+      pendingWithdrawals,
     };
 
     return objResult;
@@ -128,9 +136,11 @@ export class WithdrawalService {
       );
     }
 
+    const currentDate = new Date().toISOString();
+
     await this.withdrawalRepository.query(
-      'INSERT INTO withdrawals (amount, userId, bankId, status) VALUES (?, ?, ?, "Pending")',
-      [amount, parseInt(req.user.userId), parseInt(bankId)],
+      'INSERT INTO withdrawals (amount, date, userId, bankId, status) VALUES (?, ?, ?, ?, "Pending")',
+      [amount, currentDate, parseInt(req.user.userId), parseInt(bankId)],
     );
 
     const objResult = {
