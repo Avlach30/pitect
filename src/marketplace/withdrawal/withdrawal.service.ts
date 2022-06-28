@@ -136,9 +136,11 @@ export class WithdrawalService {
       );
     }
 
+    const currentDate = new Date().toISOString();
+
     await this.withdrawalRepository.query(
-      'INSERT INTO withdrawals (amount, userId, bankId, status) VALUES (?, ?, ?, "Pending")',
-      [amount, parseInt(req.user.userId), parseInt(bankId)],
+      'INSERT INTO withdrawals (amount, date, userId, bankId, status) VALUES (?, ?, ?, ?, "Pending")',
+      [amount, currentDate, parseInt(req.user.userId), parseInt(bankId)],
     );
 
     const objResult = {
