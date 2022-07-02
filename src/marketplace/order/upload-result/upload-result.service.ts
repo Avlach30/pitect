@@ -58,7 +58,12 @@ export class UploadResultService {
 
     const serviceResult = file.Location;
 
-    const currentDate = new Date().toISOString();
+    const date = new Date().toISOString().split('T')[0];
+    const time = new Date().toISOString().split('T')[1];
+    const hour = time.split(':')[0];
+    const minute = time.split(':')[1];
+    const second = time.split(':')[2].split('.')[0];
+    const currentDate = `${date} ${hour}:${minute}:${second}`;
 
     await this.orderRepository.query(
       'UPDATE orders SET status = "Selesai", doneDate = ?, serviceResult = ? WHERE id = ?',
